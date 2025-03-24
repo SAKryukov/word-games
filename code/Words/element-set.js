@@ -54,7 +54,6 @@ const getElementSet = () => {
         elementSet.input.languageSet.style.height = heightPx;
         elementSet.input.options.style.height = heightPx;
     };
-    elementSet.createOption = () => document.createElement("option");
 
     elementSet.selectInSelect = (select, value) => {
         for (let index = 0; index < select.childElementCount; ++index)

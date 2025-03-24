@@ -24,11 +24,6 @@ const getDefinitionSet = () => {
         };
     }; //definitionSet.createFileOptions
 
-    gameDefinitionSet.characterRepertoireOptions = {
-        acceptBlankspaceCharacters: "Accept blankspace characters",
-        acceptPunctuationCharacters: "Accept punctuation characters",
-    };
-
     gameDefinitionSet.invalidOperation = menuItemText => 
         `${menuItemText} (not supported by this browser; please use, for example, Chromium-compatible one)`;
 

@@ -7,7 +7,7 @@
 
 "use strict";
 
-const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, optionsObject) => {
+const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, languageSelector) => {
     const gameIO = {};
 
     const fileIO = createFileIO(exception => {
@@ -50,11 +50,10 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, optionsObje
             const json = JSON.parse(text);
             elementSet.input.inputSetWord.value = json.metadata.setWord;
             elementSet.selectInSelect(elementSet.input.languageSet, json.metadata.language);
-            const optionValues = [
+            languageSelector.setOptionValues(
                 json.metadata.options.acceptBlankspaceCharacters,
-                json.metadata.options.acceptPunctuationCharacters,                
-            ];
-            optionsObject.setValues(optionValues);
+                json.metadata.options.acceptPunctuationCharacters
+            );
             for (let word of json.alphabetical)
                 sortedWordList.add(word);
         }, gameDefinitionSet.createFileOptions());

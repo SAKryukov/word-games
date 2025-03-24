@@ -12,38 +12,13 @@ window.onload = () => {
     const elementSet = getElementSet();
     const gameDefinitionSet = getDefinitionSet();
     elementSet.makeEqualWidth(elementSet.buttonShuffle);
+
     const sortedWordList = createSortedWordList(elementSet.main, elementSet.highlightClass);
-    let currentLanguage = null;
-    let repertoire = null;
 
-    //const repertoireSelector = 
-        createRepertoireSelector(gameDefinitionSet, elementSet.input.languageSet, elementSet.input.options);
+    const languageSelector =
+        createLanguageSelector(elementSet.input.languageSet, elementSet.input.options);
+    elementSet.makeEqualHeight();
     
-    const setRepertoire = options => {
-        const acceptBlankspaceCharacters = options[0];
-        const acceptPunctuationCharacters = options[1];
-        repertoire = currentLanguage.characterRepertoire.letters;
-        repertoire += repertoire.toUpperCase();
-        if (acceptBlankspaceCharacters)
-            repertoire += currentLanguage.characterRepertoire.blankSpace;
-        if (acceptPunctuationCharacters)
-            repertoire += currentLanguage.characterRepertoire.punctuation;        
-    }; //setRepertoire
-
-    const optionsObject = (() => {
-        const optionsObject = setupCheckedListBox(elementSet.input.options, [false, false]);
-        optionsObject.setCallback(options => setRepertoire(options));
-        return optionsObject;
-    })();
-
-    const filterOut = event => {
-		if (event.charCode == 0) return true;
-		var char = String.fromCharCode(event.charCode);
-		if (repertoire.indexOf(char) >= 0) return true;
-		if (event.preventDefault) event.preventDefault();
-		return false;
-    }; //filterOut
-
     const reset = () => {
         elementSet.input.inputSetWord.value = null;
         elementSet.input.inputTry.value = null; 
@@ -59,7 +34,7 @@ window.onload = () => {
             if (!currentLanguage.alphabetical[event.target.value.toLowerCase()])
                 modalPopup.show(gameDefinitionSet.setWordBad(currentLanguage, event.target.value));
         } else
-            filterOut(event);
+            languageSelector.filterOut(event);
     }; //elementSet.input.inputSetWord.onkeypress
 
     elementSet.input.inputTry.onkeypress = event => {
@@ -86,46 +61,8 @@ window.onload = () => {
                     modalPopup.show(gameDefinitionSet.trialWordNotInDictionary(currentLanguage, trialWord));    
             } //if
         } else
-            filterOut(event);
+            languageSelector.filterOut(event);
     }; //elementSet.input.inputTry.onkeypress
-
-    const setLanguageAndOptions = () => {
-        const languageName = elementSet.input.languageSet.children[elementSet.input.languageSet.selectedIndex].value
-        for (let index in dictionaries) {
-            if (languageName == dictionaries[index].languageName) {
-                currentLanguage = dictionaries[index];
-                break;
-            } //if
-        } //loop
-        setRepertoire(optionsObject.getValues());
-    }; //setupLanguageAndOptions
-    elementSet.input.inputSetWord.onfocus = () => setLanguageAndOptions();
-    elementSet.input.inputTry.onfocus = () => setLanguageAndOptions();    
-
-    (() => { // populate language set:
-        let count = 0;
-        let indexedDictionaries = [];
-        for (let index in dictionaries) {
-            const dictionary = dictionaries[index];
-            indexedDictionaries.push(dictionary);
-            if (!currentLanguage) {
-                currentLanguage = dictionary;
-                setRepertoire(optionsObject.getValues());
-            } //if
-            const option = elementSet.createOption();
-            option.value = dictionary.languageName;
-            option.textContent = index;
-            elementSet.input.languageSet.appendChild(option);
-            ++count;
-        } //loop
-        elementSet.makeEqualHeight();
-        elementSet.input.languageSet.size = count;
-        elementSet.input.languageSet.onchange = event => {
-            currentLanguage = indexedDictionaries[event.target.selectedIndex];
-            setRepertoire(optionsObject.getValues());
-            reset();
-        };
-    })(); //populate language set
 
     (() => { // setup shuffle:
         elementSet.input.inputSetWord.oninput = event => {
@@ -162,7 +99,7 @@ window.onload = () => {
     }; //reviewMachineSolution
     
     (() => { // contextMenu:
-        const gameIO = createGameIO(gameDefinitionSet, sortedWordList, elementSet, optionsObject);
+        const gameIO = createGameIO(gameDefinitionSet, sortedWordList, elementSet, languageSelector);
         const contextMenu = new menuGenerator(elementSet.input.menu);
         contextMenu.subscribe(elementSet.menuItem.reviewMachineSolution, actionRequest => {
             if (!actionRequest) return true; 

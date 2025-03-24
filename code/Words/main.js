@@ -151,14 +151,18 @@ window.onload = () => {
             if (!actionRequest) return true; 
             reviewMachineSolution();
         });
-        contextMenu.subscribe(elementSet.menuItem.saveGame, actionRequest => {
-            if (!actionRequest) return sortedWordList.count() > 0;
+        const menuItemProxyApiSave = contextMenu.subscribe(elementSet.menuItem.saveGame, actionRequest => {
+            if (!actionRequest) return gameIO != undefined && sortedWordList.count() > 0;
             gameIO.saveGame(currentLanguage);
         });
-        contextMenu.subscribe(elementSet.menuItem.loadGame, actionRequest => {
-            if (!actionRequest) return true;
+        if (!gameIO)
+            menuItemProxyApiSave.changeText(gameDefinitionSet.invalidOperation(elementSet.menuItem.saveGame));
+        const menuItemProxyApiLoad = contextMenu.subscribe(elementSet.menuItem.loadGame, actionRequest => {
+            if (!actionRequest) return gameIO != undefined;
             gameIO.restoreGame();
         });
+        if (!gameIO)
+            menuItemProxyApiLoad.changeText(gameDefinitionSet.invalidOperation(elementSet.menuItem.loadGame));
         let lastPointerX = 0;
         let lastPointerY = 0;
         window.onpointermove = event => {

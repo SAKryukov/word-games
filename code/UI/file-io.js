@@ -8,6 +8,10 @@ http://www.SAKryukov.org
 
 const createFileIO = showException => {
 
+    const experimentalImplementation = window.showOpenFilePicker && window.showSaveFilePicker;
+    if (!experimentalImplementation)
+        return undefined;
+
     let fileHandleSave = undefined;
     let fileHandleOpen = undefined;
 

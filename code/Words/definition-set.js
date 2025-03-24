@@ -24,6 +24,9 @@ const getDefinitionSet = () => {
         };
     }; //definitionSet.createFileOptions
 
+    definitionSet.invalidOperation = menuItemText => 
+        `${menuItemText} (not supported by this browser; please use, for example, Chromium-compatible one)`;
+
     const leftQuote = language => language == dictionaries.Russian ? "&laquo;" : "&ldquo;";
     const rightQuote = language => language == dictionaries.Russian ? "&raquo;" : "&rdquo;";
     const notComposed = "cannot be composed based on the given character repertoire";

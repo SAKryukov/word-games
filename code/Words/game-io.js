@@ -14,6 +14,9 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, optionsObje
         console.log(exception); //SA???
     });
 
+    if (!fileIO)
+        return undefined;
+
     const gameData = {
         signature: gameDefinitionSet.gameSignature,
         metadata: {

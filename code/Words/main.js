@@ -57,7 +57,7 @@ window.onload = () => {
                 modalPopup.show(gameDefinitionSet.setWordBad(currentLanguage, event.target.value));
         } else
             filterOut(event);
-    };
+    }; //elementSet.input.inputSetWord.onkeypress
 
     elementSet.input.inputTry.onkeypress = event => {
         if (elementSet.isEnter(event) && event.target.value) {
@@ -84,9 +84,24 @@ window.onload = () => {
             } //if
         } else
             filterOut(event);
-    };
+    }; //elementSet.input.inputTry.onkeypress
 
-    (() => { // populate language set
+    (() => { // to fix language and options after game load:
+        const setLanguageAndOptions = () => {
+            const languageName = elementSet.input.languageSet.children[elementSet.input.languageSet.selectedIndex].value
+            for (let index in dictionaries) {
+                if (languageName == dictionaries[index].languageName) {
+                    currentLanguage = dictionaries[index];
+                    break;
+                } //if
+            } //loop
+            setRepertoire(optionsObject.getValues());
+        }; //setupLanguageAndOptions
+        elementSet.input.inputSetWord.onfocus = () => setLanguageAndOptions();
+        elementSet.input.inputTry.onfocus = () => setLanguageAndOptions();    
+    })(); //fix language and options after game load
+
+    (() => { // populate language set:
         let count = 0;
         let indexedDictionaries = [];
         for (let index in dictionaries) {
@@ -109,9 +124,9 @@ window.onload = () => {
             setRepertoire(optionsObject.getValues());
             reset();
         };
-    })();
+    })(); //populate language set
 
-    (() => { // setup shuffle
+    (() => { // setup shuffle:
         elementSet.input.inputSetWord.oninput = event => {
             sortedWordList.reset();
             shuffle(true);
@@ -132,7 +147,7 @@ window.onload = () => {
                     event.preventDefault();
             } //if
         };
-    })();
+    })(); //setup shuffle
 
     const reviewMachineSolution = () => {
         sortedWordList.reset();
@@ -144,7 +159,7 @@ window.onload = () => {
         elementSet.count.textContent = sortedWordList.count();
     }; //reviewMachineSolution
     
-    (() => { //contextMenu:
+    (() => { // contextMenu:
         const gameIO = createGameIO(gameDefinitionSet, sortedWordList, elementSet, optionsObject);
         const contextMenu = new menuGenerator(elementSet.input.menu);
         contextMenu.subscribe(elementSet.menuItem.reviewMachineSolution, actionRequest => {
@@ -183,7 +198,7 @@ window.onload = () => {
         }; 
     })(); //contextMenu
 
-    (() => { //product:
+    (() => { // product:
         elementSet.product.title.textContent = definitionSet.title;
         elementSet.product.version.innerHTML = definitionSet.version;
         elementSet.product.copyrightYears.textContent = definitionSet.copirightYears;

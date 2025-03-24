@@ -1,2 +1,3 @@
-# word-games
-Browser-based nostalgy word games
+## Word Games
+
+Browser-based nostalgic word games 

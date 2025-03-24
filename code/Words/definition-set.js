@@ -8,10 +8,10 @@
 "use strict";
 
 const getDefinitionSet = () => {
-    const definitionSet = {};
+    const gameDefinitionSet = {};
 
-    definitionSet.gameSignature = "Words game";
-    definitionSet.createFileOptions = () => {
+    gameDefinitionSet.gameSignature = "Words game";
+    gameDefinitionSet.createFileOptions = () => {
         return {
             suggestedName: "saved-words-game.words",
             id: "saved-words-game", //SA??? does not work
@@ -24,26 +24,31 @@ const getDefinitionSet = () => {
         };
     }; //definitionSet.createFileOptions
 
-    definitionSet.invalidOperation = menuItemText => 
+    gameDefinitionSet.characterRepertoireOptions = {
+        acceptBlankspaceCharacters: "Accept blankspace characters",
+        acceptPunctuationCharacters: "Accept punctuation characters",
+    };
+
+    gameDefinitionSet.invalidOperation = menuItemText => 
         `${menuItemText} (not supported by this browser; please use, for example, Chromium-compatible one)`;
 
     const leftQuote = language => language == dictionaries.Russian ? "&laquo;" : "&ldquo;";
     const rightQuote = language => language == dictionaries.Russian ? "&raquo;" : "&rdquo;";
     const notComposed = "cannot be composed based on the given character repertoire";
 
-    definitionSet.setWordBad = (language, value) => 
+    gameDefinitionSet.setWordBad = (language, value) => 
         `<p style="text-align: center">Warning!</p><p>${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary</p>`;
-    definitionSet.trialWordNotInDictionary = (language, value) => 
+    gameDefinitionSet.trialWordNotInDictionary = (language, value) => 
         `${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary`;
     
-    definitionSet.alreadyFound = (language, value) =>
+    gameDefinitionSet.alreadyFound = (language, value) =>
         `${leftQuote(language)}${value}${rightQuote(language)} is already found`;
 
-    definitionSet.insufficientRepertoire = (language, value) =>
+    gameDefinitionSet.insufficientRepertoire = (language, value) =>
         `The word ${leftQuote(language)}${value}${rightQuote(language)} ${notComposed}`;
 
-    definitionSet.trialWordDoubleBad = (language, value) =>
+    gameDefinitionSet.trialWordDoubleBad = (language, value) =>
         `<p>${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary.<p><p>The word ${notComposed}.</p>`;
 
-    return definitionSet;
+    return gameDefinitionSet;
 };

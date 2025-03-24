@@ -15,6 +15,9 @@ window.onload = () => {
     const sortedWordList = createSortedWordList(elementSet.main, elementSet.highlightClass);
     let currentLanguage = null;
     let repertoire = null;
+
+    //const repertoireSelector = 
+        createRepertoireSelector(gameDefinitionSet, elementSet.input.languageSet, elementSet.input.options);
     
     const setRepertoire = options => {
         const acceptBlankspaceCharacters = options[0];
@@ -86,20 +89,18 @@ window.onload = () => {
             filterOut(event);
     }; //elementSet.input.inputTry.onkeypress
 
-    (() => { // to fix language and options after game load:
-        const setLanguageAndOptions = () => {
-            const languageName = elementSet.input.languageSet.children[elementSet.input.languageSet.selectedIndex].value
-            for (let index in dictionaries) {
-                if (languageName == dictionaries[index].languageName) {
-                    currentLanguage = dictionaries[index];
-                    break;
-                } //if
-            } //loop
-            setRepertoire(optionsObject.getValues());
-        }; //setupLanguageAndOptions
-        elementSet.input.inputSetWord.onfocus = () => setLanguageAndOptions();
-        elementSet.input.inputTry.onfocus = () => setLanguageAndOptions();    
-    })(); //fix language and options after game load
+    const setLanguageAndOptions = () => {
+        const languageName = elementSet.input.languageSet.children[elementSet.input.languageSet.selectedIndex].value
+        for (let index in dictionaries) {
+            if (languageName == dictionaries[index].languageName) {
+                currentLanguage = dictionaries[index];
+                break;
+            } //if
+        } //loop
+        setRepertoire(optionsObject.getValues());
+    }; //setupLanguageAndOptions
+    elementSet.input.inputSetWord.onfocus = () => setLanguageAndOptions();
+    elementSet.input.inputTry.onfocus = () => setLanguageAndOptions();    
 
     (() => { // populate language set:
         let count = 0;
@@ -150,6 +151,7 @@ window.onload = () => {
     })(); //setup shuffle
 
     const reviewMachineSolution = () => {
+        setLanguageAndOptions();
         sortedWordList.reset();
         const setWord = elementSet.input.inputSetWord.value.toLowerCase();
         for (let word in currentLanguage.alphabetical) {            

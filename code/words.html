@@ -13,16 +13,17 @@
 
 <head>
   <title>Words Game</title>
+  <script src="agnostic.UI/modal-popup.js"></script>
+  <script src="agnostic.UI/menu.js"></script>
+  <script src="agnostic.UI/sorted-word-list.js"></script>
+  <script src="agnostic.UI/checked-list-box.js"></script>
+  <script src="agnostic.UI/file-io.js"></script>
+  <script src="UI/repertoire-selector.js"></script>
   <script src="definition-set.js"></script>
   <script src="Dictionaries/ru.js"></script>
   <script src="Dictionaries/en.js"></script>
   <script src="Dictionaries/dictionaries.js"></script>
   <script src="Dictionaries/utilities.js"></script>
-  <script src="UI/modal-popup.js"></script>
-  <script src="UI/menu.js"></script>
-  <script src="UI/sorted-word-list.js"></script>
-  <script src="UI/checked-list-box.js"></script>
-  <script src="UI/file-io.js"></script>
   <script src="Words/element-set.js"></script>
   <script src="Words/definition-set.js"></script>
   <script src="Words/game-io.js"></script>
@@ -80,12 +81,11 @@
 
   <header>
     <p>
-      <section><u>L</u>anguage:<br /><select accesskey="L" id="language"></select></section>
-      <section><u>O</u>ptions:<br />
-        <select accesskey="O" id="options" size="2">
-          <option value="false" selected="true">Accept blankspace characters</option>
-          <option value="false">Accept punctuation characters</option>
-        </select>
+      <section>
+        <u>L</u>anguage:<br /><select accesskey="L" id="language"></select>
+      </section>
+      <section>
+        <u>O</u>ptions:<br /><select accesskey="O" id="options"></select>
       </section>
       <section>
         <button id="button-activate-menu" title="Context menu: advanced...">⋯</button>

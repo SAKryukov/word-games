@@ -90,7 +90,6 @@ window.onload = () => {
     })(); //setup shuffle
 
     const reviewMachineSolution = () => {
-        setLanguageAndOptions();
         sortedWordList.reset();
         const setWord = elementSet.input.inputSetWord.value.toLowerCase();
         for (let word in languageSelector.currentLanguage.alphabetical) {            
@@ -101,12 +100,15 @@ window.onload = () => {
     }; //reviewMachineSolution
     
     (() => { // contextMenu:
+        const dictionaryMaintenanceStarter = createDictionaryMaintenanceStarter(gameDefinitionSet);
         const gameIO = createGameIO(gameDefinitionSet, sortedWordList, elementSet, languageSelector);
+        dictionaryMaintenanceStarter.prepareMenu(elementSet.input.menu);
         const contextMenu = new menuGenerator(elementSet.input.menu);
+        dictionaryMaintenanceStarter.subsribe(contextMenu);
         contextMenu.subscribe(elementSet.menuItem.reviewMachineSolution, actionRequest => {
             if (!actionRequest) return true; 
             reviewMachineSolution();
-        });
+        });        
         const menuItemProxyApiSave = contextMenu.subscribe(elementSet.menuItem.saveGame, actionRequest => {
             if (!actionRequest) return gameIO != undefined && sortedWordList.count() > 0;
             gameIO.saveGame(languageSelector.currentLanguage);
@@ -142,7 +144,7 @@ window.onload = () => {
     (() => { // product:
         elementSet.product.title.textContent = definitionSet.title;
         elementSet.product.version.innerHTML = definitionSet.version;
-        elementSet.product.copyrightYears.textContent = definitionSet.copirightYears;
+        elementSet.product.copyrightYears.textContent = definitionSet.copyrightYears;
     })(); //product
 
     elementSet.input.inputSetWord.focus();

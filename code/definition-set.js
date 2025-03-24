@@ -10,5 +10,5 @@
 const definitionSet = {
     title: "Word Games",
     version: "v.&thinsp;1.0",
-    copirightYears: "2025",
+    copyrightYears: "2025",
 };

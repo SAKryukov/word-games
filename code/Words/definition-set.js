@@ -49,6 +49,15 @@ const getDefinitionSet = () => {
         },
     };
 
+    gameDefinitionSet.dictionaryMaintenance = {
+        urlKeyword: "maintenance", // use in the browser address line: ...words.html?maintenance
+        menuItemText: "Dictionary Maintenance", 
+        createOption: () => document.createElement("option"),
+        maitenanceCompletionMessage: function() {
+            return `<p>${this.menuItemText} complete</p><p>The result is in the clipboard.</p>`;
+        },
+    }; //gameDefinitionSet.dictionaryMaintenance
+
     gameDefinitionSet.trialWordNotInDictionary = (language, value) => 
         `${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary`;
     

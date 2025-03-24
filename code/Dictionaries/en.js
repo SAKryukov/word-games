@@ -1,19 +1,19 @@
 ﻿"use strict";
 
 const English = {
-    "languageName": "English",
-    "RTL": false,
-    "characterRepertoire": {
-        "characters": "abcdefghijklmnopqrstuvwxyz '-",
-        "letters": "abcdefghijklmnopqrstuvwxyz",
-        "vowels": "aeiouy",
-        "consonants": "bcdfghjklmnpqrstvwxz",
-        "modifierLetters": "",
-        "diacritic": "'",
-        "punctuation": "'-",
-        "blankSpace": " "
-    },
-"alphabetical": {
+languageName: "English",
+RTL: false,
+characterRepertoire: {
+    characters: "abcdefghijklmnopqrstuvwxyz '-",
+    letters: "abcdefghijklmnopqrstuvwxyz",
+    vowels: "aeiouy",
+    consonants: "bcdfghjklmnpqrstvwxz",
+    modifierLetters: "",
+    diacritic: "'",
+    punctuation: "'-",
+    blankSpace: " "
+},
+alphabetical: {
 "aam": 3,
 "aardvark": 8,
 "aardwolf": 8,
@@ -61078,5 +61078,4 @@ const English = {
 "zythem": 6,
 "zythepsary": 10
 },
-"indexedByLength": {}
-};
+indexedByLength: {}};

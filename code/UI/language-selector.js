@@ -23,6 +23,9 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
     let acceptBlankspaceCharacters = false;
     let acceptPunctuationCharacters = false;
 
+    languageSelector.acceptBlankspaceCharactersValue = () => acceptBlankspaceCharacters;
+    languageSelector.acceptPunctuationCharactersValue = () => acceptPunctuationCharacters;
+
     const setRepertoire = () => {
         repertoire = languageSelector.currentLanguage.characterRepertoire.letters;
         repertoire += repertoire.toUpperCase();
@@ -77,7 +80,7 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
         selectOptionsElement.size = 2;
         selectLanguageElement.selectedIndex = 0;
     } //if
-    const chechedListBox = setupCheckedListBox(selectOptionsElement, [false, false],
+    const checkedListBox = setupCheckedListBox(selectOptionsElement, [false, false],
         (index, _, value) => {
             if (index == 0)
                 acceptBlankspaceCharacters = value;
@@ -87,9 +90,9 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
         });
 
     languageSelector.setOptionValues = (acceptBlankspaceCharactersValue, acceptPunctuationCharactersValue) => {
-        chechedListBox.setValue(0, acceptBlankspaceCharactersValue);
-        chechedListBox.setValue(1, acceptPunctuationCharactersValue);
-    } //languageSelector.setOptionValues 
+        checkedListBox.setValue(0, acceptBlankspaceCharactersValue);
+        checkedListBox.setValue(1, acceptPunctuationCharactersValue);
+    } //languageSelector.setOptionValues
 
     languageSelector.setLanguage = languageName => {
         languageSelector.currentLanguage = dictionaries[languageName];

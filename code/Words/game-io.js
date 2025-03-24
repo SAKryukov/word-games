@@ -11,7 +11,7 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, optionsObje
     const gameIO = {};
 
     const fileIO = createFileIO(exception => {
-        console.log(exception); //SA???
+        alert(exception.toString()); //SA???
     });
 
     if (!fileIO)

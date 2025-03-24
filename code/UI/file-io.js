@@ -8,6 +8,11 @@ http://www.SAKryukov.org
 
 const createFileIO = showException => {
 
+    const definitionSet = {
+        defaultLocation: "downloads",
+        nonHandledExceptionName: "AbortError",
+    }; //definitionSet
+
     const experimentalImplementation = window.showOpenFilePicker && window.showSaveFilePicker;
 
     let fileHandleSave = undefined;
@@ -15,10 +20,7 @@ const createFileIO = showException => {
     let previouslyOpenedFilename = null; // fallback
 
     const exceptionHandler = exception => {
-        if (showException != null &&
-            //SA??? cannot see the other way to detect "The user aborted a request",
-            // in contrast to "real" I/O error:
-            !exception.message.toLowerCase().includes("user")) 
+        if (showException != null && exception.name != definitionSet.nonHandledExceptionName)
             showException(exception);
     }; //exceptionHandler
 
@@ -36,7 +38,7 @@ const createFileIO = showException => {
     }; //saveFileWithHandle
 
     const loadTextFile = (fileHandler, options) => { // fileHandler(fileName, text)
-        options.startIn = fileHandleSave ?? fileHandleOpen ?? "downloads";
+        options.startIn = fileHandleSave ?? fileHandleOpen ?? definitionSet.defaultLocation;
         if (!fileHandler) return;
         window.showOpenFilePicker(options).then(handles => {
             if (!handles) return;
@@ -57,7 +59,7 @@ const createFileIO = showException => {
     }; //loadTextFile
 
     const storeTextFile = (_, content, options) => {
-        options.startIn = fileHandleSave ?? fileHandleOpen;
+        options.startIn = fileHandleSave ?? fileHandleOpen ?? definitionSet.defaultLocation;
         window.showSaveFilePicker(options).then(handle => {
             if (!handle) return;
             fileHandleSave = handle;

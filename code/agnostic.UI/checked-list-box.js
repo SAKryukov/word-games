@@ -7,7 +7,8 @@
 
 "use strict";
 
-const setupCheckedListBox = (selectElement, defaultValues) => {
+const setupCheckedListBox = (selectElement, defaultValues, modificationCallback) => {
+    // modificationCallback(number index, string textContent, bool value)
 
     const emptyBallotPrefix = `${String.fromCodePoint(0x2610)} `;
     const checkedBallotPrefix = `${String.fromCodePoint(0x2611)} `;
@@ -22,7 +23,9 @@ const setupCheckedListBox = (selectElement, defaultValues) => {
             option.textContent = checkedBallotPrefix + originalTextContent[index];
         else
             option.textContent = emptyBallotPrefix + originalTextContent[index];
-        if (callback) callback(getValues());
+        if (callback) callback(getValues()); //SA??? obsolete
+        if (modificationCallback)
+            modificationCallback(index, originalTextContent[index], value);
     }; //toggleOption
 
     for (let index = 0; index < selectElement.childElementCount; ++index) {
@@ -65,12 +68,17 @@ const setupCheckedListBox = (selectElement, defaultValues) => {
             else
                 option.textContent = emptyBallotPrefix + originalTextContent[index];
             } //loop
+            if (callback) callback(getValues()); //SA??? obsolete
+            if (modificationCallback)
+                modificationCallback(index, originalTextContent[index], values[index]);
     } //setValues
 
-    let callback;
+    let callback; //SA??? obsolete
 
-    const setCallback = aCallback => callback = aCallback;
+    const setCallback = aCallback => callback = aCallback; //SA??? obsolete
 
-    return { setCallback: setCallback, getValues: getValues, setValues: setValues };
+    return {
+        setCallback: setCallback, //SA??? obsolete
+        getValues: getValues, setValues: setValues };
 
 };

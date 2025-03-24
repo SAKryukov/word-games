@@ -41,8 +41,8 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
     }; //filterOut
 
     (() => { // populate language set:
-        let count = 0;
         let indexedDictionaries = [];
+        let count = 0;
         for (let index in dictionaries) {
             const dictionary = dictionaries[index];
             indexedDictionaries.push(dictionary);
@@ -90,6 +90,17 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
         chechedListBox.setValue(0, acceptBlankspaceCharactersValue);
         chechedListBox.setValue(1, acceptPunctuationCharactersValue);
     } //languageSelector.setOptionValues 
+
+    languageSelector.setLanguage = languageName => {
+        languageSelector.currentLanguage = dictionaries[languageName];
+        let index = 0;
+        for (let key in dictionaries) {
+            if (key == languageName) break;
+            ++index;
+        } //loop
+        selectLanguageElement.selectedIndex = index;
+        setRepertoire();
+    } //languageSelector.setLanguage
   
     return languageSelector;
 };

@@ -52,7 +52,7 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, languageSel
         fileIO.loadTextFile((_, text)=> {
             const json = JSON.parse(text);
             elementSet.input.inputSetWord.value = json.metadata.setWord;
-            elementSet.selectInSelect(elementSet.input.languageSet, json.metadata.language);
+            languageSelector.setLanguage(json.metadata.language);
             languageSelector.setOptionValues(
                 json.metadata.options.acceptBlankspaceCharacters,
                 json.metadata.options.acceptPunctuationCharacters

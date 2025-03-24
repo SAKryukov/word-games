@@ -55,14 +55,6 @@ const getElementSet = () => {
         elementSet.input.options.style.height = heightPx;
     };
 
-    elementSet.selectInSelect = (select, value) => {
-        for (let index = 0; index < select.childElementCount; ++index)
-            if (select.children[index].value == value) {
-                select.selectedIndex = index;
-                return;
-            } //if
-    }; //elementSet.selectInSelect
-    
     return elementSet;
 };
 

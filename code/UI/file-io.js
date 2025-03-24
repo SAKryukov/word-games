@@ -9,11 +9,10 @@ http://www.SAKryukov.org
 const createFileIO = showException => {
 
     const experimentalImplementation = window.showOpenFilePicker && window.showSaveFilePicker;
-    if (!experimentalImplementation)
-        return undefined;
 
     let fileHandleSave = undefined;
     let fileHandleOpen = undefined;
+    let previouslyOpenedFilename = null; // fallback
 
     const exceptionHandler = exception => {
         if (showException != null &&
@@ -37,7 +36,7 @@ const createFileIO = showException => {
     }; //saveFileWithHandle
 
     const loadTextFile = (fileHandler, options) => { // fileHandler(fileName, text)
-        options.startIn = fileHandleSave ?? fileHandleOpen;
+        options.startIn = fileHandleSave ?? fileHandleOpen ?? "downloads";
         if (!fileHandler) return;
         window.showOpenFilePicker(options).then(handles => {
             if (!handles) return;
@@ -57,7 +56,7 @@ const createFileIO = showException => {
         });
     }; //loadTextFile
 
-    const storeTextFile = (content, options) => {
+    const storeTextFile = (_, content, options) => {
         options.startIn = fileHandleSave ?? fileHandleOpen;
         window.showSaveFilePicker(options).then(handle => {
             if (!handle) return;
@@ -68,9 +67,42 @@ const createFileIO = showException => {
         });
     }; //storeTextFile
 
+    const storeTextFileFallback = (fileName, content, _) => {
+        const link = document.createElement('a');
+        link.href = `data:application/javascript;charset=utf-8,${encodeURIComponent(content)}`; //sic!
+        link.download = this.previouslyOpenedFilename == null
+            ? fileName
+            : this.previouslyOpenedFilename;
+        link.click();
+    }; //storeTextFileFallback
+
+    const loadTextFileFallback = (fileHandler, fileType) => { // fileHandler(fileName, text)
+        if (!fileHandler) return;
+        const input = document.createElement("input");
+        input.type = "file";
+        let acceptFileTypes = null;
+        for (let index in fileType.accept) {
+            acceptFileTypes = fileType.accept[index][0];
+            break;
+        } //loop
+        input.accept = acceptFileTypes;
+        input.value = null;
+        if (fileHandler)
+            input.onchange = event => {
+                const file = event.target.files[0];
+                previouslyOpenedFilename = file.name;
+                if (!file) return;
+                const reader = new FileReader();
+                reader.readAsText(file);
+                reader.onload = readEvent => fileHandler(file.name, readEvent.target.result);
+            }; //input.onchange
+        input.click();
+    }; //loadTextFileFallback
+
     return {
-        storeTextFile: storeTextFile,
-        loadTextFile: loadTextFile,
+        isFallback: !experimentalImplementation,
+        storeTextFile: experimentalImplementation ? storeTextFile : storeTextFileFallback,
+        loadTextFile: experimentalImplementation ? loadTextFile : loadTextFileFallback,
     };
 
 }; //createFileIO

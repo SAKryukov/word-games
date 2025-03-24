@@ -35,7 +35,11 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, optionsObje
         const options = optionsObject.getValues();
         gameData.metadata.options.acceptBlankspaceCharacters = options[0];
         gameData.metadata.options.acceptPunctuationCharacters = options[1];
+        let defaultInitialFileName = null;
+        if (fileIO.isFallback)
+            defaultInitialFileName = gameDefinitionSet.createFileOptions().suggestedName;
         fileIO.storeTextFile(
+            defaultInitialFileName,
             sortedWordList.toJSON(gameData),
             gameDefinitionSet.createFileOptions());
     }; //gameIO.saveGame

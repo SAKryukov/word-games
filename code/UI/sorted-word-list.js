@@ -1,0 +1,87 @@
+/*
+  Word games
+  Copyright (c) 2025 by Sergey A Kryukov
+  http://www.SAKryukov.org
+  https://github.com/SAKryukov/word-games
+*/
+
+"use strict";
+
+const createSortedWordList = (parent, hightlightClass) => {   
+    const wordSet = new Set();
+    let lastWrapper = null;
+    const result = {};
+    
+    result.count = () => {
+        return wordSet.size;
+    }; //result.count
+    
+    result.add = word => {
+        const show = (element, hide) => {
+            if (!hide) {
+                element.classList.add(hightlightClass);
+                element.scrollIntoView();
+            } else
+               element.classList.remove(hightlightClass);
+        }; //show
+        if (lastWrapper)
+            show(lastWrapper, true); //hide
+        if (wordSet.has(word)) {
+            for (let index = 0; index < parent.childElementCount; ++index)
+                if (parent.children[index].textContent == word) {
+                    show(parent.children[index]);
+                    lastWrapper = parent.children[index];
+                    break;
+                } //if
+            return false;
+        } //if
+        wordSet.add(word);
+        const wrapper = document.createElement("div");
+        wrapper.textContent = word;
+        wrapper.tabIndex = 0;
+        wrapper.onkeydown = event => {
+            switch (event.key) {
+                case "ArrowRight":
+                    event.target.nextSibling?.focus(); break;
+                case "ArrowLeft":
+                    event.target.previousSibling?.focus(); break;
+                case "Home":
+                    event.target.parentElement.firstChild.focus(); break;
+                case "End": 
+                    event.target.parentElement.lastChild.focus(); break;
+            }
+        }; //wrapper.onkeydown
+        if (parent.childElementCount > 0) {
+            let added = false;
+            for (let index = 0; index < parent.childElementCount; ++index) {
+                let child = parent.children[index];
+                if (child.textContent > word) {
+                    parent.insertBefore(wrapper, child);
+                    added = true;
+                    break;
+                } //if
+            }
+            if (!added)
+                parent.appendChild(wrapper);
+        } else
+            parent.appendChild(wrapper);
+        lastWrapper = wrapper;
+        show(wrapper);
+        return true;
+    }; //result.add
+    
+    result.reset = () => {
+        wordSet.clear();
+        while (parent.firstChild)
+            parent.removeChild(parent.lastChild);
+    }; //result.reset
+    
+    result.toJSON = gameData => {
+        gameData.alphabetical = [];
+        for (let index = 0; index < parent.childElementCount; ++index)
+            gameData.alphabetical.push(parent.children[index].textContent);
+        return JSON.stringify(gameData);
+    }; //result.toJSON
+
+    return result;
+} //createSortedWordList

@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html/>
+<html>
+
+<!--
+  Word games
+  This is the game named "Words",
+  to take a character set defined by one word
+  and use it to compose as many valid nouns as possible
+  Copyright (c) 2025 by Sergey A Kryukov
+  http://www.SAKryukov.org
+  https://github.com/SAKryukov/word-games
+-->
+
+<head>
+  <title>Words Game</title>
+  <script src="definition-set.js"></script>
+  <script src="Dictionaries/ru.js"></script>
+  <script src="Dictionaries/en.js"></script>
+  <script src="Dictionaries/dictionaries.js"></script>
+  <script src="Dictionaries/utilities.js"></script>
+  <script src="UI/modal-popup.js"></script>
+  <script src="UI/menu.js"></script>
+  <script src="UI/sorted-word-list.js"></script>
+  <script src="UI/checked-list-box.js"></script>
+  <script src="UI/file-io.js"></script>
+  <script src="Words/element-set.js"></script>
+  <script src="Words/definition-set.js"></script>
+  <script src="Words/game-io.js"></script>
+  <script src="Words/main.js"></script>
+  <style>
+    @import url("flex.css");
+    * { font-family: sans-serif; }
+    :root {
+      --deltaX: 1em;
+      --deltaY: 0.2em;
+      --smallDeltaX: 0.2em;
+      --border: solid thin darkGray;
+    }
+    main, footer, header {
+      padding: var(--deltaX);
+      padding-top: var(--deltaY);
+      padding-bottom: var(--deltaY);
+      border-top: var(--border);
+      border-bottom:  var(--border);
+    }
+    p { margin-bottom: 0.4em; }
+    p.pre-shuffle { margin-bottom: 1px; }
+    #input-try, #input-set-word { width: 40em; }
+    #input-try { visibility: hidden; }
+    #menu { display: none; }
+    select { overflow-y: auto; }
+    select, button, input { border-radius: 4px; }
+    option, input, button { padding-left: var(--deltaX); padding-right: var(--deltaX); }
+    #button-activate-menu {
+      position: absolute; right: 3; top: 3;
+      background-color: transparent;
+      font-size: 120%; border: none; font-weight: bolder;
+    }
+    #button-activate-menu:hover, #button-activate-menu:focus { background-color: lightGray; }
+    #text-shuffle { font-family: monospace; font-size: 120%; }
+    #button-shuffle { padding: 0; padding-left: 1px; padding-bottom: 2px; }
+    section { display: inline-block; }
+    section:not(:first-of-type) { margin-left: 2em; }
+    main > div {
+      display: inline-block;
+      white-space: nowrap;
+      margin-right: var(--smallDeltaX);
+      background-color: transparent;
+      padding-left: var(--smallDeltaX);
+      padding-right: var(--smallDeltaX);
+    }
+    main > div:focus { background-color: azure; outline: solid brown thin; }
+    main > div.highlight { background-color: yellow; }
+    main { background-color: lightYellow; }
+    header > p:last-of-type, header > p.pre-shuffle { display: flex; flex-direction: row; justify-content: space-between; align-items: stretch;}
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <p>
+      <section><u>L</u>anguage:<br /><select accesskey="L" id="language"></select></section>
+      <section><u>O</u>ptions:<br />
+        <select accesskey="O" id="options" size="2">
+          <option value="false" selected="true">Accept blankspace characters</option>
+          <option value="false">Accept punctuation characters</option>
+        </select>
+      </section>
+      <section>
+        <button id="button-activate-menu" title="Context menu: advanced...">⋯</button>
+      </section>
+    </p>    
+    <p class="pre-shuffle">
+      <input id="input-set-word" placeholder="Enter the word to define charset, press Enter to start game"></input>
+      <span>Length: <b id="character-count">0</b></span>
+    </p>
+    <p><button id="button-shuffle" title="Shuffle: Alt+U, Reset: Alt-R">♻</button> <span id="text-shuffle"></span></p>
+    <p>
+      <input id="input-try" placeholder="Enter word to try, press Enter"></input>
+      <span>Word count: <b id="count">0</b></span>
+    </p>
+  </header>
+
+  <select id="menu">
+    <option>Review machine solution</option>
+    <option>Save game&hellip;</option>
+    <option>Load game&hellip;</option>
+  </select>
+
+  <main></main>
+
+  <footer>
+    <small><span id="product-title"></span> <span id="product-version"></span>, Copyright &copy; <span id="product-copyright-years"></span> by Sergey A Kryukov</small>
+  </footer>
+
+</body>
+</html>

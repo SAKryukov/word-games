@@ -41,7 +41,8 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, optionsObje
     }; //gameIO.saveGame
 
     gameIO.restoreGame = () => {
-        fileIO.loadTextFile((_, text)=>{
+        sortedWordList.reset();
+        fileIO.loadTextFile((_, text)=> {
             const json = JSON.parse(text);
             elementSet.input.inputSetWord.value = json.metadata.setWord;
             elementSet.selectInSelect(elementSet.input.languageSet, json.metadata.language);

@@ -11,7 +11,10 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, languageSel
     const gameIO = {};
 
     const fileIO = createFileIO(exception => {
-        alert(exception.toString()); //SA???
+        modalPopup.show(
+            gameDefinitionSet.IOErrorFormat.formatException(exception),
+            null,
+            gameDefinitionSet.IOErrorFormat.modalPopupOptions);
     });
 
     if (!fileIO)

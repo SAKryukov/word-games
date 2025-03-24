@@ -7,7 +7,7 @@
 
 "use strict";
 
-const createLanguageSelector = (selectLanguageElement, selectOptionsElement) => {
+const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onLanguagechange) => {
     const languageSelector = {};
 
     const localDefinitionSet = {
@@ -60,6 +60,8 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement) => 
         selectLanguageElement.onchange = event => {
             languageSelector.currentLanguage = indexedDictionaries[event.target.selectedIndex];
             setRepertoire();
+            if (onLanguagechange)
+                onLanguagechange();
         };
         setRepertoire();
     })(); //populate language set

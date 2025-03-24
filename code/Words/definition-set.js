@@ -24,6 +24,15 @@ const getDefinitionSet = () => {
         };
     }; //definitionSet.createFileOptions
 
+    gameDefinitionSet.IOErrorFormat = {
+        formatException: exception => `<p>${exception.name}<br/><br/>${exception.message}</p>`,
+        modalPopupOptions: {
+            textAlign: "center",
+            textLineColor: { message: "red", },
+            backgroundColor: { message: "lightYellow", },
+        },
+    };
+
     gameDefinitionSet.invalidOperation = menuItemText => 
         `${menuItemText} (not supported by this browser; please use, for example, Chromium-compatible one)`;
 
@@ -32,7 +41,14 @@ const getDefinitionSet = () => {
     const notComposed = "cannot be composed based on the given character repertoire";
 
     gameDefinitionSet.setWordBad = (language, value) => 
-        `<p style="text-align: center">Warning!</p><p>${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary</p>`;
+        `<p>Warning:</p><p>${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary</p>`;
+    gameDefinitionSet.WarningFormat = {
+        modalPopupOptions: {
+            textAlign: "center",
+            textLineColor: { message: "darkRed", },
+        },
+    };
+
     gameDefinitionSet.trialWordNotInDictionary = (language, value) => 
         `${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary`;
     

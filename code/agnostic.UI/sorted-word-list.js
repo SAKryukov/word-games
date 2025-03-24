@@ -7,13 +7,14 @@
 
 "use strict";
 
-const createSortedWordList = (parent, hightlightClass) => {   
+const createSortedWordList = (parent, hightlightClass, callback) => {   
+    //callback(int wordCount)
     const wordSet = new Set();
     let lastWrapper = null;
     const result = {};
     
-    result.count = () => {
-        return wordSet.size;
+    result.isEmpty = () => {
+        return wordSet.size < 1;
     }; //result.count
     
     result.add = word => {
@@ -67,6 +68,8 @@ const createSortedWordList = (parent, hightlightClass) => {
             parent.appendChild(wrapper);
         lastWrapper = wrapper;
         show(wrapper);
+        if (callback)
+            callback(wordSet.size);
         return true;
     }; //result.add
     
@@ -74,6 +77,8 @@ const createSortedWordList = (parent, hightlightClass) => {
         wordSet.clear();
         while (parent.firstChild)
             parent.removeChild(parent.lastChild);
+        if (callback)
+            callback(wordSet.size);
     }; //result.reset
     
     result.toJSON = gameData => {

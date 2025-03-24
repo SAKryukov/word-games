@@ -13,7 +13,9 @@ window.onload = () => {
     const gameDefinitionSet = getDefinitionSet();
     elementSet.makeEqualWidth(elementSet.buttonShuffle);
 
-    const sortedWordList = createSortedWordList(elementSet.main, elementSet.highlightClass);
+    const sortedWordList = createSortedWordList(
+        elementSet.main, elementSet.highlightClass,
+        wordCount => elementSet.count.textContent = wordCount);
 
     const languageSelector =
         createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, () => {
@@ -52,7 +54,6 @@ window.onload = () => {
                 if (!sortedWordList.add(trialWord))
                     modalPopup.show(gameDefinitionSet.alreadyFound(languageSelector.currentLanguage, trialWord));
                 event.target.value = null;
-                elementSet.count.textContent = sortedWordList.count();
             } //if
             if (!goodSubset && !inDictionary)
                 modalPopup.show(gameDefinitionSet.trialWordDoubleBad(languageSelector.currentLanguage, trialWord)); 
@@ -96,7 +97,6 @@ window.onload = () => {
             if (dictionaryUtility.isSubset(word, setWord))
                 sortedWordList.add(word);
         } //loop
-        elementSet.count.textContent = sortedWordList.count();
     }; //reviewMachineSolution
     
     (() => { // contextMenu:
@@ -110,7 +110,7 @@ window.onload = () => {
             reviewMachineSolution();
         });        
         const menuItemProxyApiSave = contextMenu.subscribe(elementSet.menuItem.saveGame, actionRequest => {
-            if (!actionRequest) return gameIO != undefined && sortedWordList.count() > 0;
+            if (!actionRequest) return gameIO != undefined && sortedWordList.isEmpty() > 0;
             gameIO.saveGame(languageSelector.currentLanguage);
         });
         if (!gameIO)

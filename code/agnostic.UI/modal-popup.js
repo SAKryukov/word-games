@@ -2,7 +2,7 @@
 
 Modal Popup
 
-v.3.0
+v.3.1
 
 Copyright (c) 2015, 2017, 2019, 2023, 2025 by Sergey A Kryukov
 http://www.SAKryukov.org

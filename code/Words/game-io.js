@@ -36,9 +36,9 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, languageSel
         gameData.metadata.language = currentLanguage.languageName;
         gameData.metadata.setWord = elementSet.input.inputSetWord.value;
         gameData.metadata.options.acceptBlankspaceCharacters = 
-            languageSelector.acceptBlankspaceCharactersValue();
+            languageSelector.acceptBlankspaceCharactersValue;
         gameData.metadata.options.acceptPunctuationCharacters =
-            languageSelector.acceptPunctuationCharactersValue();
+            languageSelector.acceptPunctuationCharactersValue;
         let defaultInitialFileName = null;
         if (fileIO.isFallback)
             defaultInitialFileName = gameefinitionSet.createFileOptions().suggestedName;

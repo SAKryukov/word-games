@@ -111,7 +111,7 @@ window.onload = () => {
             reviewMachineSolution();
         });        
         const menuItemProxyApiSave = contextMenu.subscribe(elementSet.menuItem.saveGame, actionRequest => {
-            if (!actionRequest) return gameIO != undefined && !sortedWordList.isEmpty() > 0;
+            if (!actionRequest) return gameIO != undefined && !sortedWordList.isEmpty;
             gameIO.saveGame(languageSelector.currentLanguage);
         });
         if (!gameIO)

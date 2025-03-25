@@ -13,9 +13,12 @@ const createSortedWordList = (parent, hightlightClass, callback) => {
     let lastWrapper = null;
     const result = {};
     
-    result.isEmpty = () => {
-        return wordSet.size < 1;
-    }; //result.count
+    Object.defineProperties(result, {
+        isEmpty: {
+            get() { return wordSet.size < 1; },
+            enumerable: true, 
+        },
+    }); //Object.defineProperties isEmpty
     
     result.add = word => {
         const show = (element, hide) => {

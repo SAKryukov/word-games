@@ -19,20 +19,32 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
     }; //localDefinitionSet
 
     let repertoire = null;
-    languageSelector.currentLanguage = null;
+    let selectedLanguage = null;
     let acceptBlankspaceCharacters = false;
     let acceptPunctuationCharacters = false;
 
-    languageSelector.acceptBlankspaceCharactersValue = () => acceptBlankspaceCharacters;
-    languageSelector.acceptPunctuationCharactersValue = () => acceptPunctuationCharacters;
+    Object.defineProperties(languageSelector, {
+        acceptBlankspaceCharactersValue: {
+            get() { return acceptBlankspaceCharacters; },
+            enumerable: true, 
+        },
+        acceptPunctuationCharactersValue: {
+            get() { return acceptPunctuationCharacters; },
+            enumerable: true, 
+        },
+        currentLanguage: {
+            get() { return selectedLanguage; },
+            enumerable: true, 
+        },
+    }); //languageSelector.defineProperties options
 
     const setRepertoire = () => {
-        repertoire = languageSelector.currentLanguage.characterRepertoire.letters;
+        repertoire = selectedLanguage.characterRepertoire.letters;
         repertoire += repertoire.toUpperCase();
         if (acceptBlankspaceCharacters)
-            repertoire += languageSelector.currentLanguage.characterRepertoire.blankSpace;
+            repertoire += selectedLanguage.characterRepertoire.blankSpace;
         if (acceptPunctuationCharacters)
-            repertoire += languageSelector.currentLanguage.characterRepertoire.punctuation;        
+            repertoire += selectedLanguage.characterRepertoire.punctuation;        
     }; //setRepertoire
 
     languageSelector.filterOut = event => {
@@ -49,8 +61,8 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
         for (let index in dictionaries) {
             const dictionary = dictionaries[index];
             indexedDictionaries.push(dictionary);
-            if (!languageSelector.currentLanguage) {
-                languageSelector.currentLanguage = dictionary;
+            if (!selectedLanguage) {
+                selectedLanguage = dictionary;
             } //if
             const option = localDefinitionSet.createOption();
             option.value = dictionary.languageName;
@@ -59,9 +71,9 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
             ++count;
         } //loop
         selectLanguageElement.size = count;
-        languageSelector.currentLanguage = indexedDictionaries[selectLanguageElement.selectedIndex];
+        selectedLanguage = indexedDictionaries[selectLanguageElement.selectedIndex];
         selectLanguageElement.onchange = event => {
-            languageSelector.currentLanguage = indexedDictionaries[event.target.selectedIndex];
+            selectedLanguage = indexedDictionaries[event.target.selectedIndex];
             setRepertoire();
             if (onLanguagechange)
                 onLanguagechange();
@@ -95,7 +107,7 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
     } //languageSelector.setOptionValues
 
     languageSelector.setLanguage = languageName => {
-        languageSelector.currentLanguage = dictionaries[languageName];
+        selectedLanguage = dictionaries[languageName];
         let index = 0;
         for (let key in dictionaries) {
             if (key == languageName) break;

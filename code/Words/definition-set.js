@@ -24,6 +24,12 @@ const getDefinitionSet = () => {
         };
     }; //definitionSet.createFileOptions
 
+    function InvalidFileTypeError(message = "") {
+        this.name = "Invalid file type error";
+        this.message = message;
+    } //InvalidFileTypeError
+    InvalidFileTypeError.prototype = Error.prototype;    
+
     gameDefinitionSet.IOErrorFormat = {
         formatException: exception => `<p>${exception.name}<br/><br/>${exception.message}</p>`,
         modalPopupOptions: {
@@ -31,6 +37,8 @@ const getDefinitionSet = () => {
             textLineColor: { message: "red", },
             backgroundColor: { message: "lightYellow", },
         },
+        invalidSignatureMessage: signature => `Invalid file signature: ${signature}`,
+        invalidFileTypeError: InvalidFileTypeError,
     };
 
     gameDefinitionSet.invalidOperation = menuItemText => 

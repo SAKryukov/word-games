@@ -41,7 +41,7 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, languageSel
             languageSelector.acceptPunctuationCharactersValue();
         let defaultInitialFileName = null;
         if (fileIO.isFallback)
-            defaultInitialFileName = gameDefinitionSet.createFileOptions().suggestedName;
+            defaultInitialFileName = gameefinitionSet.createFileOptions().suggestedName;
         fileIO.storeTextFile(
             defaultInitialFileName,
             sortedWordList.toJSON(gameData),
@@ -52,6 +52,9 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, languageSel
         sortedWordList.reset();
         fileIO.loadTextFile((_, text)=> {
             const json = JSON.parse(text);
+            if (json.signature != gameDefinitionSet.gameSignature)
+                throw new gameDefinitionSet.IOErrorFormat.invalidFileTypeError(
+                    gameDefinitionSet.IOErrorFormat.invalidSignatureMessage(json.signature));
             elementSet.input.inputSetWord.value = json.metadata.setWord;
             languageSelector.setLanguage(json.metadata.language);
             languageSelector.setOptionValues(

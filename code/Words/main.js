@@ -53,7 +53,8 @@ window.onload = () => {
             if (goodSubset && inDictionary) {
                 if (!sortedWordList.add(trialWord))
                     modalPopup.show(gameDefinitionSet.alreadyFound(languageSelector.currentLanguage, trialWord));
-                event.target.value = null;
+                else
+                    event.target.value = null;
             } //if
             if (!goodSubset && !inDictionary)
                 modalPopup.show(gameDefinitionSet.trialWordDoubleBad(languageSelector.currentLanguage, trialWord)); 

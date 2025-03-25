@@ -66,10 +66,15 @@ const getDefinitionSet = () => {
         },
     }; //gameDefinitionSet.dictionaryMaintenance
 
-    gameDefinitionSet.machineSolutionCount = count => 
-        count == 0
-        ? `No words found`
-        : `Found ${count} word${ count == 1 ? "" : "s" }`;
+    gameDefinitionSet.machineSolution = {
+        countFormat: count => 
+            count == 0
+            ? `No words found`
+            : `Found ${count} word${ count == 1 ? "" : "s" }`,
+        warningFormat: "<p>You may want to save your current game in a file first.</p><p>Do you want to proceed?</p>",
+        buttonContinue: "Continue",
+        buttonCancel: "Cancel",
+    }, //gameDefinitionSet.machineSolution
 
     gameDefinitionSet.trialWordNotInDictionary = (language, value) => 
         `${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary`;

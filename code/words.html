@@ -36,6 +36,7 @@
       --deltaX: 1em;
       --deltaY: 0.2em;
       --smallDeltaX: 0.2em;
+      --menuPaddingY: 0.3em;
       --border: solid thin darkGray;
     }
     main, footer, header {
@@ -50,6 +51,8 @@
     #input-try, #input-set-word { width: 40em; }
     #input-try { visibility: hidden; }
     #menu { display: none; }
+    #menu > option { padding-top: var(--menuPaddingY); padding-bottom: var(--menuPaddingY);}
+    #menu > option:disabled { font-weight: lighter; opacity: 0.6; }
     select { overflow-y: auto; }
     select, button, input { border-radius: 4px; }
     option, input, button { padding-left: var(--deltaX); padding-right: var(--deltaX); }
@@ -85,18 +88,18 @@
       <section>
         <u>L</u>anguage:<br /><select accesskey="L" id="language"></select>
       </section>
-      <section>
+      <section title="To change option, hit spacebar, Enter, or double click">
         <u>O</u>ptions:<br /><select accesskey="O" id="options"></select>
       </section>
       <section>
-        <button id="button-activate-menu" title="Context menu: advanced...">⋯</button>
+        <button id="button-activate-menu" title="Context menu:  advanced...">⋯</button>
       </section>
     </p>    
     <p class="pre-shuffle">
-      <input id="input-set-word" placeholder="Enter the word to define charset, press Enter to start game"></input>
+      <input id="input-set-word" placeholder="Enter a word to define a character repertoire, press Enter to start game"></input>
       <span>Length: <b id="character-count">0</b></span>
     </p>
-    <p><button id="button-shuffle" title="Shuffle: Alt+U, Reset: Alt-R">♻</button> <span id="text-shuffle"></span></p>
+    <p><button id="button-shuffle" title="Shuffle: Alt+U, Reset: Alt+R">♻</button> <span id="text-shuffle"></span></p>
     <p>
       <input id="input-try" placeholder="Enter word to try, press Enter"></input>
       <span>Word count: <b id="count">0</b></span>
@@ -104,6 +107,7 @@
   </header>
 
   <select id="menu">
+    <option>View machine solution count</option>
     <option>Review machine solution</option>
     <option>Save game&hellip;</option>
     <option>Load game&hellip;</option>

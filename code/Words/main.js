@@ -91,13 +91,20 @@ window.onload = () => {
         };
     })(); //setup shuffle
 
-    const reviewMachineSolution = () => {
-        sortedWordList.reset();
+    const reviewMachineSolution = showWords => {
+        if (showWords)
+            sortedWordList.reset();
         const setWord = elementSet.input.inputSetWord.value.toLowerCase();
+        let count = 0;
         for (let word in languageSelector.currentLanguage.alphabetical) {            
             if (dictionaryUtility.isSubset(word, setWord))
-                sortedWordList.add(word);
+                if (showWords)
+                    sortedWordList.add(word);
+                else
+                    ++count;
         } //loop
+        if (!showWords)
+            modalPopup.show(gameDefinitionSet.machineSolutionCount(count));
     }; //reviewMachineSolution
     
     (() => { // contextMenu:
@@ -106,9 +113,13 @@ window.onload = () => {
         dictionaryMaintenanceStarter.prepareMenu(elementSet.input.menu);
         const contextMenu = new menuGenerator(elementSet.input.menu);
         dictionaryMaintenanceStarter.subsribe(contextMenu);
+        contextMenu.subscribe(elementSet.menuItem.viewMachineSolutionCount, actionRequest => {
+            if (!actionRequest) return true; 
+            reviewMachineSolution(false);
+        });        
         contextMenu.subscribe(elementSet.menuItem.reviewMachineSolution, actionRequest => {
             if (!actionRequest) return true; 
-            reviewMachineSolution();
+            reviewMachineSolution(true);
         });        
         const menuItemProxyApiSave = contextMenu.subscribe(elementSet.menuItem.saveGame, actionRequest => {
             if (!actionRequest) return gameIO != undefined && !sortedWordList.isEmpty;

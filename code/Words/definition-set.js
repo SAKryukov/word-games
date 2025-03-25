@@ -62,9 +62,14 @@ const getDefinitionSet = () => {
         menuItemText: "Dictionary Maintenance", 
         createOption: () => document.createElement("option"),
         maitenanceCompletionMessage: function() {
-            return `<p>${this.menuItemText} complete</p><p>The result is in the clipboard.</p>`;
+            return `<p>${this.menuItemText} complete.</p><p>The resulting dictionary definition is in the clipboard.</p>`;
         },
     }; //gameDefinitionSet.dictionaryMaintenance
+
+    gameDefinitionSet.machineSolutionCount = count => 
+        count == 0
+        ? `No words found`
+        : `Found ${count} word${ count == 1 ? "" : "s" }`;
 
     gameDefinitionSet.trialWordNotInDictionary = (language, value) => 
         `${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary`;

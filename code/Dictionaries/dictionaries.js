@@ -47,7 +47,7 @@ const performAdHocDictionaryMainenance = () => {
     }; //transform
 
     //dictionaryMaintenance("Russian", ["пита","кепи","шаурма","шаверма","оммаж","фуа","маракуйя","гранадилла","арахнофобия","арахнофоб","неолиберал","неолиберализм","неоконсерватор","неоконсерватизм","терапсид","горгонопс","алкен","алкин","криогений","тоний","мира","пескоструйщица","катык","сузьма","курт","кевлар","сарт","килт","икта","спарка","парка"]);
-    //dictionaryMaintenance("English", []);
+    dictionaryMaintenance("English", []);
     //transform("English");
 
 }; //performAdHocDictionaryMainenance

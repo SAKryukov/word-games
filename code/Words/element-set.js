@@ -30,9 +30,10 @@ const getElementSet = () => {
     elementSet.product.copyrightYears = document.querySelector("#product-copyright-years");
 
     elementSet.menuItem = {};
-    elementSet.menuItem.reviewMachineSolution = elementSet.input.menu.children[0].textContent;
-    elementSet.menuItem.saveGame = elementSet.input.menu.children[1].textContent;
-    elementSet.menuItem.loadGame = elementSet.input.menu.children[2].textContent;
+    elementSet.menuItem.viewMachineSolutionCount = elementSet.input.menu.children[0].textContent;
+    elementSet.menuItem.reviewMachineSolution = elementSet.input.menu.children[1].textContent;
+    elementSet.menuItem.saveGame = elementSet.input.menu.children[2].textContent;
+    elementSet.menuItem.loadGame = elementSet.input.menu.children[3].textContent;
 
     elementSet.showInputTry = () => {
         elementSet.input.inputTry.style.visibility = "visible";

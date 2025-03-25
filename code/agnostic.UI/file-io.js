@@ -69,6 +69,13 @@ const createFileIO = showException => {
         });
     }; //storeTextFile
 
+    const saveExisting = (_, content, options) => {
+        if (fileHandleSave != null)
+            saveFileWithHandle(fileHandleSave, content);
+        else
+            storeTextFile(null, content, options);
+    }; //saveExisting
+
     const storeTextFileFallback = (fileName, content, _) => {
         const link = document.createElement('a');
         link.href = `data:application/javascript;charset=utf-8,${encodeURIComponent(content)}`; //sic!
@@ -101,8 +108,13 @@ const createFileIO = showException => {
         input.click();
     }; //loadTextFileFallback
 
+    const saveExistingFallback = (fileName, content) => {
+        storeTextFileFallback(previouslyOpenedFilename ?? fileName, content);
+    }; //saveExistingFallback
+
     return {
         isFallback: !experimentalImplementation,
+        saveExisting: experimentalImplementation ? saveExisting : saveExistingFallback,
         storeTextFile: experimentalImplementation ? storeTextFile : storeTextFileFallback,
         loadTextFile: experimentalImplementation ? loadTextFile : loadTextFileFallback,
     };

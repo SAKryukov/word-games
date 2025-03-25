@@ -35,8 +35,9 @@ const getElementSet = () => {
     elementSet.menuItem.viewMachineSolutionCount = elementSet.input.menu.children[0].textContent;
     elementSet.menuItem.reviewMachineSolution = elementSet.input.menu.children[1].textContent;
     elementSet.menuItem.backToUserSolution = elementSet.input.menu.children[2].textContent;
-    elementSet.menuItem.saveGame = elementSet.input.menu.children[3].textContent;
-    elementSet.menuItem.loadGame = elementSet.input.menu.children[4].textContent;
+    elementSet.menuItem.saveGameInExistingFile = elementSet.input.menu.children[3].textContent;
+    elementSet.menuItem.saveGame = elementSet.input.menu.children[4].textContent;
+    elementSet.menuItem.loadGame = elementSet.input.menu.children[5].textContent;
 
     let machineSolutionBackrgoundColor = null, userSolutionSolutionBackrgoundColor = null;
     main.title = elementSet.userSolution.title;

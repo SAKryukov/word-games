@@ -132,12 +132,21 @@ window.onload = () => {
             if (!actionRequest) return !elementSet.isUserSolutionShown; 
             elementSet.showUserSolution(() => sortedWordListUser.refresh());
         });
-        const menuItemProxyApiSave = contextMenu.subscribe(elementSet.menuItem.saveGame, actionRequest => {
-            if (!actionRequest) return gameIO != undefined && !sortedWordListUser.isEmpty;
-            gameIO.saveGame(languageSelector.currentLanguage);
+        const menuItemProxyApiSave = contextMenu.subscribe(elementSet.menuItem.saveGameInExistingFile, actionRequest => {
+            console.log(gameIO.isFallback);
+            const isGood = gameIO != undefined && !sortedWordListUser.isEmpty;
+            if (!actionRequest) return isGood;                
+            gameIO.saveGame(languageSelector.currentLanguage, true);
         });
-        if (!gameIO)
-            menuItemProxyApiSave.changeText(gameDefinitionSet.invalidOperation(elementSet.menuItem.saveGame));
+        const menuItemProxyApiSaveAs = contextMenu.subscribe(elementSet.menuItem.saveGame, actionRequest => {
+            const isGood = gameIO != undefined && !sortedWordListUser.isEmpty;
+            if (!actionRequest) return isGood;
+            gameIO.saveGame(languageSelector.currentLanguage, false);
+        });
+        if (!gameIO) {
+            menuItemProxyApiSave.changeText(gameDefinitionSet.invalidOperation(elementSet.menuItem.saveGameInExistingFile));
+            menuItemProxyApiSaveAs.changeText(gameDefinitionSet.invalidOperation(elementSet.menuItem.saveGame));
+        } //if
         const menuItemProxyApiLoad = contextMenu.subscribe(elementSet.menuItem.loadGame, actionRequest => {
             if (!actionRequest) return gameIO != undefined;
             gameIO.restoreGame();

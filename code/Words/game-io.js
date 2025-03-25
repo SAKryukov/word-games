@@ -20,6 +20,8 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, languageSel
     if (!fileIO)
         return undefined;
 
+    gameIO.isFallback = fileIO.isFallback;
+
     const gameData = {
         signature: gameDefinitionSet.gameSignature,
         metadata: {
@@ -32,7 +34,7 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, languageSel
         },
     }; //gameData
 
-    gameIO.saveGame = currentLanguage => {
+    gameIO.saveGame = (currentLanguage, useExistingFile) => {
         gameData.metadata.language = currentLanguage.languageName;
         gameData.metadata.setWord = elementSet.input.inputSetWord.value;
         gameData.metadata.options.acceptBlankspaceCharacters = 
@@ -41,11 +43,17 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, languageSel
             languageSelector.acceptPunctuationCharactersValue;
         let defaultInitialFileName = null;
         if (fileIO.isFallback)
-            defaultInitialFileName = gameefinitionSet.createFileOptions().suggestedName;
-        fileIO.storeTextFile(
-            defaultInitialFileName,
-            sortedWordList.toJSON(gameData),
-            gameDefinitionSet.createFileOptions());
+            defaultInitialFileName = gameDefinitionSet.createFileOptions().suggestedName;
+        if (useExistingFile)
+            fileIO.saveExisting(
+                defaultInitialFileName,
+                sortedWordList.toJSON(gameData),
+                gameDefinitionSet.createFileOptions());
+        else
+            fileIO.storeTextFile(
+                defaultInitialFileName,
+                sortedWordList.toJSON(gameData),
+                gameDefinitionSet.createFileOptions());
     }; //gameIO.saveGame
 
     gameIO.restoreGame = () => {

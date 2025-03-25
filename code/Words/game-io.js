@@ -56,6 +56,7 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, languageSel
                 throw new gameDefinitionSet.IOErrorFormat.invalidFileTypeError(
                     gameDefinitionSet.IOErrorFormat.invalidSignatureMessage(json.signature));
             elementSet.input.inputSetWord.value = json.metadata.setWord;
+            elementSet.textShuffle.textContent = json.metadata.setWord.toUpperCase();
             languageSelector.setLanguage(json.metadata.language);
             languageSelector.setOptionValues(
                 json.metadata.options.acceptBlankspaceCharacters,

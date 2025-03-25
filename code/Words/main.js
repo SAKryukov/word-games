@@ -109,7 +109,8 @@ window.onload = () => {
                 [
                     { action: () => doShowWords(), text: gameDefinitionSet.machineSolution.buttonContinue },
                     { default: true, escape: true, text: gameDefinitionSet.machineSolution.buttonCancel },
-                ]);    
+                ],
+                { equalizeButtonWidths: true });    
             else
                 doShowWords();
         } //if

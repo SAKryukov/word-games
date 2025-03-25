@@ -71,8 +71,8 @@ const getDefinitionSet = () => {
             count == 0
             ? `No words found`
             : `Found ${count} word${ count == 1 ? "" : "s" }`,
-        warningFormat: "<p>You may want to save your current game in a file first.</p><p>Do you want to proceed?</p>",
-        buttonContinue: "Continue",
+        warningFormat: "<p>You may want to save your current game in a file first.</p><p>Do you want to proceed without saving?</p>",
+        buttonContinue: "Yes",
         buttonCancel: "Cancel",
     }, //gameDefinitionSet.machineSolution
 

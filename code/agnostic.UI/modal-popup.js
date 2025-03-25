@@ -345,7 +345,8 @@ const modalPopup = {
                             if (this.messageWindow.buttonSet[index].offsetWidth > max)
                                 max = this.messageWindow.buttonSet[index].offsetWidth;
                         for (let index = 0; index < this.messageWindow.buttonSet.length; ++index)
-                            constants.formatSizeProperty(this.messageWindow.buttonSet[index].style.width);
+                            this.messageWindow.buttonSet[index].style.width =
+                                constants.formatSizeProperty(max);
                     } //if style.equalizeButtonWidths
                     if (!effectiveStyles.width) {
                         let max = textPad.offsetWidth;

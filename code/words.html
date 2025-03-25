@@ -39,12 +39,14 @@
       --menuPaddingY: 0.3em;
       --border: solid thin darkGray;
     }
-    main, footer, header {
+    main {
+      border-top: var(--border);
+      border-bottom:  var(--border);
+    }
+    main, header, footer {
       padding: var(--deltaX);
       padding-top: var(--deltaY);
       padding-bottom: var(--deltaY);
-      border-top: var(--border);
-      border-bottom:  var(--border);
     }
     p { margin-bottom: 0.4em; }
     p.pre-shuffle { margin-bottom: 1px; }
@@ -65,8 +67,8 @@
     #text-shuffle { font-family: monospace; font-size: 120%; }
     #button-shuffle { padding: 0; padding-left: 1px; padding-bottom: 2px; }
     section { display: inline-block; }
-    section:not(:first-of-type) { margin-left: 2em; }
-    main > div {
+    header section:not(:first-of-type) { margin-left: 2em; }
+    main > section > div {
       display: inline-block;
       white-space: nowrap;
       margin-right: var(--smallDeltaX);
@@ -74,9 +76,10 @@
       padding-left: var(--smallDeltaX);
       padding-right: var(--smallDeltaX);
     }
-    main > div:focus { background-color: azure; outline: solid brown thin; }
-    main > div.highlight { background-color: yellow; }
+    #machine-solution { display: none; background-color: lightblue; }
     main { background-color: lightYellow; }
+    main  > section > div:focus { background-color: azure; outline: solid brown thin; }
+    main  > section > div.highlight { background-color: yellow; }
     header > p:last-of-type, header > p.pre-shuffle { display: flex; flex-direction: row; justify-content: space-between; align-items: stretch;}
   </style>
 </head>
@@ -109,11 +112,15 @@
   <select id="menu">
     <option title="View machine solution count without looking at the words found">View machine solution count</option>
     <option title="Let the machine to find the solution and show the words found">Review machine solution</option>
+    <option title="Show user solution and hide machine solution">Back to user solution</option>
     <option title="Save the current game in a file">Save game&hellip;</option>
     <option title="Restore a previously saved game from a file">Restore game&hellip;</option>
   </select>
 
-  <main></main>
+  <main>
+    <section id="user-solution" title="User solution"></section>
+    <section id="machine-solution" title="Machine solution"></section>
+  </main>
 
   <footer>
     <small><span id="product-title"></span> <span id="product-version"></span>, Copyright &copy; <span id="product-copyright-years"></span> by Sergey A Kryukov</small>

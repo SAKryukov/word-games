@@ -13,17 +13,21 @@ window.onload = () => {
     const gameDefinitionSet = getDefinitionSet();
     elementSet.makeEqualWidth(elementSet.buttonShuffle);
 
-    const sortedWordList = createSortedWordList(
-        elementSet.main, elementSet.highlightClass,
+    const sortedWordListUser = createSortedWordList(
+        elementSet.userSolution, elementSet.highlightClass,
         wordCount => elementSet.count.textContent = wordCount);
 
+    const sortedWordListMachine = createSortedWordList(
+        elementSet.machineSolution, elementSet.highlightClass,
+        wordCount => elementSet.count.textContent = wordCount);
+    
     const languageSelector =
         createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, () => {
             // on language change:
             elementSet.input.inputSetWord.value = null;
             elementSet.input.inputTry.value = null; 
             elementSet.hideInputTry();
-            sortedWordList.reset();
+            sortedWordListUser.reset();
             elementSet.textShuffle.textContent = null;
             elementSet.count.textContent = 0;    
         });
@@ -51,7 +55,7 @@ window.onload = () => {
             if (dictionaryUtility.isSubset(trialWord, elementSet.input.inputSetWord.value.toLowerCase()))
                 goodSubset = true;
             if (goodSubset && inDictionary) {
-                if (!sortedWordList.add(trialWord))
+                if (!sortedWordListUser.add(trialWord))
                     modalPopup.show(gameDefinitionSet.alreadyFound(languageSelector.currentLanguage, trialWord));
                 else
                     event.target.value = null;
@@ -68,10 +72,12 @@ window.onload = () => {
             languageSelector.filterOut(event);
     }; //elementSet.input.inputTry.onkeypress
 
+    elementSet.input.inputTry.oninput = () => elementSet.showUserSolution(() => sortedWordListUser.refresh());
     (() => { // setup shuffle:
         elementSet.input.inputSetWord.oninput = event => {
-            sortedWordList.reset();
+            sortedWordListUser.reset();
             shuffle(true);
+            elementSet.showUserSolution(() => sortedWordListUser.refresh());
             elementSet.characterCount.textContent = event.target.value.length;
         };
         const shuffle = firstTime =>
@@ -94,33 +100,23 @@ window.onload = () => {
     const reviewMachineSolution = showWords => {
         const setWord = elementSet.input.inputSetWord.value.toLowerCase();
         let count = 0;
+        if (showWords)
+            sortedWordListMachine.reset();
         for (let word in languageSelector.currentLanguage.alphabetical)
             if (dictionaryUtility.isSubset(word, setWord))
-                ++count;
-        const doShowWords = ( ) => {
-            sortedWordList.reset();
-            for (let word in languageSelector.currentLanguage.alphabetical)
-                if (dictionaryUtility.isSubset(word, setWord))
-                        sortedWordList.add(word);
-        }; //doShowWords
-        if (showWords) {
-            if (count > 0 && !sortedWordList.isEmpty)
-                modalPopup.show(gameDefinitionSet.machineSolution.warningFormat,
-                [
-                    { action: () => doShowWords(), text: gameDefinitionSet.machineSolution.buttonContinue },
-                    { default: true, escape: true, text: gameDefinitionSet.machineSolution.buttonCancel },
-                ],
-                { equalizeButtonWidths: true });    
-            else
-                doShowWords();
-        } //if
+                if (showWords)
+                    sortedWordListMachine.add(word);
+                else
+                    ++count;
+        if (showWords && !sortedWordListMachine.isEmpty)
+            elementSet.showMachineSolution(() => () => sortedWordListMachine.refresh());
         if (!showWords)
             modalPopup.show(gameDefinitionSet.machineSolution.countFormat(count));
 }; //reviewMachineSolution
     
     (() => { // contextMenu:
         const dictionaryMaintenanceStarter = createDictionaryMaintenanceStarter(gameDefinitionSet);
-        const gameIO = createGameIO(gameDefinitionSet, sortedWordList, elementSet, languageSelector);
+        const gameIO = createGameIO(gameDefinitionSet, sortedWordListUser, elementSet, languageSelector);
         dictionaryMaintenanceStarter.prepareMenu(elementSet.input.menu);
         const contextMenu = new menuGenerator(elementSet.input.menu);
         dictionaryMaintenanceStarter.subsribe(contextMenu);
@@ -131,9 +127,13 @@ window.onload = () => {
         contextMenu.subscribe(elementSet.menuItem.reviewMachineSolution, actionRequest => {
             if (!actionRequest) return true; 
             reviewMachineSolution(true);
-        });        
+        }); 
+        contextMenu.subscribe(elementSet.menuItem.backToUserSolution, actionRequest => {
+            if (!actionRequest) return !elementSet.isUserSolutionShown; 
+            elementSet.showUserSolution(() => sortedWordListUser.refresh());
+        });
         const menuItemProxyApiSave = contextMenu.subscribe(elementSet.menuItem.saveGame, actionRequest => {
-            if (!actionRequest) return gameIO != undefined && !sortedWordList.isEmpty;
+            if (!actionRequest) return gameIO != undefined && !sortedWordListUser.isEmpty;
             gameIO.saveGame(languageSelector.currentLanguage);
         });
         if (!gameIO)

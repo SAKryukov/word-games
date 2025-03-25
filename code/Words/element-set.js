@@ -10,7 +10,9 @@
 const getElementSet = () => {
     const elementSet = {};
     
-    elementSet.main = document.querySelector("main");
+    const main = document.querySelector("main");
+    elementSet.userSolution = document.querySelector("#user-solution");
+    elementSet.machineSolution = document.querySelector("#machine-solution");
     elementSet.input = {};
     elementSet.input.languageSet = document.querySelector("#language");
     elementSet.input.options = document.querySelector("#options");
@@ -32,17 +34,58 @@ const getElementSet = () => {
     elementSet.menuItem = {};
     elementSet.menuItem.viewMachineSolutionCount = elementSet.input.menu.children[0].textContent;
     elementSet.menuItem.reviewMachineSolution = elementSet.input.menu.children[1].textContent;
-    elementSet.menuItem.saveGame = elementSet.input.menu.children[2].textContent;
-    elementSet.menuItem.loadGame = elementSet.input.menu.children[3].textContent;
+    elementSet.menuItem.backToUserSolution = elementSet.input.menu.children[2].textContent;
+    elementSet.menuItem.saveGame = elementSet.input.menu.children[3].textContent;
+    elementSet.menuItem.loadGame = elementSet.input.menu.children[4].textContent;
+
+    let machineSolutionBackrgoundColor = null, userSolutionSolutionBackrgoundColor = null;
+    main.title = elementSet.userSolution.title;
+    let showingUserSolution = true;
+    Object.defineProperties(elementSet, {
+        isUserSolutionShown: {
+            get() { return showingUserSolution; },
+            enumerable: true, 
+        }
+    }); //Object.defineProperties
 
     elementSet.showInputTry = () => {
         elementSet.input.inputTry.style.visibility = "visible";
         elementSet.input.inputTry.focus();
-    };
+    }; //elementSet.showInputTry
     elementSet.hideInputTry = () => {
         elementSet.input.inputTry.style.visibility = "hidden";
         elementSet.input.inputSetWord.focus();
-    };
+    }; //elementSet.hideInputTry
+
+    elementSet.showUserSolution = callback => {
+        if (userSolutionSolutionBackrgoundColor == null) {
+            const style = window.getComputedStyle(main);
+            userSolutionSolutionBackrgoundColor = style.getPropertyValue("background-color");
+        } //if
+        main.style.backgroundColor = userSolutionSolutionBackrgoundColor;
+        main.title = elementSet.userSolution.title;
+        elementSet.machineSolution.style.display = "none";
+        elementSet.userSolution.style.display = "block";
+        if (callback)
+            callback();
+        showingUserSolution = true;
+    }; //elementSet.showUserSolution
+    elementSet.showMachineSolution = callback => {
+        if (machineSolutionBackrgoundColor == null) {
+            const style = window.getComputedStyle(elementSet.machineSolution);
+            machineSolutionBackrgoundColor = style.getPropertyValue("background-color");
+            elementSet.machineSolution.style.backgroundColor = "transparent";
+        } //if
+        main.style.backgroundColor = machineSolutionBackrgoundColor;
+        main.title = elementSet.machineSolution.title;
+        main.title = "Machine solution";
+        elementSet.userSolution.style.display = "none";
+        elementSet.machineSolution.style.display = "block";
+        if (callback)
+            callback();
+        showingUserSolution = false;
+    }; //elementSet.showMachineSolution
+
     elementSet.isEnter = event => event.key == "Enter";
     elementSet.highlightClass = "highlight";
     elementSet.keyShuffle = "u";
@@ -58,4 +101,3 @@ const getElementSet = () => {
 
     return elementSet;
 };
-

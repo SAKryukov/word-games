@@ -19,6 +19,8 @@ const createSortedWordList = (parent, hightlightClass, callback) => {
             enumerable: true, 
         },
     }); //Object.defineProperties isEmpty
+
+    result.refresh = ()=> { if (callback) callback(wordSet.size); }
     
     result.add = word => {
         const show = (element, hide) => {

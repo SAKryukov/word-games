@@ -12,3 +12,6 @@ Under development:
 - Balda
 - Word ladder
 - Boggle?
+
+[Help>(code/help.html)
+

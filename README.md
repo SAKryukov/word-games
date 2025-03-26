@@ -13,5 +13,4 @@ Under development:
 - Word ladder
 - Boggle?
 
-[Help>(code/help.html)
-
+[Help](https://sakryukov.github.io/word-games/code/help.html)

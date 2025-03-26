@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        table { border-collapse: collapse; }
+        table, td { border: thin solid red; }
+        table:focus { outline: thick solid blue; }
+        td.selected { background-color: aqua; }
+        td {
+            font-family: monospace;
+            width: 1.6em;
+            height: 1.6em;
+            text-align: center;
+            vertical-align: center;
+        }
+    </style>
+    <script src="game.bulls-and-cows/main.js"></script>
+    <script>
+        window.onload = () => {
+            const tables = document.querySelectorAll("table");
+            const cells = document.querySelectorAll("td");
+            let index = 0;
+            for (let table of tables) {
+                table.tabIndex = index++;
+                table.onclick = event => {
+                    event.target.classList.toggle("selected");
+                    const tableInstance = event.currentTarget;
+                    tableInstance.focus();
+                };
+                table.onkeydown = event => {
+                    const table = event.currentTarget;
+                    const row = table.rows[0];
+                    const cell = row.cells[0];
+                    if (event.key == "ArrowLeft") {
+                        console.log("r");
+                        cell.classList.toggle("selected");
+                    }
+                };
+            }
+            for (let cell of cells) {
+            }
+            tables[1].focus();
+        }
+    </script>
+</head>
+
+<body>
+
+    <table>
+        <tr>
+            <td>A</td>
+            <td>.</td>
+            <td>A</td>
+            <td>A</td>
+            <td>A</td>
+            <td> </td>
+            <td> </td>
+            <td>-</td>
+        <tr>
+    </table>
+    <table>
+        <tr>
+            <td>B</td>
+            <td>.</td>
+            <td>B</td>
+            <td>D</td>
+            <td> </td>
+            <td>.</td>
+            <td>B</td>
+            <td>f</td>
+        <tr>
+    </table>
+
+</body>
+
+</html>

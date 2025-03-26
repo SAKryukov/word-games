@@ -31,44 +31,12 @@
   <script src="game.words/main.js"></script>
   <style>
     @import url("css/flex.css");
-    * { font-family: sans-serif; }
-    :root {
-      --deltaX: 1em;
-      --deltaY: 0.2em;
-      --smallDeltaX: 0.2em;
-      --menuPaddingY: 0.3em;
-      --border: solid thin darkGray;
-    }
-    a.help { margin-left: 3em; }
-    main {
-      border-top: var(--border);
-      border-bottom:  var(--border);
-    }
-    main, header, footer {
-      padding: var(--deltaX);
-      padding-top: var(--deltaY);
-      padding-bottom: var(--deltaY);
-    }
-    p { margin-bottom: 0.4em; }
+    @import url("css/game.css");
     p.pre-shuffle { margin-bottom: 1px; }
     #input-try, #input-set-word { width: 40em; }
     #input-try { visibility: hidden; }
-    #menu { display: none; }
-    #menu > option { padding-top: var(--menuPaddingY); padding-bottom: var(--menuPaddingY);}
-    #menu > option:disabled { font-weight: lighter; opacity: 0.6; }
-    select { overflow-y: auto; }
-    select, button, input { border-radius: 4px; }
-    option, input, button { padding-left: var(--deltaX); padding-right: var(--deltaX); }
-    #button-activate-menu {
-      position: absolute; right: 3px; top: 3px;
-      background-color: transparent;
-      font-size: 120%; border: none; font-weight: bolder;
-    }
-    #button-activate-menu:hover, #button-activate-menu:focus { background-color: lightGray; }
     #text-shuffle { font-family: monospace; font-size: 120%; }
     #button-shuffle { padding: 0; padding-left: 1px; padding-bottom: 2px; }
-    section { display: inline-block; }
-    header section:not(:first-of-type) { margin-left: 2em; }
     main > section > div {
       display: inline-block;
       white-space: nowrap;
@@ -78,7 +46,6 @@
       padding-right: var(--smallDeltaX);
     }
     #machine-solution { display: none; background-color: lightblue; }
-    main { background-color: lightYellow; }
     main  > section > div:focus { background-color: azure; outline: solid brown thin; }
     main  > section > div.highlight { background-color: yellow; }
     header > p:last-of-type, header > p.pre-shuffle { display: flex; flex-direction: row; justify-content: space-between; align-items: stretch;}

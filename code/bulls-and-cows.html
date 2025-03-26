@@ -18,79 +18,81 @@
     <script src="game.bulls-and-cows/game-io.js"></script>
     <script src="game.bulls-and-cows/main.js"></script>
     <style>
-        @import url("css/flex.css");
-        @import url("css/table-input.css");        
-        main table { margin-left: auto; margin-right: auto; }
-        a.help { margin-left: 3em; }
-        * { font-family: sans-serif; }
-        :root {
-          --deltaX: 1em;
-          --deltaY: 0.2em;
-          --smallDeltaX: 0.2em;
-          --menuPaddingY: 0.3em;
-          --border: solid thin darkGray;
-    }
-    main {
-      border-top: var(--border);
-      border-bottom:  var(--border);
-    }
-    main, header, footer {
-      padding: var(--deltaX);
-      padding-top: var(--deltaY);
-      padding-bottom: var(--deltaY);
-    }
-    p { margin-bottom: 0.4em; }
+      @import url("css/flex.css");
+      @import url("css/game.css");
+      @import url("css/table-input.css");        
+      main table { margin-left: auto; margin-right: auto; }
+      a.help { margin-left: 3em; }
+      * { font-family: sans-serif; }
+      :root {
+        --deltaX: 1em;
+        --deltaY: 0.2em;
+        --smallDeltaX: 0.2em;
+        --menuPaddingY: 0.3em;
+        --border: solid thin darkGray;
+      }
+      main {
+        border-top: var(--border);
+        border-bottom:  var(--border);
+      }
+      main, header, footer {
+        padding: var(--deltaX);
+        padding-top: var(--deltaY);
+        padding-bottom: var(--deltaY);
+      }
+      p { margin-bottom: 0.4em; }
     </style>
 </head>
 
 <body>
 
     <header>
-        <p>
-            <section>
-              <u>L</u>anguage:<br /><select accesskey="L" id="language"></select>
-            </section>
-            <section title="To change option, hit spacebar, Enter, or double click">
-              <u>O</u>ptions:<br /><select accesskey="O" id="options"></select>
-            </section>
-            <section>
-              <button id="button-activate-menu" title="Context menu:  advanced...">⋯</button>
-            </section>
-          </p>          
+      <p>
+      <section>
+        <u>L</u>anguage:<br /><select accesskey="L" id="language"></select>
+      </section>
+      <section title="To change option, hit spacebar, Enter, or double click">
+        <u>O</u>ptions:<br /><select accesskey="O" id="options"></select>
+      </section>
+      <section>
+        <button id="button-activate-menu" title="Context menu:  advanced...">⋯</button>
+      </section>
+      </p>
     </header>
-
+    
     <main>
-        <table>
-            <tr>
-                <td>A</td>
-                <td>.</td>
-                <td>A</td>
-                <td>A</td>
-                <td>A</td>
-                <td> </td>
-                <td> </td>
-                <td>-</td>
-            <tr>
-        </table>
-        <table>
-            <tr>
-                <td>B</td>
-                <td>.</td>
-                <td>B</td>
-                <td>D</td>
-                <td> </td>
-                <td>.</td>
-                <td>B</td>
-                <td>f</td>
-            <tr>
-        </table>    
+      <table>
+        <tr>
+          <td>A</td>
+          <td>.</td>
+          <td>A</td>
+          <td>A</td>
+          <td>A</td>
+          <td> </td>
+          <td> </td>
+          <td>-</td>
+        <tr>
+      </table>
+      <table>
+        <tr>
+          <td>B</td>
+          <td>.</td>
+          <td>B</td>
+          <td>D</td>
+          <td> </td>
+          <td>.</td>
+          <td>B</td>
+          <td>f</td>
+        <tr>
+      </table>
     </main>
-
-  <footer>
-    <small><span id="product-title"></span> <span id="product-version"></span>, Copyright &copy; <span id="product-copyright-years"></span> by Sergey A Kryukov
+    
+    <footer>
+      <small><span id="product-title"></span> <span id="product-version"></span>, Copyright &copy; <span
+          id="product-copyright-years"></span> by Sergey A Kryukov
         <a href="help.html#bulls-and-cows" class="help">Help</a>
-    </small>
-  </footer>
-
+      </small>
+    </footer>
+    
 </body>
 </html>

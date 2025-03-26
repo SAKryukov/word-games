@@ -5,6 +5,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "words",
+            //"file": "${workspaceFolder}/words.html"
             "file": "${workspaceFolder}/bulls-and-cows.html"
         }
     ]

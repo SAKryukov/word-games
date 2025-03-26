@@ -1,8 +1,10 @@
 table { border-collapse: collapse; }
-table, td { border: thin solid red; }
+table, td { border: thin solid black; }
 table:focus { outline: thick solid blue; }
 td.selected { background-color: aqua; }
+table:focus td.selected { background-color: lightskyblue; }
 td {
+    background-color: snow;
     font-family: monospace;
     width: 1.6em;
     height: 1.6em;

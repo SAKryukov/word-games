@@ -157,13 +157,9 @@ window.onload = () => {
         window.onpointermove = event => {
             lastPointerX = event.clientX;
             lastPointerY = event.clientY;
-        }; 
+        }; //window.onpointermove
         window.oncontextmenu = event => {
-            const isPointer = event.button >= 0;
-            if (isPointer)
-                contextMenu.activate(event.clientX, event.clientY);
-            else
-                contextMenu.activate(lastPointerX, lastPointerY);
+            contextMenu.activate(lastPointerX, lastPointerY);
             event.preventDefault();
         }; //window.oncontextmenu
         elementSet.input.buttonActivateMenu.onclick = event => {

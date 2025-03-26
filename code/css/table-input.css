@@ -1,0 +1,11 @@
+table { border-collapse: collapse; }
+table, td { border: thin solid red; }
+table:focus { outline: thick solid blue; }
+td.selected { background-color: aqua; }
+td {
+    font-family: monospace;
+    width: 1.6em;
+    height: 1.6em;
+    text-align: center;
+    vertical-align: center;
+}

@@ -20,7 +20,12 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, languageSel
     if (!fileIO)
         return undefined;
 
-    gameIO.isFallback = fileIO.isFallback;
+    Object.defineProperties(gameIO, {
+        isFallback: {
+            get() { return fileIO.isFallback; },
+            enumerable: true, 
+        },
+    }); //gameIO.isFallback
 
     const gameData = {
         signature: gameDefinitionSet.gameSignature,

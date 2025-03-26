@@ -8,7 +8,7 @@
 "use strict";
 
 window.onload = () => {
-    
+
     const elementSet = getElementSet();
     const gameDefinitionSet = getDefinitionSet();
     elementSet.makeEqualWidth(elementSet.buttonShuffle);
@@ -133,14 +133,13 @@ window.onload = () => {
             elementSet.showUserSolution(() => sortedWordListUser.refresh());
         });
         const menuItemProxyApiSave = contextMenu.subscribe(elementSet.menuItem.saveGameInExistingFile, actionRequest => {
-            console.log(gameIO.isFallback);
-            const isGood = gameIO != undefined && !sortedWordListUser.isEmpty;
-            if (!actionRequest) return isGood;                
+            if (!actionRequest)
+                return gameIO != undefined && !sortedWordListUser.isEmpty;
             gameIO.saveGame(languageSelector.currentLanguage, true);
         });
         const menuItemProxyApiSaveAs = contextMenu.subscribe(elementSet.menuItem.saveGame, actionRequest => {
-            const isGood = gameIO != undefined && !sortedWordListUser.isEmpty;
-            if (!actionRequest) return isGood;
+            if (!actionRequest)
+                return gameIO != undefined && !sortedWordListUser.isEmpty;
             gameIO.saveGame(languageSelector.currentLanguage, false);
         });
         if (!gameIO) {

@@ -48,8 +48,8 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
     }; //setRepertoire
 
     languageSelector.filterOut = event => {
-		if (event.charCode == 0) return true;
-		var char = String.fromCharCode(event.charCode);
+		const char = event.key;
+        if (!char || char.length != 1) return false;
 		if (repertoire.indexOf(char) >= 0) return true;
 		if (event.preventDefault) event.preventDefault();
 		return false;

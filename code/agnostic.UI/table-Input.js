@@ -55,7 +55,7 @@ const createTableInput = (element, initialWidth, initialHeight) => {
         enterCallback: { // enterCallback(cell, x, y);
             set(value) { enterCallback = value; }
         },
-        characterInputCallback: { // characterInputCallback(cell, keyCharacter)
+        characterInputCallback: { // characterInputCallback(cell, event)
             set(value) { characterInputCallback = value; }
         },
     }); //Object.defineProperties
@@ -70,6 +70,7 @@ const createTableInput = (element, initialWidth, initialHeight) => {
             cell.classList.add(className);
         else
             cell.classList.remove(className);
+        return cell;
     }; //setClass
 
     tableInput.enableCell = (x, y, doEnable) =>
@@ -81,6 +82,7 @@ const createTableInput = (element, initialWidth, initialHeight) => {
         const cell = findCell(x, y);
         if (!cell) return;
         cell.textContent = character;
+        return cell;
     } //tableInput.putCharacter
 
     const unselect = () => {
@@ -97,6 +99,7 @@ const createTableInput = (element, initialWidth, initialHeight) => {
         unselect();
         currentX = x;
         currentY = y;
+        return cell;
     } //tableInput.putCharacter
 
     const setupCell = (cell, x, y) => {
@@ -212,9 +215,9 @@ const createTableInput = (element, initialWidth, initialHeight) => {
                 if (enterCallback)
                     enterCallback(cell, currentX, currentY);
             default:
-                if (!cell.classList.contains(readonlyClassName) && event.key && event.key.length == 1) {
+                if (!cell.classList.contains(readonlyClassName)) {
                     if (characterInputCallback)
-                        characterInputCallback(cell, event.key);
+                        characterInputCallback(cell, event);
                 } //if
         }
     } //element.onkeydown

@@ -33,14 +33,16 @@ window.onload = () => {
     gameReset();
     elementSet.input.wordLength.onchange = () => gameReset();
     
-    //const languageSelector =
-    createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, () => {
+    const languageSelector =
+        createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, () => {
         // on language change
         //SA???
     });
 
-    tableInput.characterInputCallback = (cell, keyCharacter) =>
-        cell.textContent = keyCharacter.toUpperCase();
+    tableInput.characterInputCallback = (cell, event) => {
+        if (languageSelector.filterOut(event))
+            cell.textContent = event.key.toUpperCase();
+    }; //tableInput.characterInputCallback
     tableInput.enterCallback = (_, x, y) => {
         tableInput.addRow();
         newRowHandler();
@@ -49,10 +51,10 @@ window.onload = () => {
     } //tableInput.enterCallback
 
     tableInput.setReadonly(0, 0, true);
-    tableInput.putCharacter(1, 0, "A");
-    tableInput.putCharacter(2, 0, "B");
-    tableInput.putCharacter(4, 0, 3);
-    tableInput.putCharacter(5, 0, 2);
+    tableInput.putCharacter(1, 0, "𐤀");
+    tableInput.putCharacter(2, 0, "𐤀");
+    tableInput.putCharacter(4, 0, "🏡");
+    tableInput.putCharacter(5, 0, "🐮");
     tableInput.addRow();
     tableInput.enableCell(4, 1, false);
     tableInput.enableCell(5, 1, false);

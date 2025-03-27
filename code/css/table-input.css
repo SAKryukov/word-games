@@ -1,8 +1,8 @@
 table { border-collapse: collapse; }
 table, td { border: thin solid black; }
-table:focus { outline: thick solid blue; }
-td.selected { background-color: aqua; }
-table:focus td.selected { background-color: lightskyblue; }
+table:focus { outline: 2px solid blue; outline-offset: 1px; }
+td.selected { background-color: lightskyblue; }
+table:focus td.selected { background-color: aqua; }
 td {
     background-color: snow;
     font-family: monospace;
@@ -11,3 +11,5 @@ td {
     text-align: center;
     vertical-align: center;
 }
+td.non-selectable { background-color: steelblue; color: yellow; }
+

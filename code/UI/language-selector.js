@@ -61,15 +61,13 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
         for (let index in dictionaries) {
             const dictionary = dictionaries[index];
             indexedDictionaries.push(dictionary);
-            if (!selectedLanguage) {
-                selectedLanguage = dictionary;
-            } //if
             const option = localDefinitionSet.createOption();
             option.value = dictionary.languageName;
             option.textContent = index;
             selectLanguageElement.appendChild(option);
             ++count;
         } //loop
+        selectLanguageElement.selectedIndex = 0;
         selectLanguageElement.size = count;
         selectedLanguage = indexedDictionaries[selectLanguageElement.selectedIndex];
         selectLanguageElement.onchange = event => {
@@ -90,7 +88,6 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
         selectOptionsElement.appendChild(option);
         document.createElement("option");
         selectOptionsElement.size = 2;
-        selectLanguageElement.selectedIndex = 0;
     } //if
     const checkedListBox = setupCheckedListBox(selectOptionsElement, [false, false],
         (index, _, value) => {
@@ -116,6 +113,13 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
         selectLanguageElement.selectedIndex = index;
         setRepertoire();
     } //languageSelector.setLanguage
-  
+
+     (() => { //makeEqualHeight
+        const height =  Math.max(selectOptionsElement.offsetHeight, selectLanguageElement.offsetHeight);
+        const heightPx = `${height}px`;
+        selectLanguageElement.style.height = heightPx;
+        selectOptionsElement.style.height = heightPx;
+    })(); //makeEqualHeight
+    
     return languageSelector;
 };

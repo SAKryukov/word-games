@@ -13,6 +13,7 @@
     <script src="Dictionaries/dictionaries.js"></script>
     <script src="Dictionaries/utilities.js"></script>
     <script src="UI/language-selector.js"></script>
+    <script src="UI/shared-element-set.js"></script>
     <script src="game.bulls-and-cows/definition-set.js"></script>
     <script src="game.bulls-and-cows/element-set.js"></script>
     <script src="game.bulls-and-cows/game-io.js"></script>
@@ -41,6 +42,7 @@
         padding-bottom: var(--deltaY);
       }
       p { margin-bottom: 0.4em; }
+      table { margin-top: 1.4em; font-size: 140%; }
     </style>
 </head>
 
@@ -57,34 +59,13 @@
       <section>
         <button id="button-activate-menu" title="Context menu:  advanced...">⋯</button>
       </section>
+      <section>
+        <u>W</u>ord length:<br /><select accesskey="W" id="word-length"></select>
+      </section>
       </p>
     </header>
     
     <main>
-      <table>
-        <tr>
-          <td>A</td>
-          <td>.</td>
-          <td>A</td>
-          <td>A</td>
-          <td>A</td>
-          <td> </td>
-          <td> </td>
-          <td>-</td>
-        <tr>
-      </table>
-      <table>
-        <tr>
-          <td>B</td>
-          <td>.</td>
-          <td>B</td>
-          <td>D</td>
-          <td> </td>
-          <td>.</td>
-          <td>B</td>
-          <td>f</td>
-        <tr>
-      </table>
     </main>
     
     <footer>

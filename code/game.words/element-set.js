@@ -10,12 +10,14 @@
 const getElementSet = () => {
     const elementSet = {};
     
-    const main = document.querySelector("main");
+    const sharedElementSet = getSharedElementSet();
+
+    const main = sharedElementSet.main;
+    elementSet.input = {};
+    elementSet.input.languageSet = sharedElementSet.languageSet;
+    elementSet.input.options = sharedElementSet.options;
     elementSet.userSolution = document.querySelector("#user-solution");
     elementSet.machineSolution = document.querySelector("#machine-solution");
-    elementSet.input = {};
-    elementSet.input.languageSet = document.querySelector("#language");
-    elementSet.input.options = document.querySelector("#options");
     elementSet.input.inputSetWord = document.querySelector("#input-set-word");
     elementSet.input.inputTry = document.querySelector("#input-try");
     elementSet.input.menu = document.querySelector("#menu");
@@ -93,12 +95,6 @@ const getElementSet = () => {
     elementSet.keyShuffleReset = "r";
     elementSet.isKeyShuffleRelated = event => event.key == "u" || event.key == "r";
     elementSet.makeEqualWidth = element => element.style.width = `${element.offsetHeight}px`;
-    elementSet.makeEqualHeight = () => {
-        const height = Math.max(elementSet.input.options.offsetHeight, elementSet.input.languageSet.offsetHeight);
-        const heightPx = `${height}px`;
-        elementSet.input.languageSet.style.height = heightPx;
-        elementSet.input.options.style.height = heightPx;
-    };
 
     return elementSet;
 };

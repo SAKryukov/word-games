@@ -31,7 +31,6 @@ window.onload = () => {
             elementSet.textShuffle.textContent = null;
             elementSet.count.textContent = 0;    
         });
-    elementSet.makeEqualHeight();
     
     elementSet.input.inputSetWord.onkeypress = event => {
         if (elementSet.isEnter(event) && event.target.value) {

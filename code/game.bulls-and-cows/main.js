@@ -15,15 +15,18 @@ window.onload = () => {
     elementSet.main.appendChild(tableInput.tableElement);
 
     const newRowHandler = () => {
-        for (let x = tableInput.width - 2; x <= tableInput.width - 1; ++x)
+        for (let x = tableInput.width - 2; x <= tableInput.width - 1; ++x) {
             tableInput.enableCell(x, tableInput.height - 1, false);
+            tableInput.setReadonly(x, tableInput.height - 1, true);
+        } //loop
     } //newRowHandler
 
     const gameReset = () => {
         const wordLength =
             gameDefinitionSet.input.wordLength.valueFromIndex(
                 elementSet.input.wordLength.selectedIndex);
-        tableInput.reset(wordLength + 2, 1, newRowHandler);
+        tableInput.reset(wordLength + 2, 1);
+        newRowHandler();
         if (tableInput.height > 0 && tableInput.width > 0)
             tableInput.select(0, 0);
     } //gameReset
@@ -32,15 +35,20 @@ window.onload = () => {
     
     //const languageSelector =
     createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, () => {
-        // on language change:
+        // on language change
         //SA???
     });
 
-    tableInput.enterCallback = () => {
+    tableInput.characterInputCallback = (cell, keyCharacter) =>
+        cell.textContent = keyCharacter.toUpperCase();
+    tableInput.enterCallback = (_, x, y) => {
         tableInput.addRow();
         newRowHandler();
+        console.log(`${x} ${y}`);
+        console.log(tableInput.isRowFilledIn(1));
     } //tableInput.enterCallback
 
+    tableInput.setReadonly(0, 0, true);
     tableInput.putCharacter(1, 0, "A");
     tableInput.putCharacter(2, 0, "B");
     tableInput.putCharacter(4, 0, 3);
@@ -48,6 +56,8 @@ window.onload = () => {
     tableInput.addRow();
     tableInput.enableCell(4, 1, false);
     tableInput.enableCell(5, 1, false);
+    tableInput.setReadonly(4, 1, true);
+    tableInput.setReadonly(5, 1, true);
     tableInput.putCharacter(4, 1, 1);
     tableInput.putCharacter(5, 1, 0);
     tableInput.insertCell(2); tableInput.select(2, 0);

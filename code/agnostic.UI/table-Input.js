@@ -22,7 +22,7 @@ const createTableInput = (element, initialWidth, initialHeight) => {
     let body = null;
     let currentWidth = null, currentHeight = null;
     let currentX = null, currentY = null;
-    let enterCallback = null;
+    let enterCallback, characterInputCallback = null;
 
     Object.defineProperties(tableInput, {
         tableElement: {
@@ -52,22 +52,30 @@ const createTableInput = (element, initialWidth, initialHeight) => {
         height: {
             get() { return currentHeight; }
         },
-        enterCallback: {
+        enterCallback: { // enterCallback(cell, x, y);
             set(value) { enterCallback = value; }
+        },
+        characterInputCallback: { // characterInputCallback(cell, keyCharacter)
+            set(value) { characterInputCallback = value; }
         },
     }); //Object.defineProperties
 
     const findCell = (x, y) => 
         element.rows[y]?.cells[x];
 
-    tableInput.enableCell = (x, y, doEnable) => {
+    const setClass = (x, y, doSet, className) => {
         const cell = findCell(x, y);
         if (!cell) return;
-        if (doEnable)
-            cell.classList.remove(nonSelectableClassName);
+        if (doSet)
+            cell.classList.add(className);
         else
-            cell.classList.add(nonSelectableClassName);
-    }; //tableInput.enableCell
+            cell.classList.remove(className);
+    }; //setClass
+
+    tableInput.enableCell = (x, y, doEnable) =>
+        setClass(x, y, !doEnable, nonSelectableClassName);
+    tableInput.setReadonly = (x, y, doSet) => 
+        setClass(x, y, doSet, readonlyClassName);
 
     tableInput.putCharacter = (x, y, character) => {
         const cell = findCell(x, y);
@@ -105,7 +113,7 @@ const createTableInput = (element, initialWidth, initialHeight) => {
         }; //cell.onclick
     } //setupCell
 
-    tableInput.reset = (width, height, callback) => {
+    tableInput.reset = (width, height) => {
         cellMap.clear();
         currentWidth = null;
         currentHeight = null;
@@ -120,8 +128,6 @@ const createTableInput = (element, initialWidth, initialHeight) => {
         } //loop rows
         currentWidth = width;
         currentHeight = height;
-        if (callback)
-            callback();
     }; //tableInput.reset
 
     tableInput.addRow = () => {
@@ -135,9 +141,7 @@ const createTableInput = (element, initialWidth, initialHeight) => {
         return row;
     } //tableInput.addRow
 
-    tableInput.insertCell = atIndex => { // to fix (optimise):
-        const oldCurrentX = currentX;
-        const oldCurrentY = currentY;
+    tableInput.insertCell = atIndex => {
         if (currentWidth == null || currentHeight == null)
             return;
         if (atIndex < 0 || atIndex >= currentWidth)
@@ -152,29 +156,23 @@ const createTableInput = (element, initialWidth, initialHeight) => {
                 setupCell(cell, columnIndex, rowIndex);
             } //loop columns
         } //loop rows
-        for (let rowIndex = 0; rowIndex < currentHeight; ++rowIndex) {
-            for (let columnIndex = 0; columnIndex < currentWidth; ++columnIndex) {
-                const cell = body.rows[rowIndex].cells[columnIndex];
-                if (!cell.classList.contains(nonSelectableClassName))
-                    tableInput.select(columnIndex, rowIndex);
-            } //loop columns
-        } //loop rows
-        tableInput.select(oldCurrentX, oldCurrentY);
+        if (atIndex <= currentX)
+            ++currentX;
     }; //tableInput.insertCell
 
     tableInput.addCell = () => tableInput.insertCell();
 
-    const isRowTextContent = (row, requiredEmpty) => { //SA??? to fix:
-        const result = true;
-        for (let x = 0; x < currentX; ++x) {
+    const isRowTextContent = (row, requiredEmpty) => {
+        for (let x = 0; x < currentWidth; ++x) {
             const cell = findCell(x, row);
-            if (!cell) exit;
-            // SA??? check for readonly here
+            if (!cell) return;
+            if (cell.classList.contains(readonlyClassName)) 
+                continue;
             if ((requiredEmpty && cell.textContent)
                 || (!requiredEmpty && !cell.textContent))
                     return false;
         } //loop
-        return result;
+        return true;
     } //isRowTextContent
     tableInput.isRowFilledIn = row => isRowTextContent(row, false);
     tableInput.isRowEmpty = row => isRowTextContent(row, true);
@@ -194,7 +192,6 @@ const createTableInput = (element, initialWidth, initialHeight) => {
     element.onkeydown = event => {
         if (currentX == null || currentY == null)
             return;
-        const table = event.target;
         const cell = findCell(currentX, currentY);
         if (cell == null)
             return;
@@ -213,13 +210,14 @@ const createTableInput = (element, initialWidth, initialHeight) => {
                 break;
             case "Enter":
                 if (enterCallback)
-                    enterCallback();
-            default: //SA???
-                if (event.key && event.key.length == 1)
-                    cell.textContent = event.key.toUpperCase();
+                    enterCallback(cell, currentX, currentY);
+            default:
+                if (!cell.classList.contains(readonlyClassName) && event.key && event.key.length == 1) {
+                    if (characterInputCallback)
+                        characterInputCallback(cell, event.key);
+                } //if
         }
     } //element.onkeydown
 
     return tableInput;
 };
-

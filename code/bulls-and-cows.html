@@ -18,6 +18,7 @@
     <script src="game.bulls-and-cows/definition-set.js"></script>
     <script src="game.bulls-and-cows/element-set.js"></script>
     <script src="game.bulls-and-cows/game-io.js"></script>
+    <script src="game.bulls-and-cows/game-algorythm.js"></script>
     <script src="game.bulls-and-cows/main.js"></script>
     <style>
       @import url("css/flex.css");
@@ -43,7 +44,8 @@
         padding-bottom: var(--deltaY);
       }
       p { margin-bottom: 0.4em; }
-      table { margin-top: 1.4em; font-size: 140%; }
+      table { margin-top: 0.6em; font-size: 140%; }
+      main p { text-align: center; margin-top: 1em; }
     </style>
 </head>
 
@@ -63,10 +65,14 @@
       <section>
         <u>W</u>ord length:<br /><select accesskey="W" id="word-length"></select>
       </section>
+      <section>
+        <button id="buttonStartStop" accesskey="G" data-second-content="Stop <u>G</u>ame">Start <u>G</u>ame</button>
+      </section>
       </p>
     </header>
     
     <main>
+      <p>Start game</p>
     </main>
     
     <footer>

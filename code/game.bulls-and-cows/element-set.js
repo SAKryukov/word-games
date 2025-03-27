@@ -15,6 +15,36 @@ const getElementSet = definitionSet => {
     elementSet.input = {};
     elementSet.input.languageSet = sharedElementSet.languageSet;
     elementSet.input.options = sharedElementSet.options;
+    elementSet.input.buttonStartStop = document.querySelector("#buttonStartStop");
+    const buttonStartContent = elementSet.input.buttonStartStop.innerHTML;
+    const buttonStopContent = elementSet.input.buttonStartStop.dataset.secondContent;
+
+    const enableInput = doEnable => {
+        elementSet.input.languageSet.disabled = !doEnable;
+        elementSet.input.options.disabled = !doEnable;   
+        elementSet.input.wordLength.disabled = !doEnable;    
+    } //enableInput
+
+    let message = document.querySelector("main p");
+    const initialMessage = message.innerHTML;
+    let isButtonStartReady = true;
+    Object.defineProperties(elementSet, {
+        isButtonStartReady: {
+            get() { return isButtonStartReady; }
+        },
+        message: {
+            set(value) { message.innerHTML = value == null ? initialMessage : value; }
+        },
+    }); //Object.defineProperties
+
+    elementSet.input.onButtonStartStopToggle = readyToStart => {       
+        isButtonStartReady = !isButtonStartReady;
+        enableInput(isButtonStartReady);
+        elementSet.input.buttonStartStop.innerHTML = isButtonStartReady
+            ? buttonStartContent
+            : buttonStopContent;
+        readyToStart = isButtonStartReady;
+    } //elementSet.input.onButtonStart
 
     elementSet.input.wordLength = document.querySelector("#word-length");
     for (let length = definitionSet.input.wordLength.minimum; length <= definitionSet.input.wordLength.maximum; ++length) {

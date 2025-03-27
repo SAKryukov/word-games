@@ -60,6 +60,8 @@ const createTableInput = (element, initialWidth, initialHeight) => {
         },
     }); //Object.defineProperties
 
+    tableInput.focus = () => element.focus();
+
     const findCell = (x, y) => 
         element.rows[y]?.cells[x];
 
@@ -83,6 +85,12 @@ const createTableInput = (element, initialWidth, initialHeight) => {
         if (!cell) return;
         cell.textContent = character;
         return cell;
+    } //tableInput.putCharacter
+
+    tableInput.getCharacter = (x, y) => {
+        const cell = findCell(x, y);
+        if (!cell) return;
+        return cell.textContent;
     } //tableInput.putCharacter
 
     const unselect = () => {

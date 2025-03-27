@@ -8,7 +8,7 @@ Games:
 
 Under development:
 
-- Bulls and Cows
+- [Bulls and Cows](https://sakryukov.github.io/word-games/code/bulls-and-cows.html)
 - Balda
 - Word ladder
 - Boggle?

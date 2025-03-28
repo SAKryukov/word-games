@@ -233,6 +233,13 @@ const createTableInput = (element, initialWidth, initialHeight) => {
                 if (!cell.classList.contains(readonlyClassName)) {
                     if (characterInputCallback)
                         characterInputCallback(cell, event);
+                    const next = cell.nextSibling;
+                    if (!next) return;
+                    if (next.classList.contains(readonlyClassName)) return;
+                    if (next.classList.contains(readonlyClassName)) return;
+                    if (next.disabled) return;
+                    const cellData = cellMap.get(next);
+                    tableInput.select(cellData.x, cellData.y, true);                    
                 } //if
         }
     } //element.onkeydown

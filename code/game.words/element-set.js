@@ -16,17 +16,16 @@ const getElementSet = () => {
     elementSet.input = {};
     elementSet.input.languageSet = sharedElementSet.languageSet;
     elementSet.input.options = sharedElementSet.options;
+    elementSet.input.buttonActivateMenu  = sharedElementSet.buttonActivateMenu;
     elementSet.userSolution = document.querySelector("#user-solution");
     elementSet.machineSolution = document.querySelector("#machine-solution");
     elementSet.input.inputSetWord = document.querySelector("#input-set-word");
     elementSet.input.inputTry = document.querySelector("#input-try");
     elementSet.input.menu = document.querySelector("#menu");
-    elementSet.input.buttonActivateMenu = document.querySelector("#button-activate-menu");
     elementSet.textShuffle = document.querySelector("#text-shuffle");
     elementSet.buttonShuffle = document.querySelector("#button-shuffle");
     elementSet.count = document.querySelector("#count");
     elementSet.characterCount = document.querySelector("#character-count");
-    elementSet.buttonPrototype = document.querySelector("#button-prototype");
 
     elementSet.product = {};
     elementSet.product.title = document.querySelector("#product-title");

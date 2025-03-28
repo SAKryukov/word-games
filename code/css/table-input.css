@@ -11,7 +11,7 @@ td {
     text-align: center;
     vertical-align: center;
 }
-td.readonly { background-color: #fff2f0; }
+td.readonly { background-color: bisque; }
 td.non-selectable { background-color: darkgreen; color: yellow; }
 td.readonly.non-selectable { background-color: steelblue; }
 

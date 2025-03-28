@@ -14,17 +14,26 @@ window.onload = () => {
     const tableInput = createTableInput();
     elementSet.main.appendChild(tableInput.tableElement);
 
+    const languageSelector =
+        createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, () => {
+        // on language change
+        //SA???
+    });
+    const gameAlgorithm = getGameAlgorithm(languageSelector);
+
     const newRowHandler = () => {
         const row = tableInput.height - 1;
         for (let x = tableInput.width - 2; x <= tableInput.width - 1; ++x) {
             tableInput.enableCell(x, row, false);
             tableInput.setReadonly(x, row, true);
         } //loop
-        tableInput.putCharacter(tableInput.width - 2, row, "🏡");
-        tableInput.putCharacter(tableInput.width - 1, row, "🐮");
+        tableInput.putCharacter(tableInput.width - 2, row, gameDefinitionSet.images.total);
+        tableInput.putCharacter(tableInput.width - 1, row, gameDefinitionSet.images.bull);
     } //newRowHandler
 
-    const gameReset = () => {
+    let secretWord = null;
+
+    const gameReset = starting => {
         const wordLength =
             gameDefinitionSet.input.wordLength.valueFromIndex(
                 elementSet.input.wordLength.selectedIndex);
@@ -32,19 +41,17 @@ window.onload = () => {
         newRowHandler();
         if (tableInput.height > 0 && tableInput.width > 0)
             tableInput.select(0, 0);
-        } //gameReset
+        tableInput.focus();
+        if (starting) {
+            elementSet.message = gameDefinitionSet.input.messages.promptEnterTrialWordInitial;
+            secretWord = gameAlgorithm.generateSecretWord(wordLength);
+        } else
+            secretWord = null;
+    } //gameReset
     gameReset();
     elementSet.input.wordLength.onchange = () => gameReset();
-    tableInput.putCharacter(0, 0, "T");
-    tableInput.putCharacter(1, 0, "R");
-    tableInput.putCharacter(2, 0, "Y");
-
-    const languageSelector =
-        createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, () => {
-        // on language change
-        //SA???
-    });
-    const gameAlgorythm = getGameAlgorythm(languageSelector);
+    for (let index = 0; index < gameDefinitionSet.sample.length; ++index)
+        tableInput.putCharacter(index, 0, gameDefinitionSet.sample[index]);    
 
     tableInput.characterInputCallback = (cell, event) => {
         if (languageSelector.filterOut(event))
@@ -55,33 +62,39 @@ window.onload = () => {
             return;
         const row = tableInput.height - 1;
         if (!tableInput.isRowFilledIn(row)) {
-            elementSet.message = "Fill in <b><i>all</i></b> the cells in the last row and press Enter";
+            elementSet.message = gameDefinitionSet.input.messages.notFilledRow;
             return;
         } else
-            elementSet.message = "Enter the trial word";
-        let guessWord = "";
+            elementSet.message = gameDefinitionSet.input.messages.promptEnterTrialWord;
+        let guessWord = gameDefinitionSet.empty;
         for (let index = 0; index < tableInput.width - 2; ++index)
             guessWord += tableInput.getCharacter(index, row);
-        if (!gameAlgorythm.isInDictionary(guessWord)) {
-            elementSet.message = `The word &ldquo;${guessWord}&rdquo; is not in dictionary`;
+        const evaluation = gameAlgorithm.evaluateSolution(secretWord, guessWord, false);
+        if (!gameAlgorithm.isInDictionary(guessWord)) {
+            elementSet.message = 
+                gameDefinitionSet.input.messages.badWord(guessWord,
+                    languageSelector.currentLanguage.characterRepertoire.quotes);
+            return;
+        } //if
+        tableInput.putCharacter(tableInput.width - 2, row, evaluation.total);
+        tableInput.putCharacter(tableInput.width - 1, row, evaluation.bulls);
+        if (evaluation.bulls == secretWord.length) {
+            elementSet.input.onButtonStartStopToggle();
+            elementSet.message = gameDefinitionSet.input.messages.congratulations;
+            tableInput.setReadonlyRow(row, 0, tableInput.width - 2, true);
             return;
         } //if
         tableInput.addRow();
         newRowHandler();
         tableInput.select(0, row + 1);
-        for (let index = 0; index < tableInput.width - 2; ++index)
-            tableInput.setReadonly(index, row, true);
-        tableInput.putCharacter(tableInput.width - 2, row, 2);
-        tableInput.putCharacter(tableInput.width - 1, row, 1);
+        tableInput.setReadonlyRow(row, 0, tableInput.width - 2, true);
     } //tableInput.enterCallback
 
     elementSet.input.buttonStartStop.onclick = readyToStart => {
         elementSet.input.onButtonStartStopToggle();
-        if (readyToStart) {
-            gameReset();
-            tableInput.focus();
-            elementSet.message = "Enter the characters. In two last cells, you will see the sum of bulls+cows, and the number of <i>bulls</i>."
-        } else
+        if (readyToStart)
+            gameReset(true);
+        else
             elementSet.message = null;
     } //elementSet.input.buttonStartStop.onclick
 

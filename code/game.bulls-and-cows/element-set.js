@@ -15,6 +15,8 @@ const getElementSet = definitionSet => {
     elementSet.input = {};
     elementSet.input.languageSet = sharedElementSet.languageSet;
     elementSet.input.options = sharedElementSet.options;
+    elementSet.input.buttonActivateMenu = sharedElementSet.buttonActivateMenu;
+    elementSet.input.buttonActivateMenu.style.display = "none"; //SA??? to develop
     elementSet.input.buttonStartStop = document.querySelector("#buttonStartStop");
     const buttonStartContent = elementSet.input.buttonStartStop.innerHTML;
     const buttonStopContent = elementSet.input.buttonStartStop.dataset.secondContent;

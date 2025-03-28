@@ -14,8 +14,7 @@ const getSharedElementSet = () => {
     const mainElement = document.querySelector("main");
     const languageSetElement = document.querySelector("#language");
     const optionsElement = document.querySelector("#options");
-    languageSetElement.size = 2;
-    //optionsElement.size = 2;
+    const buttonActivateMenu = document.querySelector("#button-activate-menu");
 
     Object.defineProperties(elementSet, {
         main: {
@@ -26,6 +25,9 @@ const getSharedElementSet = () => {
         },
         options: {
             get() { return optionsElement; },
+        },
+        buttonActivateMenu: {
+            get() { return buttonActivateMenu; },
         },
     });
 

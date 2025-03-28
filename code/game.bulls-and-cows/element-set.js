@@ -16,7 +16,7 @@ const getElementSet = definitionSet => {
     elementSet.input.languageSet = sharedElementSet.languageSet;
     elementSet.input.options = sharedElementSet.options;
     elementSet.input.buttonActivateMenu = sharedElementSet.buttonActivateMenu;
-    elementSet.input.buttonActivateMenu.style.display = "none"; //SA??? to develop
+    elementSet.input.menu = sharedElementSet.menu;
     elementSet.input.buttonStartStop = document.querySelector("#buttonStartStop");
     const buttonStartContent = elementSet.input.buttonStartStop.innerHTML;
     const buttonStopContent = elementSet.input.buttonStartStop.dataset.secondContent;
@@ -58,6 +58,17 @@ const getElementSet = definitionSet => {
     elementSet.input.wordLength.selectedIndex =
         definitionSet.input.wordLength.indexFromValue(
             definitionSet.input.wordLength.default);
+
+    elementSet.menuItem = {
+        startGame: elementSet.input.menu.children[0].textContent,
+        giveUp: elementSet.input.menu.children[1].textContent,
+        revealSolution: elementSet.input.menu.children[2].textContent,
+        /*
+        saveGameInExistingFile: elementSet.input.menu.children[1].textContent,
+        saveGame: elementSet.input.menu.children[2].textContent,
+        loadGame: elementSet.input.menu.children[3].textContent,
+        */
+    };
 
     return elementSet;
 };

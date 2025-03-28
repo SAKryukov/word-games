@@ -16,12 +16,12 @@ const getElementSet = () => {
     elementSet.input = {};
     elementSet.input.languageSet = sharedElementSet.languageSet;
     elementSet.input.options = sharedElementSet.options;
+    elementSet.input.menu = sharedElementSet.menu;
     elementSet.input.buttonActivateMenu  = sharedElementSet.buttonActivateMenu;
     elementSet.userSolution = document.querySelector("#user-solution");
     elementSet.machineSolution = document.querySelector("#machine-solution");
     elementSet.input.inputSetWord = document.querySelector("#input-set-word");
     elementSet.input.inputTry = document.querySelector("#input-try");
-    elementSet.input.menu = document.querySelector("#menu");
     elementSet.textShuffle = document.querySelector("#text-shuffle");
     elementSet.buttonShuffle = document.querySelector("#button-shuffle");
     elementSet.count = document.querySelector("#count");

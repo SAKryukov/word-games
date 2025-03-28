@@ -55,7 +55,7 @@ const createTableInput = (element, initialWidth, initialHeight) => {
         enterCallback: { // enterCallback(cell, x, y);
             set(value) { enterCallback = value; }
         },
-        characterInputCallback: { // characterInputCallback(cell, event)
+        characterInputCallback: { // characterInputCallback(cell, event) returns bool goodKey
             set(value) { characterInputCallback = value; }
         },
     }); //Object.defineProperties
@@ -232,7 +232,8 @@ const createTableInput = (element, initialWidth, initialHeight) => {
             default:
                 if (!cell.classList.contains(readonlyClassName)) {
                     if (characterInputCallback)
-                        characterInputCallback(cell, event);
+                        if (!characterInputCallback(cell, event))
+                            return;
                     const next = cell.nextSibling;
                     if (!next) return;
                     if (next.classList.contains(readonlyClassName)) return;

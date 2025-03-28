@@ -54,8 +54,10 @@ window.onload = () => {
         tableInput.putCharacter(index, 0, gameDefinitionSet.sample[index]);    
 
     tableInput.characterInputCallback = (cell, event) => {
-        if (languageSelector.filterOut(event))
+        if (languageSelector.filterOut(event)) {
             cell.textContent = event.key.toUpperCase();
+            return true;
+        } //if
     }; //tableInput.characterInputCallback
     tableInput.enterCallback = (_, x, y) => {
         if (elementSet.isButtonStartReady)
@@ -97,5 +99,26 @@ window.onload = () => {
         else
             elementSet.message = null;
     } //elementSet.input.buttonStartStop.onclick
+
+    (() => { //menu:
+        const contextMenu = new menuGenerator(elementSet.input.menu);
+        contextMenu.subscribe(elementSet.menuItem.startGame, actionRequest => {
+            if (!actionRequest) return elementSet.isButtonStartReady;
+            elementSet.input.onButtonStartStopToggle();
+            gameReset(true);    
+        });
+        contextMenu.subscribe(elementSet.menuItem.giveUp, actionRequest => {
+            if (!actionRequest) return !elementSet.isButtonStartReady;
+            elementSet.input.onButtonStartStopToggle();
+            gameReset(false);
+            elementSet.message = null;
+        });
+        contextMenu.subscribe(elementSet.menuItem.revealSolution, actionRequest => {
+            if (!actionRequest) return secretWord != null;
+            modalPopup.show(secretWord.toUpperCase(), null, { textAlign: "center" }); 
+        });
+        //elementSet.isButtonStartReady
+        setupMenuActivator(contextMenu, elementSet.input.buttonActivateMenu);
+    })(); //menu
 
 }; //window.onload

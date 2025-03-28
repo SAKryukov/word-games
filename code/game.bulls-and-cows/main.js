@@ -92,12 +92,12 @@ window.onload = () => {
         tableInput.setReadonlyRow(row, 0, tableInput.width - 2, true);
     } //tableInput.enterCallback
 
-    elementSet.input.buttonStartStop.onclick = readyToStart => {
-        elementSet.input.onButtonStartStopToggle();
-        if (readyToStart)
+    elementSet.input.buttonStartStop.onclick = () => {
+        if (elementSet.isButtonStartReady)
             gameReset(true);
         else
             elementSet.message = null;
+        elementSet.input.onButtonStartStopToggle();
     } //elementSet.input.buttonStartStop.onclick
 
     (() => { //menu:

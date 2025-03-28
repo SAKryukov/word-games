@@ -35,7 +35,7 @@ window.onload = () => {
     elementSet.input.inputSetWord.onkeypress = event => {
         if (elementSet.isEnter(event) && event.target.value) {
             elementSet.showInputTry();
-            if (!languageSelector.currentLanguage.alphabetical[event.target.value.toLowerCase()])
+            if (dictionaryUtility.binarySearch(languageSelector.currentLanguage.alphabetical, event.target.value.toLowerCase()) == null)
                 modalPopup.show(
                     gameDefinitionSet.setWordBad(languageSelector.currentLanguage, event.target.value),
                     null,
@@ -49,7 +49,7 @@ window.onload = () => {
             const trialWord = event.target.value.toLowerCase();
             let goodSubset = false;
             let inDictionary = false;
-            if (languageSelector.currentLanguage.alphabetical[trialWord])
+            if (dictionaryUtility.binarySearch(languageSelector.currentLanguage.alphabetical, trialWord) != null)
                 inDictionary = true;
             if (dictionaryUtility.isSubset(trialWord, elementSet.input.inputSetWord.value.toLowerCase()))
                 goodSubset = true;

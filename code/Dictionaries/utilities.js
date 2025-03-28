@@ -26,7 +26,7 @@ const dictionaryUtility = {
 	shuffleWord: (word, firstTime) => {
 		if (firstTime)
 			return word;
-		var array = word.	split("");
+		var array = word.split("");
 		var length = array.length;
 		for (var index = length - 1; index > 0; --index) {
 			var random = Math.floor(Math.random() * (index + 1));
@@ -57,9 +57,8 @@ const dictionaryUtility = {
 	},
 
 	binarySearch: (sortedCollection, word) => {
-		const length = sortedCollection.length;
 		let left = 0;
-		let right = length - 1;
+		let right = sortedCollection.length - 1;
 		while (left <= right) {
 			let middle = Math.floor((left + right) / 2);
 			if (sortedCollection[middle] < word)

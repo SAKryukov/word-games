@@ -63,11 +63,6 @@ const getElementSet = definitionSet => {
         startGame: elementSet.input.menu.children[0].textContent,
         giveUp: elementSet.input.menu.children[1].textContent,
         revealSolution: elementSet.input.menu.children[2].textContent,
-        /*
-        saveGameInExistingFile: elementSet.input.menu.children[1].textContent,
-        saveGame: elementSet.input.menu.children[2].textContent,
-        loadGame: elementSet.input.menu.children[3].textContent,
-        */
     };
 
     return elementSet;

@@ -21,11 +21,13 @@ const performAdHocDictionaryMainenance = () => {
     const dictionaryMaintenance = (languageName, newWords) => {
         for (let word of newWords)
             dictionaries[languageName].alphabetical[word] = word.length;
-        dictionaries[languageName].indexedByLength = {};
+        //dictionaries[languageName].indexedByLength = {};
         let array = [];
-        for (let index in dictionaries[languageName].alphabetical)
+        for (let index of dictionaries[languageName].alphabetical)
             array.push(index);
         array.sort();
+        dictionaries[languageName].alphabetical = array;
+        /*
         dictionaries[languageName].alphabetical = {};
         for (let word of array)
             dictionaries[languageName].alphabetical[word] = word.length;
@@ -37,6 +39,7 @@ const performAdHocDictionaryMainenance = () => {
             dictionaries[languageName].indexedByLength[word.length].push(index);
         } //loop
         //
+        */
         const json = JSON.stringify(dictionaries[languageName], null, spacer);
         navigator.clipboard.writeText(wrap(languageName, json));
     }; //dictionaryMaintenance
@@ -47,7 +50,7 @@ const performAdHocDictionaryMainenance = () => {
     }; //transform
 
     //dictionaryMaintenance("Russian", ["пита","кепи","шаурма","шаверма","оммаж","фуа","маракуйя","гранадилла","арахнофобия","арахнофоб","неолиберал","неолиберализм","неоконсерватор","неоконсерватизм","терапсид","горгонопс","алкен","алкин","криогений","тоний","мира","пескоструйщица","катык","сузьма","курт","кевлар","сарт","килт","икта","спарка","парка"]);
-    dictionaryMaintenance("English", []);
+    dictionaryMaintenance("Russian", []);
     //transform("English");
 
 }; //performAdHocDictionaryMainenance

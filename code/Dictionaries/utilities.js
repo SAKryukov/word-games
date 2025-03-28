@@ -56,42 +56,20 @@ const dictionaryUtility = {
 		return true;
 	},
 
-	classifyWord: function(word, classes) {
-		var classification = [];
-		for (var index in classes) {
-			var aClass = classes[index];
-			var classificationGroup = [];
-			for(var charIndex = 0; charIndex < aClass.length; ++charIndex) {
-				var classificationElement = {character:'', characterCount:0};                        
-				var removal = this.removeCharacters(word, aClass[charIndex]);
-				var word = removal.result;
-				if (removal.count > 0) {
-					classificationElement.character += aClass[charIndex];
-					classificationElement.characterCount = removal.count;
-					classificationGroup.push(classificationElement);
-				} // if found
-			} //loop by class character
-			classification.push(classificationGroup);
-		} //loop classes
-		return {classification: classification, unclassified: word};
-	}, //classifyWord
-
-	defaultDictionaryOptions: { nonLetterdiacritic:false, punctuation:false, blankSpace:false },
-	//SA??? incorrect, should be moved
-
-	classifyCharacter: function(character, dictionary, dictionaryOption) {
-		if (dictionary.characterRepertoire.characters.indexOf(character)<0) return false;
-		if (dictionaryOption.punctuation && dictionary.characterRepertoire.punctuation.indexOf(character) >= 0) return true;
-		if (dictionaryOption.blankSpace && dictionary.characterRepertoire.blankSpace.indexOf(character) >= 0) return true;
-		var nonLetterdiacritic = "";
-		for (var index in dictionary.characterRepertoire.diacritic) {
-			var letter = dictionary.characterRepertoire.diacritic[index]; 
-			if (dictionary.characterRepertoire.letters.indexOf(letter)<0)
-			nonLetterdiacritic += letter;
+	binarySearch: (sortedCollection, word) => {
+		const length = sortedCollection.length;
+		let left = 0;
+		let right = length - 1;
+		while (left <= right) {
+			let middle = Math.floor((left + right) / 2);
+			if (sortedCollection[middle] < word)
+				left = middle + 1;
+			else if (sortedCollection[middle] > word)
+				right = middle - 1;
+			else
+				return middle;
 		} //loop
-		if (!dictionaryOption.nonLetterdiacritic && nonLetterdiacritic.indexOf(character) >= 0) return false;
-		return false;		
-	} //classifyCharacter
-	//SA??? incorrect, should be fixed
+		return;
+	},
 
-}; //dictionary
+}; //dictionaryUtility

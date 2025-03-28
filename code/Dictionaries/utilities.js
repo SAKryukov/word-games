@@ -56,19 +56,4 @@ const dictionaryUtility = {
 		return true;
 	},
 
-	binarySearch: (sortedCollection, word) => {
-		let left = 0;
-		let right = sortedCollection.length - 1;
-		while (left <= right) {
-			let middle = Math.floor((left + right) / 2);
-			if (sortedCollection[middle] < word)
-				left = middle + 1;
-			else if (sortedCollection[middle] > word)
-				right = middle - 1;
-			else
-				return middle;
-		} //loop
-		return;
-	},
-
 }; //dictionaryUtility

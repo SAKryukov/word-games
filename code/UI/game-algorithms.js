@@ -10,10 +10,25 @@
 const getGameAlgorithm = languageSelector => {
     const gameAlgorithm = {};
 
-    gameAlgorithm.isInDictionary = word =>
-        dictionaryUtility.binarySearch(languageSelector.currentLanguage.alphabetical, word.toLowerCase()) != null;
+	const binarySearch = (sortedCollection, word) => {
+		let left = 0;
+		let right = sortedCollection.length - 1;
+		while (left <= right) {
+			let middle = Math.floor((left + right) / 2);
+			if (sortedCollection[middle] < word)
+				left = middle + 1;
+			else if (sortedCollection[middle] > word)
+				right = middle - 1;
+			else
+				return middle;
+		} //loop
+		return;
+	}; //binarySearch
 
-    gameAlgorithm.generateSecretWord = length => {
+    gameAlgorithm.isInDictionary = word =>
+        binarySearch(languageSelector.currentLanguage.alphabetical, word.toLowerCase()) != null;
+
+    gameAlgorithm.pickRandomWord = length => {
         const generateIt = () => {
             const indexArray = languageSelector.currentLanguage.indexedByLength[length];
             if (!indexArray) return null;
@@ -44,7 +59,7 @@ const getGameAlgorithm = languageSelector => {
             if (goodWord(word))
                 return word;
         } //loop
-    }; //gameAlgorythm.generateSecretWord
+    }; //gameAlgorythm.pickRandomWord
 
     gameAlgorithm.evaluateSolution = (secretWord, guessWord, removeDuplicates) => {
         let bulls = 0;

@@ -44,7 +44,7 @@ window.onload = () => {
         tableInput.focus();
         if (starting) {
             elementSet.message = gameDefinitionSet.input.messages.promptEnterTrialWordInitial;
-            secretWord = gameAlgorithm.generateSecretWord(wordLength);
+            secretWord = gameAlgorithm.pickRandomWord(wordLength);
         } else
             secretWord = null;
     } //gameReset

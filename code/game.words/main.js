@@ -31,11 +31,12 @@ window.onload = () => {
             elementSet.textShuffle.textContent = null;
             elementSet.count.textContent = 0;    
         });
+    const gameAlgorithm = getGameAlgorithm(languageSelector);
     
     elementSet.input.inputSetWord.onkeypress = event => {
         if (elementSet.isEnter(event) && event.target.value) {
             elementSet.showInputTry();
-            if (dictionaryUtility.binarySearch(languageSelector.currentLanguage.alphabetical, event.target.value.toLowerCase()) == null)
+            if (!gameAlgorithm.isInDictionary(event.target.value.toLowerCase()))
                 modalPopup.show(
                     gameDefinitionSet.setWordBad(languageSelector.currentLanguage, event.target.value),
                     null,
@@ -49,7 +50,7 @@ window.onload = () => {
             const trialWord = event.target.value.toLowerCase();
             let goodSubset = false;
             let inDictionary = false;
-            if (dictionaryUtility.binarySearch(languageSelector.currentLanguage.alphabetical, trialWord) != null)
+            if (gameAlgorithm.isInDictionary(trialWord))
                 inDictionary = true;
             if (dictionaryUtility.isSubset(trialWord, elementSet.input.inputSetWord.value.toLowerCase()))
                 goodSubset = true;
@@ -101,7 +102,7 @@ window.onload = () => {
         let count = 0;
         if (showWords)
             sortedWordListMachine.reset();
-        for (let word in languageSelector.currentLanguage.alphabetical)
+        for (let word of languageSelector.currentLanguage.alphabetical)
             if (dictionaryUtility.isSubset(word, setWord))
                 if (showWords)
                     sortedWordListMachine.add(word);

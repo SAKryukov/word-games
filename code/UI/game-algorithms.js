@@ -81,7 +81,30 @@ const getGameAlgorithm = languageSelector => {
                 if (secretWord.includes(guessWord[index]))
                     ++total;
         return { total: total, bulls: bulls };
-    } //gameAlgorythm.evaluateSolution
+    }; //gameAlgorythm.evaluateSolution
+
+    gameAlgorithm.canBeComposedOf = (trialWord, characterRepertoire) => {
+		for (let char of trialWord)
+			if (characterRepertoire.indexOf(char) < 0)
+				return false;
+			else
+			    characterRepertoire = characterRepertoire.replace(char, "");
+		return true;
+	}; //gameAlgorithm.canBeComposedOf
+
+    gameAlgorithm.shuffleWord = (word, firstTime) => {
+		if (firstTime)
+			return word;
+		var array = word.split("");
+		var length = array.length;
+		for (var index = length - 1; index > 0; --index) {
+			var random = Math.floor(Math.random() * (index + 1));
+			var tmp = array[index];
+			array[index] = array[random];
+			array[random] = tmp;
+		} //loop
+		return array.join("");
+	}; //gameAlgorithm.shuffleWord
 
     return gameAlgorithm;
 };

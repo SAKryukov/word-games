@@ -52,7 +52,7 @@ window.onload = () => {
             let inDictionary = false;
             if (gameAlgorithm.isInDictionary(trialWord))
                 inDictionary = true;
-            if (dictionaryUtility.isSubset(trialWord, elementSet.input.inputSetWord.value.toLowerCase()))
+            if (gameAlgorithm.canBeComposedOf(trialWord, elementSet.input.inputSetWord.value.toLowerCase()))
                 goodSubset = true;
             if (goodSubset && inDictionary) {
                 if (!sortedWordListUser.add(trialWord))
@@ -82,7 +82,7 @@ window.onload = () => {
         };
         const shuffle = firstTime =>
             elementSet.textShuffle.textContent =
-                dictionaryUtility.shuffleWord(elementSet.input.inputSetWord.value.toUpperCase(), firstTime);
+                gameAlgorithm.shuffleWord(elementSet.input.inputSetWord.value.toUpperCase(), firstTime);
         shuffle();
         elementSet.buttonShuffle.onclick = () => shuffle(false);
         window.onkeydown = event => {
@@ -103,7 +103,7 @@ window.onload = () => {
         if (showWords)
             sortedWordListMachine.reset();
         for (let word of languageSelector.currentLanguage.alphabetical)
-            if (dictionaryUtility.isSubset(word, setWord))
+            if (gameAlgorithm.canBeComposedOf(word, setWord))
                 if (showWords)
                     sortedWordListMachine.add(word);
                 else

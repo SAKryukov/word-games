@@ -7,6 +7,13 @@
             "name": "words",
             "file": "${workspaceFolder}/words.html"
             //"file": "${workspaceFolder}/bulls-and-cows.html"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "bulls and cows",
+            "file": "${workspaceFolder}/bulls-and-cows.html"
         }
+
     ]
 }

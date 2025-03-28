@@ -80,6 +80,11 @@ const createTableInput = (element, initialWidth, initialHeight) => {
     tableInput.setReadonly = (x, y, doSet) => 
         setClass(x, y, doSet, readonlyClassName);
 
+    tableInput.setReadonlyRow  = (row, start, length, doSet) => {
+        for (let index = start; index < start + length; ++index)
+            tableInput.setReadonly(index, row, doSet);
+    } //tableInput.setReadonlyRow
+
     tableInput.putCharacter = (x, y, character) => {
         const cell = findCell(x, y);
         if (!cell) return;
@@ -104,7 +109,8 @@ const createTableInput = (element, initialWidth, initialHeight) => {
         const cell = findCell(x, y);
         if (!cell) return;
         cell.classList.add(selectedClassName);
-        unselect();
+        if (x != currentX || y != currentY)
+            unselect();
         currentX = x;
         currentY = y;
         return cell;
@@ -117,7 +123,8 @@ const createTableInput = (element, initialWidth, initialHeight) => {
             if (cell.classList.contains(nonSelectableClassName))
                 return;
             cell.classList.add(selectedClassName);
-            unselect();
+            if (x != currentX || y != currentY)
+                unselect();
             const cellData = cellMap.get(cell);
             currentX = cellData.x;
             currentY = cellData.y;

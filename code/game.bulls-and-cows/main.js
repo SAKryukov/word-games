@@ -11,7 +11,7 @@ window.onload = () => {
 
     const gameDefinitionSet = getGameDefinitionSet();
     const elementSet = getElementSet(gameDefinitionSet);
-    const tableInput = createTableInput();
+    const tableInput = createTableInput(null, elementSet.main);
     elementSet.main.appendChild(tableInput.tableElement);
 
     const languageSelector =

@@ -7,7 +7,7 @@
 
 "use strict";
 
-const createTableInput = (element, initialWidth, initialHeight) => {
+const createTableInput = (element, scrollableElement, initialWidth, initialHeight) => {
     const tableInput = {};
 
     if (!element)
@@ -105,6 +105,23 @@ const createTableInput = (element, initialWidth, initialHeight) => {
         }
     } //unselect
 
+    if (!scrollableElement)
+        scrollableElement = element.parentElement; 
+    const isScrolledIntoView = cell => {
+        const scrollableElement = element.parentElement;
+        let cellRectangle = cell.getBoundingClientRect();
+        let parentRectangle = scrollableElement.getBoundingClientRect();
+        let isVisible =
+            (cellRectangle.top >= parentRectangle.top) &&
+            (cellRectangle.bottom <= parentRectangle.bottom);
+        return isVisible;
+    }; //isScrolledIntoView
+    
+    const scrollIntoView = cell => {
+        if (!isScrolledIntoView(cell))
+            cell.scrollIntoView();
+    } //scrollIntoView
+
     tableInput.select = (x, y) => {
         const cell = findCell(x, y);
         if (!cell) return;
@@ -113,6 +130,7 @@ const createTableInput = (element, initialWidth, initialHeight) => {
             unselect();
         currentX = x;
         currentY = y;
+        scrollIntoView(cell);
         return cell;
     } //tableInput.putCharacter
 
@@ -126,6 +144,8 @@ const createTableInput = (element, initialWidth, initialHeight) => {
             if (x != currentX || y != currentY)
                 unselect();
             const cellData = cellMap.get(cell);
+            if (!cell) return;
+            scrollIntoView(cell);
             currentX = cellData.x;
             currentY = cellData.y;
         }; //cell.onclick
@@ -153,8 +173,11 @@ const createTableInput = (element, initialWidth, initialHeight) => {
             tableInput.reset(initialWidth, initialHeight);
         const rowNumber = body.rows.length;
         const row = body.insertRow();
-        for (let columnIndex = 0; columnIndex < currentWidth; ++columnIndex)
-            setupCell(row.insertCell(), columnIndex, rowNumber);
+        for (let columnIndex = 0; columnIndex < currentWidth; ++columnIndex) {
+            const cell = row.insertCell();
+            scrollIntoView(cell);
+            setupCell(cell, columnIndex, rowNumber);
+        } //loop
         ++currentHeight;
         return row;
     } //tableInput.addRow
@@ -171,6 +194,7 @@ const createTableInput = (element, initialWidth, initialHeight) => {
         for (let rowIndex = 0; rowIndex < currentHeight; ++rowIndex) {
             for (let columnIndex = 0; columnIndex < currentWidth; ++columnIndex) {
                 const cell = body.rows[rowIndex].cells[columnIndex];
+                scrollIntoView(cell);
                 setupCell(cell, columnIndex, rowIndex);
             } //loop columns
         } //loop rows

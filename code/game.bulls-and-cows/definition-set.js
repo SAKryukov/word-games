@@ -15,7 +15,7 @@ const getGameDefinitionSet = () => {
 	gameDefinitionSet.input.wordLength = {
 		minimum: 2,
 		maximum: 9,
-		default: 4,
+		default: 6,
 		size: 4,
 		indexFromValue: function (value) { return value - this.minimum; },
 		valueFromIndex: function (index) { return this.minimum + index; },

@@ -61,7 +61,7 @@ const getGameAlgorithm = languageSelector => {
         } //loop
     }; //gameAlgorythm.pickRandomWord
 
-    gameAlgorithm.evaluateSolution = (secretWord, guessWord, removeDuplicates) => {
+    gameAlgorithm.evaluateBullsAndCowsSolution = (secretWord, guessWord) => {
         let bulls = 0;
         guessWord = guessWord.toLowerCase();
         for (let index = 0; index < secretWord.length; ++index)
@@ -70,18 +70,18 @@ const getGameAlgorithm = languageSelector => {
         if (bulls == guessWord.length)
             return { total: bulls, bulls: bulls };
         let total = 0;
-        if (removeDuplicates) {
-            const letterSet = new Set(guessWord.split(""));
-            letterSet.forEach(letter => {
-                if (secretWord.includes(letter))
-                    ++total;
-            });
-        } else
-            for (let index = 0; index < secretWord.length; ++index)
-                if (secretWord.includes(guessWord[index]))
-                    ++total;
+        let shadowGuessWord = guessWord;
+        for (let index = 0; index <guessWord.length; ++index) {
+            const letter = guessWord[index];
+            if (shadowGuessWord.indexOf(letter) < 0) continue;
+            if (secretWord.indexOf(letter) >= 0) {
+                ++total;
+                secretWord = secretWord.replace(letter, "");
+                shadowGuessWord = shadowGuessWord.replace(letter, "");
+            } //if
+        } //loop
         return { total: total, bulls: bulls };
-    }; //gameAlgorythm.evaluateSolution
+    }; //gameAlgorythm.evaluateBullsAndCowsSolution
 
     gameAlgorithm.canBeComposedOf = (trialWord, characterRepertoire) => {
 		for (let char of trialWord)

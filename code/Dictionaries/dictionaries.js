@@ -19,27 +19,21 @@ const performAdHocDictionaryMainenance = () => {
        `"use strict";\nconst ${languageName} =\n${json};`;
     
     const dictionaryMaintenance = (languageName, newWords) => {
+        const dictionary = dictionaries[languageName];
+        const wordSet = new Set(dictionary.alphabetical);
         for (let word of newWords)
-            dictionaries[languageName].alphabetical[word] = word.length;
-        //dictionaries[languageName].indexedByLength = {};
-        let array = [];
-        for (let index of dictionaries[languageName].alphabetical)
-            array.push(index);
+            wordSet.add(word);
+        const array = [];
+        wordSet.forEach(word => array.push(word));
         array.sort();
-        dictionaries[languageName].alphabetical = array;
-        /*
-        dictionaries[languageName].alphabetical = {};
-        for (let word of array)
-            dictionaries[languageName].alphabetical[word] = word.length;
-        // indexing:
+        dictionary.alphabetical = array;
+        dictionary.indexedBy = {};
         for (let index = 0; index < array.length; ++index) {
             const word = array[index];
-            if (dictionaries[languageName].indexedByLength[word.length] == null)
-                dictionaries[languageName].indexedByLength[word.length] = [];
-            dictionaries[languageName].indexedByLength[word.length].push(index);
+            if (dictionary.indexedByLength[word.length] == null)
+                dictionary.indexedByLength[word.length] = [];
+            dictionary.indexedByLength[word.length].push(index);
         } //loop
-        //
-        */
         const json = JSON.stringify(dictionaries[languageName], null, spacer);
         navigator.clipboard.writeText(wrap(languageName, json));
     }; //dictionaryMaintenance
@@ -50,7 +44,7 @@ const performAdHocDictionaryMainenance = () => {
     }; //transform
 
     //dictionaryMaintenance("Russian", ["пита","кепи","шаурма","шаверма","оммаж","фуа","маракуйя","гранадилла","арахнофобия","арахнофоб","неолиберал","неолиберализм","неоконсерватор","неоконсерватизм","терапсид","горгонопс","алкен","алкин","криогений","тоний","мира","пескоструйщица","катык","сузьма","курт","кевлар","сарт","килт","икта","спарка","парка"]);
-    dictionaryMaintenance("Russian", []);
+    dictionaryMaintenance("Russian", ["лысыйхрен"]);
     //transform("English");
 
 }; //performAdHocDictionaryMainenance

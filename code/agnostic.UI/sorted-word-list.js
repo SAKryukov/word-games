@@ -86,12 +86,11 @@ const createSortedWordList = (parent, hightlightClass, callback) => {
             callback(wordSet.size);
     }; //result.reset
     
-    result.toJSON = gameData => {
+    result.updateGameData = gameData => {
         gameData.alphabetical = [];
         for (let index = 0; index < parent.childElementCount; ++index)
             gameData.alphabetical.push(parent.children[index].textContent);
-        return JSON.stringify(gameData);
-    }; //result.toJSON
+    }; //result.updateGameData
 
     return result;
 } //createSortedWordList

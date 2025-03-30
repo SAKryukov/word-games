@@ -10,13 +10,13 @@
 const getIoDefinitionSet = () => {
     const ioDefinitionSet = {};
 
-    ioDefinitionSet.createFileOptions = (suggestedName, gameName) => {
+    ioDefinitionSet.createFileOptions = (suggestedName, gameName, gameSuffix) => {
         return {
             suggestedName: suggestedName,
             types: [
                 {
                     description: `JSON file or ${gameName} file`,
-                    accept: { "application/ecmascript": [".words", ".json"] },
+                    accept: { "application/ecmascript": [`.${gameSuffix}`, ".json"] },
                 }
             ]
         };

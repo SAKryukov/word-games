@@ -7,7 +7,25 @@
 
 "use strict";
 
-const createGameIO = (sortedWordList, elementSet, languageSelector, gameDefinitionSet) => {
+const createGameIO = (gameDefinitionSet, languageSelector, onSave, onLoad) => {
     const gameIO = {};
+
+    const dictionaryIO = createDictionartyIO(
+        languageSelector,
+        gameDefinitionSet.gameIO.gameSignature,
+        gameDefinitionSet.gameIO.suggestedInitialFileName,
+        gameDefinitionSet.gameIO.gameName,
+        gameDefinitionSet.gameIO.gameSuffix,
+        onSave, onLoad
+    ); //dictionaryIO
+
+    gameIO.saveGame = (currentLanguage, useExistingFile) => {
+        dictionaryIO.saveGame(currentLanguage, useExistingFile);
+    }; //gameIO.saveGame
+
+    gameIO.restoreGame = () => {
+        dictionaryIO.restoreGame();
+    }; //gameIO.restoreGame
+
     return gameIO;
 };

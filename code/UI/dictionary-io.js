@@ -7,7 +7,7 @@
 
 "use strict";
 
-const createDictionartyIO = (languageSelector, signature, suggestedInitialFileName, gameName, onSave, onLoad) => {
+const createDictionartyIO = (languageSelector, signature, suggestedInitialFileName, gameName, gameSuffix, onSave, onLoad) => {
     // callback onSave(gameData); // take game data and add game-specific info, such as secret work and word list
     // onLoad(gameData); // extract game-specific info from game data and update UI
     
@@ -54,12 +54,12 @@ const createDictionartyIO = (languageSelector, signature, suggestedInitialFileNa
             fileIO.saveExisting(
                 defaultInitialFileName,
                 stringData,
-                ioDefinitionSet.createFileOptions(suggestedInitialFileName, gameName));
+                ioDefinitionSet.createFileOptions(suggestedInitialFileName, gameName, gameSuffix));
         else
             fileIO.storeTextFile(
                 defaultInitialFileName,
                 stringData,
-                ioDefinitionSet.createFileOptions(suggestedInitialFileName, gameName));
+                ioDefinitionSet.createFileOptions(suggestedInitialFileName, gameName, gameSuffix));
     }; //gameIO.saveGame
 
     gameIO.restoreGame = () => {
@@ -74,7 +74,7 @@ const createDictionartyIO = (languageSelector, signature, suggestedInitialFileNa
                 json.metadata.options.acceptPunctuationCharacters
             );
             onLoad(json);
-        }, ioDefinitionSet.createFileOptions(suggestedInitialFileName, gameName));
+        }, ioDefinitionSet.createFileOptions(suggestedInitialFileName, gameName, gameSuffix));
     }; //gameIO.restoreGame
 
     return gameIO;

@@ -12,7 +12,8 @@ const getDefinitionSet = () => {
 
     gameDefinitionSet.gameIO = {
         gameSignature: "Words game",
-        gameName: "Words game",
+        gameName: "Words",
+        gameSuffix: "words",
         suggestedInitialFileName: "saved-words-game.words",
     };
 

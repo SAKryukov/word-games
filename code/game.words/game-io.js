@@ -7,14 +7,15 @@
 
 "use strict";
 
-const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, languageSelector) => {
+const createGameIO = (sortedWordList, elementSet, languageSelector, gameDefinitionSet) => {
     const gameIO = {};
 
     const dictionaryIO = createDictionartyIO(
         languageSelector,
         gameDefinitionSet.gameIO.gameSignature,
         gameDefinitionSet.gameIO.suggestedInitialFileName,
-        gameDefinitionSet.gameIOgameName,
+        gameDefinitionSet.gameIO.gameName,
+        gameDefinitionSet.gameIO.gameSuffix,
         gameData => { //onSave
             gameData.setWord = elementSet.input.inputSetWord.value;
             sortedWordList.updateGameData(gameData);
@@ -34,6 +35,7 @@ const createGameIO = (gameDefinitionSet, sortedWordList, elementSet, languageSel
         sortedWordList.reset();
         dictionaryIO.restoreGame();
     }; //gameIO.restoreGame
+
 
     return gameIO;
 };

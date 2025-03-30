@@ -10,6 +10,13 @@
 const getGameDefinitionSet = () => {
 	const gameDefinitionSet = {};
 
+    gameDefinitionSet.gameIO = {
+        gameSignature: "Bulls and cows game",
+        gameName: "Bulls and cows",
+		gameSuffix: "cattle",
+        suggestedInitialFileName: "saved-bulls-and-cows-game.cattle",
+    };
+
 	gameDefinitionSet.input = {};
 
 	gameDefinitionSet.input.wordLength = {

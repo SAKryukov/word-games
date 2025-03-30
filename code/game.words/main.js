@@ -116,7 +116,7 @@ window.onload = () => {
     
     (() => { // contextMenu:
         const dictionaryMaintenanceStarter = createDictionaryMaintenanceStarter(gameDefinitionSet);
-        const gameIO = createGameIO(gameDefinitionSet, sortedWordListUser, elementSet, languageSelector);
+        const gameIO = createGameIO(sortedWordListUser, elementSet, languageSelector, gameDefinitionSet);
         dictionaryMaintenanceStarter.prepareMenu(elementSet.input.menu);
         const contextMenu = new menuGenerator(elementSet.input.menu);
         dictionaryMaintenanceStarter.subsribe(contextMenu);

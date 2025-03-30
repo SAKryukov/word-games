@@ -16,8 +16,6 @@ window.onload = () => {
 
     const languageSelector =
         createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, () => {
-        // on language change
-        //SA???
     });
     const gameAlgorithm = getGameAlgorithm(languageSelector);
 
@@ -101,6 +99,22 @@ window.onload = () => {
     } //elementSet.input.buttonStartStop.onclick
 
     (() => { //menu:
+        const getMoves = () => {
+            return ["aaa", "bbb", "ccc"]; //SA???
+        }; //getMoves
+        const restoreMoves = moves => {      
+            //SA???      
+        }; //restoreMoves
+        const gameIO = createGameIO(gameDefinitionSet, languageSelector,
+            gameData => { //onSave:
+                gameData.secretWord = secretWord;
+                gameData.moves = getMoves();
+            },
+            gameData => { //onLoad:
+                secretWord = gameData.secretWord;
+                restoreMoves(gameData.moves);
+            },
+        );
         const contextMenu = new menuGenerator(elementSet.input.menu);
         contextMenu.subscribe(elementSet.menuItem.startGame, actionRequest => {
             if (!actionRequest) return elementSet.isButtonStartReady;
@@ -112,6 +126,18 @@ window.onload = () => {
             elementSet.input.onButtonStartStopToggle();
             gameReset(false);
             elementSet.message = null;
+        });
+        contextMenu.subscribe(elementSet.menuItem.saveGame, actionRequest => {
+            if (!actionRequest) return false; //gameIO != undefined && !elementSet.isButtonStartReady;
+            gameIO.saveGame(languageSelector.currentLanguage, true);
+        });
+        contextMenu.subscribe(elementSet.menuItem.saveGameInExistingFile, actionRequest => {
+            if (!actionRequest) return false; //gameIO != undefined && !elementSet.isButtonStartReady;
+            gameIO.saveGame(languageSelector.currentLanguage, false);
+        });
+        contextMenu.subscribe(elementSet.menuItem.loadGame, actionRequest => {
+            if (!actionRequest) return false; //gameIO != undefined;
+            gameIO.restoreGame();
         });
         contextMenu.subscribe(elementSet.menuItem.revealSolution, actionRequest => {
             if (!actionRequest) return secretWord != null;

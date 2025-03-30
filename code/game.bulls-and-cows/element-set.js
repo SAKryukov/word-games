@@ -62,7 +62,10 @@ const getElementSet = definitionSet => {
     elementSet.menuItem = {
         startGame: elementSet.input.menu.children[0].textContent,
         giveUp: elementSet.input.menu.children[1].textContent,
-        revealSolution: elementSet.input.menu.children[2].textContent,
+        saveGame: elementSet.input.menu.children[2].textContent,
+        saveGameInExistingFile: elementSet.input.menu.children[3].textContent,
+        loadGame: elementSet.input.menu.children[4].textContent,
+        revealSolution: elementSet.input.menu.children[5].textContent,
     };
 
     return elementSet;

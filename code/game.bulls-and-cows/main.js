@@ -99,21 +99,34 @@ window.onload = () => {
     } //elementSet.input.buttonStartStop.onclick
 
     (() => { //menu:
-        const getMoves = () => {
-            return ["aaa", "bbb", "ccc"]; //SA???
-        }; //getMoves
-        const restoreMoves = moves => {      
-            //SA???      
-        }; //restoreMoves
         const gameIO = createGameIO(gameDefinitionSet, languageSelector,
             gameData => { //onSave:
-                gameData.secretWord = secretWord;
-                gameData.moves = getMoves();
-            },
+                gameData.secretWord = gameIO.restoreGame.obfuscate(secretWord);
+                gameData.moves = tableInput.text;
+                gameData.selection = [tableInput.x, tableInput.y];
+            }, //onSave
             gameData => { //onLoad:
-                secretWord = gameData.secretWord;
-                restoreMoves(gameData.moves);
-            },
+                secretWord = gameIO.restoreGame.deobfuscate(gameData.secretWord);
+                const moves = gameData.moves;
+                let lastWord = moves[moves.length - 1];
+                lastWord = lastWord.slice(0, lastWord.length - 4);
+                moves[moves.length - 1] = lastWord;
+                tableInput.text = gameData.moves;
+                for (let row = 0; row < tableInput.height - 1; ++row)
+                    for (let column = 0; column < tableInput.width; ++column) {
+                        tableInput.setReadonly(column, row, true);
+                        if (column > tableInput.width - 3)
+                            tableInput.enableCell(column, row, false);
+                    } //loop
+                newRowHandler();
+                tableInput.select(gameData.selection[0], gameData.selection[1]);
+                elementSet.input.wordLength.selectedIndex =
+                    gameDefinitionSet.input.wordLength.indexFromValue(tableInput.width - 2);
+                if (elementSet.isButtonStartReady) {
+                    elementSet.input.onButtonStartStopToggle();
+                } //if
+                tableInput.focus();
+            }, //onLoad
         );
         const contextMenu = new menuGenerator(elementSet.input.menu);
         contextMenu.subscribe(elementSet.menuItem.startGame, actionRequest => {
@@ -128,15 +141,15 @@ window.onload = () => {
             elementSet.message = null;
         });
         contextMenu.subscribe(elementSet.menuItem.saveGame, actionRequest => {
-            if (!actionRequest) return false; //gameIO != undefined && !elementSet.isButtonStartReady;
+            if (!actionRequest) return gameIO != undefined && !elementSet.isButtonStartReady;
             gameIO.saveGame(languageSelector.currentLanguage, true);
         });
         contextMenu.subscribe(elementSet.menuItem.saveGameInExistingFile, actionRequest => {
-            if (!actionRequest) return false; //gameIO != undefined && !elementSet.isButtonStartReady;
+            if (!actionRequest) return gameIO != undefined && !elementSet.isButtonStartReady;
             gameIO.saveGame(languageSelector.currentLanguage, false);
         });
         contextMenu.subscribe(elementSet.menuItem.loadGame, actionRequest => {
-            if (!actionRequest) return false; //gameIO != undefined;
+            if (!actionRequest) return gameIO != undefined;
             gameIO.restoreGame();
         });
         contextMenu.subscribe(elementSet.menuItem.revealSolution, actionRequest => {

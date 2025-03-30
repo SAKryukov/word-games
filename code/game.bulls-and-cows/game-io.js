@@ -27,5 +27,19 @@ const createGameIO = (gameDefinitionSet, languageSelector, onSave, onLoad) => {
         dictionaryIO.restoreGame();
     }; //gameIO.restoreGame
 
+    gameIO.restoreGame.obfuscate = word => {
+        const data = [];
+        for (let index = 0; index < word.length; ++index)
+            data.push((word.codePointAt(index) ^ gameDefinitionSet.gameIO.obfuscationSeed).toString());
+        return data.join(gameDefinitionSet.gameIO.delimiter);
+    }; //gameIO.restoreGame.obfuscate
+    gameIO.restoreGame.deobfuscate = data => {
+        const word = [];
+        const numbers = data.split(gameDefinitionSet.gameIO.delimiter);
+        for (let number of numbers)
+            word.push(String.fromCodePoint(parseInt(number) ^ gameDefinitionSet.gameIO.obfuscationSeed));
+        return word.join(gameDefinitionSet.gameIO.empty);
+    }; //gameIO.restoreGame.deobfuscate
+
     return gameIO;
 };

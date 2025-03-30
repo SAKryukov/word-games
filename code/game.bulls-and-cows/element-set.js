@@ -27,7 +27,7 @@ const getElementSet = definitionSet => {
         elementSet.input.wordLength.disabled = !doEnable;    
     } //enableInput
 
-    let message = document.querySelector("main p");
+    let message = document.querySelector("#message");
     const initialMessage = message.innerHTML;
     let isButtonStartReady = true;
     Object.defineProperties(elementSet, {

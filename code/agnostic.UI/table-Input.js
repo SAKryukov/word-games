@@ -24,6 +24,18 @@ const createTableInput = (element, scrollableElement, initialWidth, initialHeigh
     let currentX = null, currentY = null;
     let enterCallback, characterInputCallback = null;
 
+    const getRow = index => {
+        const result = [];
+        if (index < 0 || index >= currentHeight) return;
+        for (let position = 0; position < currentWidth; ++position)
+            result.push(tableInput.getCharacter(position, index));
+        return result.join("");
+    }; //getRow
+    const putRow = (row, value) => {
+        for (let index = 0; index < value.length; ++index)
+            tableInput.putCharacter(index, row, value.charAt(index));
+    }; //putRow
+
     Object.defineProperties(tableInput, {
         tableElement: {
             get() { return element; },
@@ -58,6 +70,26 @@ const createTableInput = (element, scrollableElement, initialWidth, initialHeigh
         characterInputCallback: { // characterInputCallback(cell, event) returns bool goodKey
             set(value) { characterInputCallback = value; }
         },
+        text: {
+            get() {
+                const result = [];
+                for (let index = 0; index < currentHeight; ++index)
+                    result.push(getRow(index));
+                return result;
+            },
+            set(value) {
+                if (!value) return;
+                if (!(value instanceof Array)) return;
+                let rows = value.length;
+                if (rows < 1) return;
+                let width = 0;
+                for (let word of value)
+                    if (word.length > width) width = word.length;
+                tableInput.reset(width, rows);
+                for (let row = 0; row < rows; ++row)
+                    putRow(row, value[row]);
+            },
+        }
     }); //Object.defineProperties
 
     tableInput.focus = () => element.focus();

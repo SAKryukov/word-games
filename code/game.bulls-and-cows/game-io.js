@@ -30,14 +30,15 @@ const createGameIO = (gameDefinitionSet, languageSelector, onSave, onLoad) => {
     gameIO.restoreGame.obfuscate = word => {
         const data = [];
         for (let index = 0; index < word.length; ++index)
-            data.push((word.codePointAt(index) ^ gameDefinitionSet.gameIO.obfuscationSeed).toString());
+            data.push((word.codePointAt(index) ^ gameDefinitionSet.gameIO.obfuscationSeed[index]).toString());
         return data.join(gameDefinitionSet.gameIO.delimiter);
     }; //gameIO.restoreGame.obfuscate
     gameIO.restoreGame.deobfuscate = data => {
         const word = [];
         const numbers = data.split(gameDefinitionSet.gameIO.delimiter);
+        let index = 0;
         for (let number of numbers)
-            word.push(String.fromCodePoint(parseInt(number) ^ gameDefinitionSet.gameIO.obfuscationSeed));
+            word.push(String.fromCodePoint(parseInt(number) ^ gameDefinitionSet.gameIO.obfuscationSeed[index++]));
         return word.join(gameDefinitionSet.gameIO.empty);
     }; //gameIO.restoreGame.deobfuscate
 

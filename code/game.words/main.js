@@ -117,41 +117,50 @@ window.onload = () => {
     (() => { // contextMenu:
         const dictionaryMaintenanceStarter = createDictionaryMaintenanceStarter(gameDefinitionSet);
         const gameIO = createGameIO(sortedWordListUser, elementSet, languageSelector, gameDefinitionSet);
+        const restoreFocus = () => {
+            elementSet.input.inputSetWord.focus();
+            elementSet.input.inputTry.focus();
+        }; //restoreFocus
         dictionaryMaintenanceStarter.prepareMenu(elementSet.input.menu);
         const contextMenu = new menuGenerator(elementSet.input.menu);
         dictionaryMaintenanceStarter.subsribe(contextMenu);
         contextMenu.subscribe(elementSet.menuItem.viewMachineSolutionCount, actionRequest => {
             if (!actionRequest) return true; 
             reviewMachineSolution(false);
+            restoreFocus();
         });        
         contextMenu.subscribe(elementSet.menuItem.reviewMachineSolution, actionRequest => {
             if (!actionRequest) return true; 
             reviewMachineSolution(true);
+            restoreFocus();
         }); 
         contextMenu.subscribe(elementSet.menuItem.backToUserSolution, actionRequest => {
             if (!actionRequest) return !elementSet.isUserSolutionShown; 
             elementSet.showUserSolution(() => sortedWordListUser.refresh());
+            restoreFocus();
         });
         const menuItemProxyApiSave = contextMenu.subscribe(elementSet.menuItem.saveGameInExistingFile, actionRequest => {
             if (!actionRequest)
                 return gameIO != undefined && !sortedWordListUser.isEmpty;
             gameIO.saveGame(languageSelector.currentLanguage, true);
+            restoreFocus();
         });
         const menuItemProxyApiSaveAs = contextMenu.subscribe(elementSet.menuItem.saveGame, actionRequest => {
             if (!actionRequest)
                 return gameIO != undefined && !sortedWordListUser.isEmpty;
             gameIO.saveGame(languageSelector.currentLanguage, false);
+            restoreFocus();
+        });
+        const menuItemProxyApiLoad = contextMenu.subscribe(elementSet.menuItem.loadGame, actionRequest => {
+            if (!actionRequest) return gameIO != undefined;
+            gameIO.restoreGame();
+            restoreFocus();
         });
         if (!gameIO) {
             menuItemProxyApiSave.changeText(gameDefinitionSet.invalidOperation(elementSet.menuItem.saveGameInExistingFile));
             menuItemProxyApiSaveAs.changeText(gameDefinitionSet.invalidOperation(elementSet.menuItem.saveGame));
-        } //if
-        const menuItemProxyApiLoad = contextMenu.subscribe(elementSet.menuItem.loadGame, actionRequest => {
-            if (!actionRequest) return gameIO != undefined;
-            gameIO.restoreGame();
-        });
-        if (!gameIO)
             menuItemProxyApiLoad.changeText(gameDefinitionSet.invalidOperation(elementSet.menuItem.loadGame));
+        } //if
         setupMenuActivator(contextMenu, elementSet.input.buttonActivateMenu);
     })(); //contextMenu
 

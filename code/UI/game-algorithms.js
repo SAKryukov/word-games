@@ -36,7 +36,7 @@ const getGameAlgorithm = languageSelector => {
             if (indexLength < 1) return null;
             const randomIndex = Math.floor(Math.random() * indexLength);
             const index = indexArray[randomIndex];
-            return languageSelector.currentLanguage.alphabetical[index];    
+            return languageSelector.currentLanguage.alphabetical[index];  
         }; // generateIt
         const badLetterFound = (word, letters) => {
             for (let index = 0; index < letters.length; ++index)

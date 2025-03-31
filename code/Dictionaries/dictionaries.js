@@ -31,7 +31,7 @@ const performAdHocDictionaryMainenance = () => {
         wordSet.forEach(word => array.push(word));
         array.sort();
         dictionary.alphabetical = array;
-        dictionary.indexedBy = {};
+        dictionary.indexedByLength = {};
         for (let index = 0; index < array.length; ++index) {
             const word = array[index];
             if (dictionary.indexedByLength[word.length] == null)

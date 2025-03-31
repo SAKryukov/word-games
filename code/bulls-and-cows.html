@@ -48,6 +48,7 @@
     p { margin-bottom: 0.4em; }
     table { margin-top: 0.6em; font-size: 140%; }
     #message { text-align: center; margin-top: 1.4em; }
+    #buttonStartStop:focus { outline: solid 2px black; outline-offset: 2px; }
   </style>
 </head>
 
@@ -62,15 +63,15 @@
       <u>O</u>ptions:<br /><select accesskey="O" id="options"></select>
     </section>
     <section>
-      <button id="button-activate-menu" title="Context menu:  advanced...">⋯</button>
-    </section>
-    <section>
       <u>W</u>ord length:<br /><select accesskey="W" id="word-length"></select>
     </section>
     <section>
       <button id="buttonStartStop" accesskey="G" data-second-content="<u>G</u>ive up">Start <u>G</u>ame</button>
     </section>
     </p>
+    <section>
+      <button id="button-activate-menu" title="Context menu:  advanced...">⋯</button>
+    </section>
     <p id="message">Start game</p>
   </header>
 

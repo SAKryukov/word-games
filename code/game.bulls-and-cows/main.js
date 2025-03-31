@@ -129,6 +129,7 @@ window.onload = () => {
             }, //onLoad
         );
         const contextMenu = new menuGenerator(elementSet.input.menu);
+        //contextMenu.onBlur = () => tableInput.focus();
         contextMenu.subscribe(elementSet.menuItem.startGame, actionRequest => {
             if (!actionRequest) return elementSet.isButtonStartReady;
             elementSet.input.onButtonStartStopToggle();
@@ -139,14 +140,17 @@ window.onload = () => {
             elementSet.input.onButtonStartStopToggle();
             gameReset(false);
             elementSet.message = null;
+            elementSet.input.buttonStartStop.focus();
         });
         contextMenu.subscribe(elementSet.menuItem.saveGame, actionRequest => {
             if (!actionRequest) return gameIO != undefined && !elementSet.isButtonStartReady;
             gameIO.saveGame(languageSelector.currentLanguage, true);
+            tableInput.focus();
         });
         contextMenu.subscribe(elementSet.menuItem.saveGameInExistingFile, actionRequest => {
             if (!actionRequest) return gameIO != undefined && !elementSet.isButtonStartReady;
             gameIO.saveGame(languageSelector.currentLanguage, false);
+            tableInput.focus();
         });
         contextMenu.subscribe(elementSet.menuItem.loadGame, actionRequest => {
             if (!actionRequest) return gameIO != undefined;
@@ -154,7 +158,15 @@ window.onload = () => {
         });
         contextMenu.subscribe(elementSet.menuItem.revealSolution, actionRequest => {
             if (!actionRequest) return secretWord != null;
-            modalPopup.show(secretWord.toUpperCase(), null, { textAlign: "center" }); 
+            modalPopup.show(
+                secretWord.toUpperCase(),
+                [{
+                    text: gameDefinitionSet.revealSecretWordPopup.buttonText,
+                    default: true, escape: true,
+                    action: () => tableInput.focus()
+                }],
+                { textAlign: gameDefinitionSet.revealSecretWordPopup.textAlign },
+                () => tableInput.focus()); 
         });
         //elementSet.isButtonStartReady
         setupMenuActivator(contextMenu, elementSet.input.buttonActivateMenu);

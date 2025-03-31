@@ -15,10 +15,16 @@ const getGameDefinitionSet = () => {
         gameName: "Bulls and cows",
 		gameSuffix: "cattle",
         suggestedInitialFileName: "saved-bulls-and-cows-game.cattle",
+		// Its length should be no less than gameDefinitionSet.input.wordLength.maximum:
 		obfuscationSeed: [42344, 3216, 4327, 32, 49, 31232, 43432, 202, 132, 32314],
 		delimiter: "-",
 		empty: "",
     };
+
+	gameDefinitionSet.revealSecretWordPopup = {
+		buttonText: "Close",
+		textAlign: "center",
+	}, //gameDefinitionSet.revealSecretWordPopup
 
 	gameDefinitionSet.input = {};
 

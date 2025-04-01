@@ -94,10 +94,14 @@ window.onload = () => {
     (() => { //menu:
         const gameIO = createGameIO(gameDefinitionSet, languageSelector,
             gameData => { //onSave:
-                gameData.currentContent = tableInput.text[0];
+                gameData.currentContent = tableInput.text[0].slice(1, -1);
             }, //onSave
             gameData => { //onLoad:
                 tableInput.text = [gameData.currentContent];
+                if (elementSet.isButtonStartReady)
+                    elementSet.input.onButtonStartStopToggle();
+                newTurnHandler();
+                tableInput.select(tableInput.width - 1, 0);
                 tableInput.focus();
             }, //onLoad
         );

@@ -17,8 +17,9 @@ const getGameDefinitionSet = () => {
         gameName: "Balda",
 		gameSuffix: "balda",
         suggestedInitialFileName: "balda-game.balda",
-    };
+    }; //gameDefinitionSet.gameIO
 
+	gameDefinitionSet.welcome = "Welcome to Balda!";
 	gameDefinitionSet.input = {};
 
 	gameDefinitionSet.input.wordLength = {
@@ -31,13 +32,11 @@ const getGameDefinitionSet = () => {
 	}; //gameDefinitionSet.input.wordLength
 
 	gameDefinitionSet.input.messages = {
-		promptEnterTrialWordInitial: "Enter the characters. In two last cells, you will see the sum of <i>bulls+cows</i>, and the number of <i>bulls</i>.",
-		promptEnterTrialWord: "Enter the trial word",
-		notFilledRow: "Fill in <b><i>all</i></b> the cells in the last row and press Enter",
-		badWord: (guessWord, quotes) =>
-			`The word ${quotes[0]}${guessWord}${quotes[1]} is not in dictionary`,
-		congratulations: "Congratulations!",
+		promptEnterTrialWord: "Enter a letter at the beginning or end of the word",
+		congratulations: (word, quotes) =>
+			`Game over. The word ${quotes[0]}${word}${quotes[1]} is found in the dictionary.`,
 	}; //gameDefinitionSet.input.messages
 
+	Object.freeze(gameDefinitionSet);
 	return gameDefinitionSet;
 };

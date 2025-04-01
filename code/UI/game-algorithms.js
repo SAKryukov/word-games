@@ -93,6 +93,12 @@ const getGameAlgorithm = languageSelector => {
         } //loop
     }; //gameAlgorythm.pickRandomWord
 
+    gameAlgorithm.isValidCharacter = character => {
+        if (!character) return false;
+        if (character.length < 1) return false;
+        return goodWord(character);
+    }; //gameAlgorithm.isValidCharacter
+
     gameAlgorithm.evaluateBullsAndCowsSolution = (secretWord, guessWord) => {
         let bulls = 0;
         guessWord = guessWord.toLowerCase();

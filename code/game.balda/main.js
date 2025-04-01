@@ -29,14 +29,7 @@ window.onload = () => {
         tableInput.insertCell(0);
     } //newTurnHandler
 
-    const gameReset = starting => {
-        if (!starting) {
-            tableInput.reset(gameDefinitionSet.welcome.length, 1);
-            tableInput.text = [gameDefinitionSet.welcome.toLocaleUpperCase()];
-            tableInput.setReadonlyRow(0, 0, gameDefinitionSet.welcome.length, true);
-            elementSet.input.buttonStartStop.focus();
-            return;
-        } //if
+    const gameReset = () => {
         const wordLength =
             gameDefinitionSet.input.wordLength.valueFromIndex(
                 elementSet.input.wordLength.selectedIndex);
@@ -51,10 +44,11 @@ window.onload = () => {
         if (tableInput.height > 0 && tableInput.width > 0)
             tableInput.select(tableInput.width - 1, 0);
         tableInput.focus();
-        if (starting)
-            elementSet.message = gameDefinitionSet.input.messages.promptEnterTrialWord;
+        elementSet.message = gameDefinitionSet.input.messages.promptEnterTrialWord;
     } //gameReset
-    gameReset();
+    tableInput.reset(gameDefinitionSet.welcome.length, 1);
+    tableInput.text = [gameDefinitionSet.welcome.toLocaleUpperCase()];
+    tableInput.setReadonlyRow(0, 0, gameDefinitionSet.welcome.length, true);
     elementSet.input.buttonStartStop.focus();
 
     tableInput.characterInputCallback = (cell, event) => {
@@ -85,7 +79,7 @@ window.onload = () => {
 
     elementSet.input.buttonStartStop.onclick = () => {
         if (elementSet.isButtonStartReady)
-            gameReset(true);
+            gameReset();
         else
             elementSet.message = null;
         elementSet.input.onButtonStartStopToggle();
@@ -100,6 +94,7 @@ window.onload = () => {
                 tableInput.text = [gameData.currentContent];
                 if (elementSet.isButtonStartReady)
                     elementSet.input.onButtonStartStopToggle();
+                tableInput.setReadonlyRow(0, 0, tableInput.width, true);
                 newTurnHandler();
                 tableInput.select(tableInput.width - 1, 0);
                 tableInput.focus();
@@ -109,12 +104,11 @@ window.onload = () => {
         contextMenu.subscribe(elementSet.menuItem.startGame, actionRequest => {
             if (!actionRequest) return elementSet.isButtonStartReady;
             elementSet.input.onButtonStartStopToggle();
-            gameReset(true);    
+                gameReset();    
         });
         contextMenu.subscribe(elementSet.menuItem.giveUp, actionRequest => {
             if (!actionRequest) return !elementSet.isButtonStartReady;
             elementSet.input.onButtonStartStopToggle();
-            gameReset(false);
             elementSet.message = null;
             elementSet.input.buttonStartStop.focus();
         });

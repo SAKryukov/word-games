@@ -67,5 +67,6 @@ const getElementSet = definitionSet => {
         loadGame: elementSet.input.menu.children[4].textContent,
     };
 
+    Object.freeze(elementSet);
     return elementSet;
 };

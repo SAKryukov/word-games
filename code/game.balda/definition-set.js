@@ -32,7 +32,7 @@ const getGameDefinitionSet = () => {
 	}; //gameDefinitionSet.input.wordLength
 
 	gameDefinitionSet.input.messages = {
-		promptEnterTrialWord: "Enter a letter at the beginning or end of the word",
+		promptEnterTrialWord: "Enter a letter at the beginning or end of the word and press Enter",
 		congratulations: (word, quotes) =>
 			`Game over. The word ${quotes[0]}${word}${quotes[1]} is found in the dictionary.`,
 	}; //gameDefinitionSet.input.messages

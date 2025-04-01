@@ -47,7 +47,6 @@ window.onload = () => {
             secretWord = null;
     } //gameReset
     gameReset();
-    elementSet.input.wordLength.onchange = () => gameReset();
     for (let index = 0; index < gameDefinitionSet.sample.length; ++index)
         tableInput.putCharacter(index, 0, gameDefinitionSet.sample[index]);    
 
@@ -129,7 +128,6 @@ window.onload = () => {
             }, //onLoad
         );
         const contextMenu = new menuGenerator(elementSet.input.menu);
-        //contextMenu.onBlur = () => tableInput.focus();
         contextMenu.subscribe(elementSet.menuItem.startGame, actionRequest => {
             if (!actionRequest) return elementSet.isButtonStartReady;
             elementSet.input.onButtonStartStopToggle();

@@ -18,15 +18,16 @@
   <script src="UI/shared-element-set.js"></script>
   <script src="UI/menu-activator.js"></script>
   <script src="UI/dictionary-io.js"></script>
-  <script src="game.bulls-and-cows/definition-set.js"></script>
-  <script src="game.bulls-and-cows/element-set.js"></script>
-  <script src="game.bulls-and-cows/game-io.js"></script>
-  <script src="game.bulls-and-cows/main.js"></script>
+  <script src="game.balda/definition-set.js"></script>
+  <script src="game.balda/element-set.js"></script>
+  <script src="game.balda/game-io.js"></script>
+  <script src="game.balda/main.js"></script>
   <style>
     @import url("css/flex.css");
+    @import url("css/game.css");
     @import url("css/table-input.css");        
-    a.help { margin-left: 3em; }
     main table { margin-left: auto; margin-right: auto; }
+    a.help { margin-left: 3em; }
     * { font-family: sans-serif; }
     :root {
       --deltaX: 1em;
@@ -45,6 +46,9 @@
       padding-bottom: var(--deltaY);
     }
     p { margin-bottom: 0.4em; }
+    table { margin-top: 0.6em; font-size: 140%; }
+    #message { text-align: center; margin-top: 1.4em; }
+    #buttonStartStop:focus { outline: solid 2px black; outline-offset: 2px; }
   </style>
 </head>
 
@@ -59,10 +63,25 @@
       <u>O</u>ptions:<br /><select accesskey="o" id="options"></select>
     </section>
     <section>
-      <button id="button-activate-menu" title="Context menu:  advanced...">⋯</button>
+      Initial <u>w</u>ord fragment length:<br /><select accesskey="w" id="word-length"></select>
+    </section>
+    <section>
+      <button id="buttonStartStop" accesskey="g" data-second-content="Stop <u>G</u>ame">Start <u>G</u>ame</button>
     </section>
     </p>
+    <section>
+      <button id="button-activate-menu" title="Context menu:  advanced...">⋯</button>
+    </section>
+    <p id="message">Start game</p>
   </header>
+
+  <select id="menu">
+    <option>Start game</option>
+    <option>Stop game</option>
+    <option title="Save the current game in a file">Save game&hellip;</option>
+    <option title="Save the current game in a file">Save game as&hellip;</option>
+    <option title="Restore a previously saved game from a file">Restore game&hellip;</option>
+  </select>
 
   <main>
   </main>
@@ -70,9 +89,10 @@
   <footer>
     <small><span id="product-title"></span> <span id="product-version"></span>, Copyright &copy; <span
         id="product-copyright-years"></span> by Sergey A Kryukov
-      <a href="help.html#balda" class="help">Help</a>
+      <a href="help.html#bulls-and-cows" class="help">Help</a>
     </small>
   </footer>
 
 </body>
+
 </html>

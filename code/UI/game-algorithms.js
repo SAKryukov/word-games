@@ -28,7 +28,54 @@ const getGameAlgorithm = languageSelector => {
     gameAlgorithm.isInDictionary = word =>
         binarySearch(languageSelector.currentLanguage.alphabetical, word.toLowerCase()) != null;
 
-    gameAlgorithm.pickRandomWord = length => {
+    const badLetterFound = (word, letters) => {
+        for (let index = 0; index < letters.length; ++index)
+            if (word.indexOf(letters[index]) < 0) return false;
+        return true;
+    }; //badLetterFound
+    const goodWord = word => {
+        if (!word) return false;
+        if (!languageSelector.acceptBlankspaceCharactersValue &&
+            word.indexOf(languageSelector.currentLanguage.characterRepertoire.blankSpace) >= 0)
+                return false;
+        if (!languageSelector.acceptPunctuationCharactersValue &&
+            badLetterFound(word, languageSelector.currentLanguage.characterRepertoire.punctuation))
+                return false;
+        return true;
+    }; //goodWord
+
+    let longerRandomWordCache = [];
+    gameAlgorithm.pickLongerRandomWord = length => { // balda
+        if (length != longerRandomWordCache.length) {
+            longerRandomWordCache = [];
+            const indexedByLength = languageSelector.currentLanguage.indexedByLength;
+            for (let index = length + 2; index < Object.getOwnPropertyNames(indexedByLength).length; ++index) {
+                const arrayAtLength = indexedByLength[index];
+                if (!arrayAtLength) break;
+                for (let wordIndex in arrayAtLength)
+                    longerRandomWordCache.push(arrayAtLength[wordIndex]);
+            } //loop
+        } //if
+        if (!longerRandomWordCache || longerRandomWordCache.length < 1) return "";
+        const generateIt = () => {
+            const randomIndex = Math.floor(Math.random() * longerRandomWordCache.length);
+            return languageSelector.currentLanguage.alphabetical[longerRandomWordCache[randomIndex]];
+        }; //generateIt
+        let word = null;
+        while (true) {
+            word = generateIt();
+            if (goodWord(word)) break;
+        } //loop
+        return word;
+    }; //gameAlgorithm.pickLongerRandomWord
+
+    gameAlgorithm.getRandomSubstring = (value, length) => {
+        const maximum = value.length - length;
+        const randomIndex =  Math.floor(Math.random(), maximum);
+        return value.substr(randomIndex, length);
+    }; //gameAlgorithm.getRandomSubstring
+
+    gameAlgorithm.pickRandomWord = length => { // bulls and cows
         const generateIt = () => {
             const indexArray = languageSelector.currentLanguage.indexedByLength[length];
             if (!indexArray) return null;
@@ -38,21 +85,6 @@ const getGameAlgorithm = languageSelector => {
             const index = indexArray[randomIndex];
             return languageSelector.currentLanguage.alphabetical[index];  
         }; // generateIt
-        const badLetterFound = (word, letters) => {
-            for (let index = 0; index < letters.length; ++index)
-                if (word.indexOf(letters[index]) < 0) return false;
-            return true;
-        }; //badLetterFound
-        const goodWord = word => {
-            if (!word) return false;
-            if (!languageSelector.acceptBlankspaceCharactersValue &&
-                word.indexOf(languageSelector.currentLanguage.characterRepertoire.blankSpace) >= 0)
-                    return false;
-            if (!languageSelector.acceptPunctuationCharactersValue &&
-                badLetterFound(word, languageSelector.currentLanguage.characterRepertoire.punctuation))
-                    return false;
-            return true;
-        }; //goodWord
         let word = null;
         while (true) {
             word = generateIt();
@@ -105,6 +137,20 @@ const getGameAlgorithm = languageSelector => {
 		} //loop
 		return array.join("");
 	}; //gameAlgorithm.shuffleWord
+
+    Object.defineProperties(gameAlgorithm, {
+        randomLetter: {
+            get() {
+                let repertoire;
+                repertoire += languageSelector.currentLanguage.characterRepertoire.letters;
+                if (languageSelector.acceptBlankspaceCharactersValue)
+                    repertoire += languageSelector.currentLanguage.characterRepertoire.blankSpace;
+                if (languageSelector.acceptPunctuationCharactersValue)
+                    repertoire += languageSelector.currentLanguage.characterRepertoire.punctuation;
+                return repertoire[Math.floor(Math.random() * repertoire.length)];
+            }
+        }, //randomLetter
+    }); //Object.defineProperties
 
     return gameAlgorithm;
 };

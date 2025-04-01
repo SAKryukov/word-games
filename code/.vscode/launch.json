@@ -4,9 +4,14 @@
         {
             "type": "chrome",
             "request": "launch",
+            "name": "balda",
+            "file": "${workspaceFolder}/balda.html"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
             "name": "words",
             "file": "${workspaceFolder}/words.html"
-            //"file": "${workspaceFolder}/bulls-and-cows.html"
         },
         {
             "type": "chrome",

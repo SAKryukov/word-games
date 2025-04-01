@@ -7,7 +7,40 @@
 
 "use strict";
 
-const createGameIO = (sortedWordList, elementSet, languageSelector, gameDefinitionSet) => {
+const createGameIO = (gameDefinitionSet, languageSelector, onSave, onLoad) => {
     const gameIO = {};
+
+    const dictionaryIO = createDictionartyIO(
+        languageSelector,
+        gameDefinitionSet.gameIO.gameSignature,
+        gameDefinitionSet.gameIO.suggestedInitialFileName,
+        gameDefinitionSet.gameIO.gameName,
+        gameDefinitionSet.gameIO.gameSuffix,
+        onSave, onLoad
+    ); //dictionaryIO
+
+    gameIO.saveGame = (currentLanguage, useExistingFile) => {
+        dictionaryIO.saveGame(currentLanguage, useExistingFile);
+    }; //gameIO.saveGame
+
+    gameIO.restoreGame = () => {
+        dictionaryIO.restoreGame();
+    }; //gameIO.restoreGame
+
+    gameIO.restoreGame.obfuscate = word => {
+        const data = [];
+        for (let index = 0; index < word.length; ++index)
+            data.push((word.codePointAt(index) ^ gameDefinitionSet.gameIO.obfuscationSeed[index]).toString());
+        return data.join(gameDefinitionSet.gameIO.delimiter);
+    }; //gameIO.restoreGame.obfuscate
+    gameIO.restoreGame.deobfuscate = data => {
+        const word = [];
+        const numbers = data.split(gameDefinitionSet.gameIO.delimiter);
+        let index = 0;
+        for (let number of numbers)
+            word.push(String.fromCodePoint(parseInt(number) ^ gameDefinitionSet.gameIO.obfuscationSeed[index++]));
+        return word.join(gameDefinitionSet.gameIO.empty);
+    }; //gameIO.restoreGame.deobfuscate
+
     return gameIO;
 };

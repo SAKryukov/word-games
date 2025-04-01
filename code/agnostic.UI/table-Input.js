@@ -22,7 +22,8 @@ const createTableInput = (element, scrollableElement, initialWidth, initialHeigh
     let body = null;
     let currentWidth = null, currentHeight = null;
     let currentX = null, currentY = null;
-    let enterCallback, characterInputCallback = null;
+    let enterCallback, characterInputCallback, selectingCallback, selectedCallback = null;
+    //selectingCallback, selectedCallback(oldX, oldY, newX, newY);
 
     const getRow = index => {
         const result = [];
@@ -44,6 +45,13 @@ const createTableInput = (element, scrollableElement, initialWidth, initialHeigh
         } //loop
     }; //putRow
 
+    const currentCellHasClass = className => {
+        if (currentX == null || currentY == null) return false;
+        const cell = findCell(currentX, currentY);
+        if (!cell) return false;
+        return cell.classList.contains(className);
+    } //currentCellHasClass
+
     Object.defineProperties(tableInput, {
         tableElement: {
             get() { return element; },
@@ -59,6 +67,12 @@ const createTableInput = (element, scrollableElement, initialWidth, initialHeigh
         nonSelectableClassName: {
             get() { return nonSelectableClassName; },
             set(value) { nonSelectableClassName = value; },
+        },
+        isCurrentCellReadonly: {
+            get() { return currentCellHasClass(readonlyClassName); }
+        },
+        isCurrentCellSelectable: {
+            get() { return !currentCellHasClass(nonSelectableClassName); }
         },
         x: {
             get() { return currentX; }
@@ -77,6 +91,12 @@ const createTableInput = (element, scrollableElement, initialWidth, initialHeigh
         },
         characterInputCallback: { // characterInputCallback(cell, event) returns bool goodKey
             set(value) { characterInputCallback = value; }
+        },
+        selectingCallback: {
+            set(value) { selectingCallback = value; }
+        },
+        selectedCallback: {
+            set(value) { selectedCallback = value; }
         },
         text: {
             get() {
@@ -165,12 +185,16 @@ const createTableInput = (element, scrollableElement, initialWidth, initialHeigh
     tableInput.select = (x, y) => {
         const cell = findCell(x, y);
         if (!cell) return;
+        if (selectingCallback)
+            selectingCallback(currentX, currentY, x, y);
         cell.classList.add(selectedClassName);
         if (x != currentX || y != currentY)
             unselect();
         currentX = x;
         currentY = y;
         scrollIntoView(cell);
+        if (selectedCallback)
+            selectedCallback(currentX, currentY, x, y);
         return cell;
     } //tableInput.putCharacter
 

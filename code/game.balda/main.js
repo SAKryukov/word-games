@@ -14,6 +14,11 @@ window.onload = () => {
     const tableInput = createTableInput(null, elementSet.main, 1, 1, false);
     elementSet.main.appendChild(tableInput.tableElement);
 
+    tableInput.selectingCallback = (x, y) => {
+        if (!tableInput.isCurrentCellReadonly)
+            tableInput.putCharacter(x, y, null);
+    }; //selectingCallback
+
     const languageSelector =
         createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, () => {
     });

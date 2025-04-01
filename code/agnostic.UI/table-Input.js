@@ -139,7 +139,7 @@ const createTableInput = (element, scrollableElement, initialWidth, initialHeigh
     } //tableInput.putCharacter
 
     const unselect = () => {
-        if (currentX != null && currentX != null) {
+        if (currentX != null && currentY != null) {
             const previousSelection = findCell(currentX, currentY);
             previousSelection.classList.remove(selectedClassName);
         }

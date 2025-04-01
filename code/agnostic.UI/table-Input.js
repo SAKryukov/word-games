@@ -7,7 +7,7 @@
 
 "use strict";
 
-const createTableInput = (element, scrollableElement, initialWidth, initialHeight) => {
+const createTableInput = (element, scrollableElement, initialWidth, initialHeight, autoCarriage = true, empty = "?") => {
     const tableInput = {};
 
     if (!element)
@@ -27,13 +27,21 @@ const createTableInput = (element, scrollableElement, initialWidth, initialHeigh
     const getRow = index => {
         const result = [];
         if (index < 0 || index >= currentHeight) return;
-        for (let position = 0; position < currentWidth; ++position)
-            result.push(tableInput.getCharacter(position, index));
+        for (let position = 0; position < currentWidth; ++position) {
+            let character = tableInput.getCharacter(position, index)
+            if (character == null || character.length < 1)
+                character = empty;
+            result.push(character);
+        } //loop
         return result.join("");
     }; //getRow
     const putRow = (row, value) => {
-        for (let index = 0; index < value.length; ++index)
-            tableInput.putCharacter(index, row, value.charAt(index));
+        for (let index = 0; index < value.length; ++index) {
+            let character = value.charAt(index);
+            if (character == empty)
+                character = null;
+            tableInput.putCharacter(index, row, character);
+        } //loop
     }; //putRow
 
     Object.defineProperties(tableInput, {
@@ -290,6 +298,7 @@ const createTableInput = (element, scrollableElement, initialWidth, initialHeigh
                     if (characterInputCallback)
                         if (!characterInputCallback(cell, event))
                             return;
+                    if (!autoCarriage) return;
                     const next = cell.nextSibling;
                     if (!next) return;
                     if (next.classList.contains(readonlyClassName)) return;

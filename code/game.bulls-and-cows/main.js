@@ -11,7 +11,7 @@ window.onload = () => {
 
     const gameDefinitionSet = getGameDefinitionSet();
     const elementSet = getElementSet(gameDefinitionSet);
-    const tableInput = createTableInput(null, elementSet.main);
+    const tableInput = createTableInput(null, elementSet.main, null, null, true, gameDefinitionSet.emptyCell);
     elementSet.main.appendChild(tableInput.tableElement);
 
     const languageSelector =
@@ -102,6 +102,8 @@ window.onload = () => {
             gameData => { //onSave:
                 gameData.secretWord = gameIO.restoreGame.obfuscate(secretWord);
                 gameData.moves = tableInput.text;
+                const last = gameData.moves.length - 1;
+                gameData.moves[last] = gameData.moves[last].substr(0, tableInput.width - 2);
                 gameData.selection = [tableInput.x, tableInput.y];
             }, //onSave
             gameData => { //onLoad:

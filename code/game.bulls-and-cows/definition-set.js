@@ -10,6 +10,8 @@
 const getGameDefinitionSet = () => {
 	const gameDefinitionSet = {};
 
+	gameDefinitionSet.emptyCell = String.fromCodePoint(0x2205);
+
     gameDefinitionSet.gameIO = {
         gameSignature: "Bulls and cows game",
         gameName: "Bulls and cows",

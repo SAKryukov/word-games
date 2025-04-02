@@ -32,4 +32,3 @@ option, input, button { padding-left: var(--deltaX); padding-right: var(--deltaX
 }
 #button-activate-menu:hover, #button-activate-menu:focus { background-color: lightGray; }
 p { margin-bottom: 0.4em; }
-main { background-color: lightYellow; }

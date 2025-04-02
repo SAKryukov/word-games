@@ -29,6 +29,12 @@ window.onload = () => {
         tableInput.insertCell(0);
     } //newTurnHandler
 
+    const showInputPrompt = () => {
+        elementSet.message = tableInput.width == 1
+            ? gameDefinitionSet.input.messages.promptEnterCharacterFirst
+            : gameDefinitionSet.input.messages.promptEnterCharacter;
+    } //showInputPrompt;
+
     const gameReset = () => {
         const wordLength =
             gameDefinitionSet.input.wordLength.valueFromIndex(
@@ -38,13 +44,13 @@ window.onload = () => {
             word = gameAlgorithm.getRandomSubstring(word, wordLength);
             tableInput.text = [word];
             tableInput.setReadonlyRow(0, 0, tableInput.width, true);
+            newTurnHandler();
         } else
-            tableInput.reset(0, 1);
-        newTurnHandler();
+            tableInput.reset(1, 1);
         if (tableInput.height > 0 && tableInput.width > 0)
             tableInput.select(tableInput.width - 1, 0);
         tableInput.focus();
-        elementSet.message = gameDefinitionSet.input.messages.promptEnterTrialWord;
+        showInputPrompt();
     } //gameReset
     tableInput.reset(gameDefinitionSet.welcome.length, 1);
     tableInput.text = [gameDefinitionSet.welcome.toLocaleUpperCase()];
@@ -62,12 +68,20 @@ window.onload = () => {
         if (!gameAlgorithm.isValidCharacter(tableInput.getCharacter(tableInput.x, tableInput.y))) return;
         tableInput.setReadonly(tableInput.x, tableInput.y, true);
         const isAtBeginning = tableInput.x == 0;
-        if (isAtBeginning)
-            tableInput.insertCell(0);
-        else
-            tableInput.insertCell();
-        tableInput.select(isAtBeginning ? 0 : tableInput.width - 1, 0);
+        if (gameDefinitionSet.input.wordLength.valueFromIndex(
+            elementSet.input.wordLength.selectedIndex) == 0 && tableInput.width == 1) {
+                tableInput.insertCell(0);
+                tableInput.insertCell();
+                tableInput.select(tableInput.width - 1, 0);
+            } else {
+                if (isAtBeginning)
+                    tableInput.insertCell(0);
+                else
+                    tableInput.insertCell();       
+                tableInput.select(isAtBeginning ? 0 : tableInput.width - 1, 0);
+            } //if
         const word = tableInput.text[0].slice(1, -1);
+        showInputPrompt();
         if (!gameAlgorithm.isInDictionary(word)) return;
         elementSet.message = gameDefinitionSet.input.messages.congratulations(
             word,

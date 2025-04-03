@@ -28,10 +28,11 @@ const getElementSet = () => {
     elementSet.count = document.querySelector("#count");
     elementSet.characterCount = document.querySelector("#character-count");
 
-    elementSet.product = {};
-    elementSet.product.title = document.querySelector("#product-title");
-    elementSet.product.version = document.querySelector("#product-version");
-    elementSet.product.copyrightYears = document.querySelector("#product-copyright-years");
+    elementSet.product = {
+        title: document.querySelector("#product-title"),
+        version: document.querySelector("#product-version"),
+        copyrightYears: document.querySelector("#product-copyright-years"),
+    };
 
     elementSet.menuItem = {};
     elementSet.menuItem.viewMachineSolutionCount = elementSet.input.menu.children[0].textContent;

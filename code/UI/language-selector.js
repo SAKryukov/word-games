@@ -80,7 +80,7 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
     })(); //populate language set
 
     if (selectOptionsElement) {
-    let option = document.createElement("option");
+        let option = document.createElement("option");
         option.textContent = localDefinitionSet.characterRepertoireOptions.acceptBlankspaceCharacters;
         selectOptionsElement.appendChild(option);
         option = document.createElement("option");
@@ -89,14 +89,16 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
         document.createElement("option");
         selectOptionsElement.size = 2;
     } //if
-    const checkedListBox = setupCheckedListBox(selectOptionsElement, [false, false],
-        (index, _, value) => {
-            if (index == 0)
-                acceptBlankspaceCharacters = value;
-            else
-                acceptPunctuationCharacters = value;
-            setRepertoire();
-        });
+    const checkedListBox = selectOptionsElement
+        ? setupCheckedListBox(selectOptionsElement, [false, false],
+            (index, _, value) => {
+                if (index == 0)
+                    acceptBlankspaceCharacters = value;
+                else
+                    acceptPunctuationCharacters = value;
+                setRepertoire();
+            })
+        : null;
 
     languageSelector.setOptionValues = (acceptBlankspaceCharactersValue, acceptPunctuationCharactersValue) => {
         checkedListBox.setValue(0, acceptBlankspaceCharactersValue);
@@ -115,6 +117,7 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
     } //languageSelector.setLanguage
 
      (() => { //makeEqualHeight
+        if (!selectOptionsElement) return;
         const pixelSize = size => `${size}px`;
         if (selectOptionsElement.children.length > 0 && selectLanguageElement.children.length > 0) {
             const height =  Math.max(selectOptionsElement.firstChild.offsetHeight, selectLanguageElement.firstChild.offsetHeight);

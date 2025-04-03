@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Dictionary Maintenance</title>
+  <script src="../agnostic.UI/table-Input.js"></script>
+  <script src="../agnostic.UI/modal-popup.js"></script>
+  <script src="../agnostic.UI/menu.js"></script>
+  <script src="../agnostic.UI/file-io.js"></script>
+  <script src="../agnostic.UI/checked-list-box.js"></script>
+  <script src="../definition-set.js"></script>
+  <script src="../Dictionaries/ru.js"></script>
+  <script src="../Dictionaries/en.js"></script>
+  <script src="../Dictionaries/dictionaries.js"></script>
+  <script src="../UI/definition-set.js"></script>
+  <script src="../UI/language-selector.js"></script>
+  <script src="../UI/game-algorithms.js"></script>
+  <script src="../UI/shared-element-set.js"></script>
+  <script src="../UI/menu-activator.js"></script>
+  <script src="../UI/dictionary-io.js"></script>
+  <script src="definition-set.js"></script>
+  <script src="element-set.js"></script>
+  <script src="main.js"></script>
+  <style>
+    @import url("../css/flex.css");
+    * { font-family: sans-serif; }
+    :root {
+      --deltaX: 1em;
+      --deltaY: 0.2em;
+      --smallDeltaX: 0.2em;
+      --menuPaddingY: 0.3em;
+      --border: solid thin darkGray;
+    }
+    input { width: 100%; }
+    header, main, button, input, option, footer { padding-left: var(--deltaX); padding-right: var(--deltaX); }
+    main { margin-top: 1em; }
+    p { margin-top: var(--deltaY); }
+</style>
+</head>
+
+<body>
+
+  <header>
+    <p>
+    <section>
+      <u>L</u>anguage:<br/><select accesskey="l" id="language"></select>
+    </section>
+  </header>
+
+  <main>
+    <p>
+      <input id="to-remove" placeholder="Comma-separated list of words to remove from dictionary"></input>
+    </p>
+    <p>
+      <input id="to-add" placeholder="Comma-separated list of words to add do dictionary"></input>
+    </p>
+    <p>
+      <button id="button-start" accesskey="u"><u>U</u>pdate dictionary</button>
+    </p>
+  </main>
+
+  <footer>
+    <small><span id="product-title"></span> <span id="product-version"></span>, Copyright &copy; <span
+        id="product-copyright-years"></span> by Sergey A Kryukov
+      <a href="help.html#dictionary-maintenance" class="help">Help</a>
+    </small>
+  </footer>
+
+</body>
+
+</html>

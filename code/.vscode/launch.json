@@ -18,7 +18,14 @@
             "request": "launch",
             "name": "bulls and cows",
             "file": "${workspaceFolder}/bulls-and-cows.html"
-        }
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "maintenance",
+            "file": "${workspaceFolder}/dictionary-maintenance/index.html"
+        },
+
 
     ]
 }

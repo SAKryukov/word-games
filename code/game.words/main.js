@@ -73,7 +73,7 @@ window.onload = () => {
     }; //elementSet.input.inputTry.onkeypress
 
     elementSet.input.inputTry.oninput = () => elementSet.showUserSolution(() => sortedWordListUser.refresh());
-    const shuffle = (() => { // setup shuffle:
+    (() => { // setup shuffle:
         elementSet.input.inputSetWord.oninput = event => {
             sortedWordListUser.reset();
             shuffle(true);
@@ -95,7 +95,6 @@ window.onload = () => {
                     event.preventDefault();
             } //if
         };
-        return shuffle;
     })(); //setup shuffle
 
     const reviewMachineSolution = showWords => {
@@ -117,7 +116,7 @@ window.onload = () => {
     
     (() => { // contextMenu:
         const dictionaryMaintenanceStarter = createDictionaryMaintenanceStarter(gameDefinitionSet);
-        const gameIO = createGameIO(sortedWordListUser, elementSet, languageSelector, gameDefinitionSet, shuffle);
+        const gameIO = createGameIO(sortedWordListUser, elementSet, languageSelector, gameDefinitionSet, gameAlgorithm);
         const restoreFocus = () => {
             elementSet.input.inputSetWord.focus();
             elementSet.input.inputTry.focus();

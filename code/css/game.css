@@ -32,3 +32,9 @@ option, input, button { padding-left: var(--deltaX); padding-right: var(--deltaX
 }
 #button-activate-menu:hover, #button-activate-menu:focus { background-color: lightGray; }
 p { margin-bottom: 0.4em; }
+
+p.message { display:flex; margin-top: 1em; flex-wrap:nowrap; }
+p.message #message { flex-grow:1; text-align:center; margin-right: 2em; }
+p.message #score, p.message span:last-of-type { white-space: nowrap; }
+
+

@@ -36,6 +36,7 @@ const getGameDefinitionSet = () => {
 		promptEnterCharacterFirst: "Enter a letter and press Enter",
 		congratulations: (word, quotes) =>
 			`Game over. The word ${quotes[0]}${word}${quotes[1]} is found in the dictionary.`,
+		relativeScore: (characters, total) => `${characters} of ${total}`,
 	}; //gameDefinitionSet.input.messages
 
 	Object.freeze(gameDefinitionSet);

@@ -36,6 +36,7 @@ window.onload = () => {
     } //showInputPrompt;
 
     const gameReset = () => {
+        elementSet.score.textContent = 0;
         const wordLength =
             gameDefinitionSet.input.wordLength.valueFromIndex(
                 elementSet.input.wordLength.selectedIndex);
@@ -66,6 +67,9 @@ window.onload = () => {
     tableInput.enterCallback = (_, x, y) => {
         if (tableInput.isCurrentCellReadonly) return;
         if (!gameAlgorithm.isValidCharacter(tableInput.getCharacter(tableInput.x, tableInput.y))) return;
+        const wordLength =
+            gameDefinitionSet.input.wordLength.valueFromIndex(
+                elementSet.input.wordLength.selectedIndex);
         tableInput.setReadonly(tableInput.x, tableInput.y, true);
         const isAtBeginning = tableInput.x == 0;
         if (gameDefinitionSet.input.wordLength.valueFromIndex(
@@ -82,6 +86,13 @@ window.onload = () => {
             } //if
         const word = tableInput.text[0].slice(1, -1);
         showInputPrompt();
+        if (wordLength > 0)
+            elementSet.score.textContent
+                = gameDefinitionSet.input.messages.relativeScore(
+                    tableInput.width - 2 - wordLength,
+                    tableInput.width - 2);
+        else
+            elementSet.score.textContent = tableInput.width - 2;
         if (!gameAlgorithm.isInDictionary(word)) return;
         elementSet.message = gameDefinitionSet.input.messages.congratulations(
             word,

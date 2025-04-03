@@ -32,6 +32,7 @@ window.onload = () => {
     let secretWord = null;
 
     const gameReset = starting => {
+        elementSet.score.textContent = 0;
         const wordLength =
             gameDefinitionSet.input.wordLength.valueFromIndex(
                 elementSet.input.wordLength.selectedIndex);
@@ -83,6 +84,7 @@ window.onload = () => {
             tableInput.setReadonlyRow(row, 0, tableInput.width - 2, true);
             return;
         } //if
+        elementSet.score.textContent = tableInput.height;
         tableInput.addRow();
         newRowHandler();
         tableInput.select(0, row + 1);

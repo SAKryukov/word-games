@@ -38,6 +38,7 @@ const getElementSet = definitionSet => {
             set(value) { message.innerHTML = value == null ? initialMessage : value; }
         },
     }); //Object.defineProperties
+    elementSet.score = document.querySelector("#score");
 
     elementSet.input.onButtonStartStopToggle = readyToStart => {       
         isButtonStartReady = !isButtonStartReady;

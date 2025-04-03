@@ -115,10 +115,17 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
     } //languageSelector.setLanguage
 
      (() => { //makeEqualHeight
+        const pixelSize = size => `${size}px`;
+        if (selectOptionsElement.children.length > 0 && selectLanguageElement.children.length > 0) {
+            const height =  Math.max(selectOptionsElement.firstChild.offsetHeight, selectLanguageElement.firstChild.offsetHeight);
+            for (let child of selectOptionsElement.children)
+                child.style.minHeight = pixelSize(height);
+            for (let child of selectLanguageElement.children)
+                child.style.minHeight = pixelSize(height);
+        } //if
         const height =  Math.max(selectOptionsElement.offsetHeight, selectLanguageElement.offsetHeight);
-        const heightPx = `${height}px`;
-        selectLanguageElement.style.height = heightPx;
-        selectOptionsElement.style.height = heightPx;
+        selectLanguageElement.style.height = pixelSize(height);
+        selectOptionsElement.style.height = pixelSize(height);
     })(); //makeEqualHeight
     
     return languageSelector;

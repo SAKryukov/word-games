@@ -7,7 +7,7 @@
 
 "use strict";
 
-const createGameIO = (sortedWordList, elementSet, languageSelector, gameDefinitionSet) => {
+const createGameIO = (sortedWordList, elementSet, languageSelector, gameDefinitionSet, shuffle) => {
     const gameIO = {};
 
     const dictionaryIO = createDictionartyIO(
@@ -24,6 +24,8 @@ const createGameIO = (sortedWordList, elementSet, languageSelector, gameDefiniti
             elementSet.input.inputSetWord.value = gameData.setWord;
             for (let word of gameData.alphabetical)
                 sortedWordList.add(word);
+            if (shuffle)
+                shuffle(true);
         }
     ); //dictionaryIO
 
@@ -35,7 +37,6 @@ const createGameIO = (sortedWordList, elementSet, languageSelector, gameDefiniti
         sortedWordList.reset();
         dictionaryIO.restoreGame();
     }; //gameIO.restoreGame
-
 
     return gameIO;
 };

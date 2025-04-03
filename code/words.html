@@ -39,9 +39,10 @@
     header { background-color: aliceBlue; }
     main { background-color: lightYellow; }
     p.pre-shuffle { margin-bottom: 1px; }
-    #input-try, #input-set-word { width: 40em; }
+    #input-try, #input-set-word { width: 40em; } 
     #input-try { visibility: hidden; }
-    #text-shuffle { font-family: monospace; font-size: 120%; }
+    #text-shuffle, #text-classify { font-family: monospace; font-size: 120%; }
+    #text-classify { margin-left: 2em; color: darkRed; font-weight: bold; }
     #button-shuffle { padding: 0; padding-left: 1px; padding-bottom: 2px; }
     main > section > div {
       display: inline-block;
@@ -76,7 +77,11 @@
       <input id="input-set-word" placeholder="Enter a word to define a character repertoire, press Enter to start game"></input>
       <span>Length: <b id="character-count">0</b></span>
     </p>
-    <p><button id="button-shuffle" title="Shuffle: Alt+U, Reset: Alt+R">♻</button> <span id="text-shuffle"></span></p>
+    <p>
+      <button id="button-shuffle" title="Shuffle: Alt+U, Reset: Alt+R">♻</button>
+      <span id="text-shuffle" title="Hint:  shuffled word"></span>
+      <span id="text-classify" title="Hint:  word characters classified into vowels, consonants, etc., and ordered"></span>
+    </p>
     <p>
       <input id="input-try" placeholder="Enter word to try, press Enter"></input>
       <span>Word count: <b id="count">0</b></span>

@@ -144,6 +144,31 @@ const getGameAlgorithm = languageSelector => {
 		return array.join("");
 	}; //gameAlgorithm.shuffleWord
 
+    gameAlgorithm.classifyWord = word => {
+        if (!word) return word;
+        if (word.length < 2) return word;
+        let vowels = [], consonants = [], modifierLetters = [], diacritic = [], punctuation = [];
+        for (let index = 0; index < word.length; ++index) {
+            const letter = word[index];
+            if (languageSelector.currentLanguage.characterRepertoire.vowels.indexOf(letter) >= 0)
+                vowels.push(letter);
+            if (languageSelector.currentLanguage.characterRepertoire.consonants.indexOf(letter) >= 0)
+                consonants.push(letter);
+            if (languageSelector.currentLanguage.characterRepertoire.modifierLetters.indexOf(letter) >= 0)
+                modifierLetters.push(letter);
+            if (languageSelector.currentLanguage.characterRepertoire.diacritic.indexOf(letter) >= 0)
+                diacritic.push(letter);
+            if (languageSelector.currentLanguage.characterRepertoire.punctuation.indexOf(letter) >= 0)
+                punctuation.push(letter);
+        } //loop
+        const classificationResult = [];
+        for (let subset of [vowels, consonants, modifierLetters, diacritic, punctuation]) {
+            if (subset.length > 0)
+                classificationResult.push(subset.sort().join(""));
+        } //loop
+        return classificationResult.join(" ");
+    } //gameAlgorithm.classifyWord
+
     Object.defineProperties(gameAlgorithm, {
         randomLetter: {
             get() {

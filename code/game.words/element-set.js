@@ -23,6 +23,7 @@ const getElementSet = () => {
     elementSet.input.inputSetWord = document.querySelector("#input-set-word");
     elementSet.input.inputTry = document.querySelector("#input-try");
     elementSet.textShuffle = document.querySelector("#text-shuffle");
+    elementSet.textClassify = document.querySelector("#text-classify");
     elementSet.buttonShuffle = document.querySelector("#button-shuffle");
     elementSet.count = document.querySelector("#count");
     elementSet.characterCount = document.querySelector("#character-count");

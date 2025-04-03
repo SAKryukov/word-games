@@ -73,24 +73,22 @@ window.onload = () => {
     }; //elementSet.input.inputTry.onkeypress
 
     elementSet.input.inputTry.oninput = () => elementSet.showUserSolution(() => sortedWordListUser.refresh());
+    const gameIO = createGameIO(sortedWordListUser, elementSet, languageSelector, gameDefinitionSet, gameAlgorithm);
     (() => { // setup shuffle:
         elementSet.input.inputSetWord.oninput = event => {
             sortedWordListUser.reset();
-            shuffle(true);
+            gameIO.shuffleAndClassify(true);
             elementSet.showUserSolution(() => sortedWordListUser.refresh());
             elementSet.characterCount.textContent = event.target.value.length;
         };
-        const shuffle = firstTime =>
-            elementSet.textShuffle.textContent =
-                gameAlgorithm.shuffleWord(elementSet.input.inputSetWord.value.toUpperCase(), firstTime);
-        shuffle();
-        elementSet.buttonShuffle.onclick = () => shuffle(false);
+        gameIO.shuffleAndClassify(true);
+        elementSet.buttonShuffle.onclick = () => gameIO.shuffleAndClassify(false);
         window.onkeydown = event => {
             if (event.altKey) {
                 if (event.key == elementSet.keyShuffle)
-                    shuffle(false);
+                    gameIO.shuffleAndClassify(false);
                 if (event.key == elementSet.keyShuffleReset)
-                    shuffle(true);
+                    gameIO.shuffleAndClassify(true);
                 if (elementSet.isKeyShuffleRelated(event))
                     event.preventDefault();
             } //if
@@ -112,11 +110,10 @@ window.onload = () => {
             elementSet.showMachineSolution(() => () => sortedWordListMachine.refresh());
         if (!showWords)
             modalPopup.show(gameDefinitionSet.machineSolution.countFormat(count));
-}; //reviewMachineSolution
+        }; //reviewMachineSolution
     
     (() => { // contextMenu:
         const dictionaryMaintenanceStarter = createDictionaryMaintenanceStarter(gameDefinitionSet);
-        const gameIO = createGameIO(sortedWordListUser, elementSet, languageSelector, gameDefinitionSet, gameAlgorithm);
         const restoreFocus = () => {
             elementSet.input.inputSetWord.focus();
             elementSet.input.inputTry.focus();

@@ -9,6 +9,7 @@
 
 window.onload = () => {
 
+	const maintenanceDefinitionSet = getMaintenanceDefinitionSet();
 	const elementSet = getElementSet(null);
 	const languageSelector =
 		createLanguageSelector(elementSet.input.languageSet, null, null);
@@ -17,13 +18,13 @@ window.onload = () => {
 		if (anObject == null) return;
 		if (!(anObject instanceof(Object)) || Array.isArray(anObject))
 			return JSON.stringify(anObject);
-		let properties = Object.keys(anObject).map(key => `${key}:${stringifyDictionary(anObject[key])}`).join(",");
-		return `{${properties}}`;
+		let properties = Object.keys(anObject)
+			.map(key => maintenanceDefinitionSet.lexicalSet.keyValuePair(key, stringifyDictionary(anObject[key])))
+			.join(maintenanceDefinitionSet.lexicalSet.delimiter);
+		return maintenanceDefinitionSet.lexicalSet.objectWrapper(properties);
 	}; //stringifyDictionary
 
 	const dictionaryMainenance = () => {
-		const wrap = (languageName, json) =>
-		   `"use strict";\nconst ${languageName} =\n${json};`;
 		const removedWords = [];
 		const notRemovedWords = [];
 		const addedWords = [];
@@ -36,7 +37,7 @@ window.onload = () => {
 			return true;
 		}; //goodWord
 		const removeAddWords = (wordsToRemove, wordsToAdd) => {
-			const dictionary = languageSelector.currentLanguage;
+			const dictionary = structuredClone(languageSelector.currentLanguage);
 			const wordSet = new Set(dictionary.alphabetical);
 			if (wordsToRemove != null)
 				for (let word of wordsToRemove) {
@@ -72,7 +73,7 @@ window.onload = () => {
 				dictionary.indexedByLength[word.length].push(index);
 			} //loop
 			const json = stringifyDictionary(dictionary);
-			navigator.clipboard.writeText(wrap(dictionary.languageName, json));
+			navigator.clipboard.writeText(maintenanceDefinitionSet.codeWrap(dictionary.languageName, json));
 			return {
 				removedWords: removedWords,
 				notRemovedWords: notRemovedWords,
@@ -83,7 +84,7 @@ window.onload = () => {
 		}; //removeAddWords
 		const getWords = value => {
 			const result = [];
-			const words = value.split(",");
+			const words = value.split(maintenanceDefinitionSet.lexicalSet.delimiter);
 			for (let word of words) {
 				const testWord = word.trim();
 				if (testWord.length > 0)
@@ -98,9 +99,9 @@ window.onload = () => {
 		const showResult = (parent, input, value) => {
 			parent.style.display = 
 				value != null && value.length > 0
-					? "block"
-					: "none";
-			input.value = value.join(", ");
+					? maintenanceDefinitionSet.visibility.shown
+					: maintenanceDefinitionSet.visibility.hidden;
+			input.value = value.join(maintenanceDefinitionSet.outputDelimiter);
 		};
 		showResult(elementSet.output.containerRemovedWords, elementSet.output.valueRemovedWords, removedWords);
 		showResult(elementSet.output.containerNotRemovedWords, elementSet.output.valueNotRemovedWords, notRemovedWords);
@@ -111,7 +112,10 @@ window.onload = () => {
 
 	elementSet.input.buttonStart.onclick = () => {
 		dictionaryMainenance();
-		modalPopup.show("<p>Dictionary maitenance complete.</p><p>The resulting dictionary definition is in the clipboard.</p>");
+		modalPopup.show(
+			maintenanceDefinitionSet.resultHTML,
+			null,
+			{dimmerOpacity: maintenanceDefinitionSet.resultDimmerOpacity});
 	}; //elementSet.input.buttonStart.onclick
 
 	(() => { // product:

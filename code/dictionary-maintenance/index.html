@@ -19,14 +19,20 @@
     @import url("../css/game.css");
     input { width: 100%; }
     p { margin-top: var(--deltaY); }
+    h1 { text-align: center; font-size: 110%; margin-top: 0.8em; }
     main p { display: none; }
+    main { padding-top: 2em; }
+    button { padding-top: var(--deltaY); padding-bottom: var(--deltaY); }
     button:focus { outline: solid 2px black; outline-offset: 2px; }
+    header { background-color: aliceblue; }
+    main { background-color: hsl(6, 93%, 95%, 100%) }
 </style>
 </head>
 
 <body>
 
   <header>
+    <h1>Dictionary Maintenance</h1>
     <p>
     <section>
       <u>L</u>anguage:<br/><select accesskey="l" id="language"></select>
@@ -60,7 +66,7 @@
       <input disabled="true"></input>
     </p>
     <p id="bad-words">
-      Not added words, because contain characters not in the dictionary character repertoire:
+      Not added words, because they contain characters not in the dictionary character repertoire:
       <input disabled="true"></input>
     </p>
   </main>

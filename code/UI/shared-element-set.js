@@ -35,9 +35,9 @@ const getSharedElementSet = () => {
     });
 
 	(() => { // product:
-		product.title.textContent = definitionSet.title;
-		product.version.innerHTML = definitionSet.version;
-		product.copyrightYears.textContent = definitionSet.copyrightYears;
+		product.title.textContent = shared.definitionSet.title;
+		product.version.innerHTML = shared.definitionSet.version;
+		product.copyrightYears.textContent = shared.definitionSet.copyrightYears;
 	})(); //product
 
     return elementSet;

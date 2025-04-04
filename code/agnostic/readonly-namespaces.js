@@ -34,13 +34,13 @@ const namespaces = (() => {
 		return namespace;
 	}; //extend
 
-	const make = (propertySource, readonly = true) => {
+	const create = (propertySource, readonly = true) => {
 		const namespace = {};
 		extend (namespace, propertySource, readonly);
 		return namespace;
-	}; //make
+	}; //create
 
-	const namespacesNamespace = { make: make, extend: extend };
+	const namespacesNamespace = { create: create, extend: extend };
 	Object.freeze(namespacesNamespace);
 	return namespacesNamespace;
 

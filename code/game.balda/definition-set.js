@@ -7,7 +7,7 @@
 
 "use strict";
 
-const game = namespaces.make({
+const game = namespaces.create({
 	definitionSet: {
 		emptyCell: String.fromCodePoint(0x2205),
 		gameIO: {

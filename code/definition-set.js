@@ -7,8 +7,10 @@
 
 "use strict";
 
-const definitionSet = {
-    title: "Word Games",
-    version: "v.&thinsp;1.0",
-    copyrightYears: "2025",
-};
+const shared = namespaces.create({
+    definitionSet: {
+        title: "Word Games",
+        version: "v.&thinsp;1.0",
+        copyrightYears: "2025",
+    }, //definitionSet
+});

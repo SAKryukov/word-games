@@ -9,20 +9,28 @@
 
 window.onload = () => {
 
+	const stringify = anObject => {
+		if (anObject instanceof Array) {
+			const elements = [];
+			for (let element of anObject)
+				elements.push(stringify(element));
+			return `[${elements.join(",")}]`;
+		} else if (anObject instanceof Object) {
+			const wrapKey = key =>
+				key.indexOf(' ') < 0
+					? key
+					: `"${key}"`;
+			let properties = Object.keys(anObject)
+				.map(key => `${wrapKey(key)}:${stringify(anObject[key])}`)
+			return `{${properties}}`;
+		} else
+			return JSON.stringify(anObject);
+	}; //stringify
+
 	const maintenanceDefinitionSet = getMaintenanceDefinitionSet();
 	const elementSet = getElementSet(null);
 	const languageSelector =
 		createLanguageSelector(elementSet.input.languageSet, null, null);
-
-	const stringifyDictionary = anObject => {
-		if (anObject == null) return;
-		if (!(anObject instanceof(Object)) || Array.isArray(anObject))
-			return JSON.stringify(anObject);
-		let properties = Object.keys(anObject)
-			.map(key => maintenanceDefinitionSet.lexicalSet.keyValuePair(key, stringifyDictionary(anObject[key])))
-			.join(maintenanceDefinitionSet.lexicalSet.delimiter);
-		return maintenanceDefinitionSet.lexicalSet.objectWrapper(properties);
-	}; //stringifyDictionary
 
 	const dictionaryMainenance = () => {
 		const removedWords = [];
@@ -72,7 +80,7 @@ window.onload = () => {
 					dictionary.indexedByLength[word.length] = [];
 				dictionary.indexedByLength[word.length].push(index);
 			} //loop
-			const json = stringifyDictionary(dictionary);
+			const json = stringify(dictionary);
 			navigator.clipboard.writeText(maintenanceDefinitionSet.codeWrap(dictionary.languageName, json));
 			return {
 				removedWords: removedWords,

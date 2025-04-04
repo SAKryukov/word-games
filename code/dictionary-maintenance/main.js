@@ -126,10 +126,4 @@ window.onload = () => {
 			{dimmerOpacity: maintenanceDefinitionSet.resultDimmerOpacity});
 	}; //elementSet.input.buttonStart.onclick
 
-	(() => { // product:
-		elementSet.product.title.textContent = definitionSet.title;
-		elementSet.product.version.innerHTML = definitionSet.version;
-		elementSet.product.copyrightYears.textContent = definitionSet.copyrightYears;
-	})(); //product
-
 }; //window.onload

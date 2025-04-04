@@ -158,12 +158,6 @@ window.onload = () => {
         setupMenuActivator(contextMenu, elementSet.input.buttonActivateMenu);
     })(); //contextMenu
 
-    (() => { // product:
-        elementSet.product.title.textContent = definitionSet.title;
-        elementSet.product.version.innerHTML = definitionSet.version;
-        elementSet.product.copyrightYears.textContent = definitionSet.copyrightYears;
-    })(); //product
-
     elementSet.input.inputSetWord.focus();
 
 }; //window.onload

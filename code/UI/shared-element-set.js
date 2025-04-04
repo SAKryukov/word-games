@@ -31,10 +31,14 @@ const getSharedElementSet = () => {
         input: {
             get() { return input; },
         },
-        product: {
-            get() { return product; },
-        },
+
     });
+
+	(() => { // product:
+		product.title.textContent = definitionSet.title;
+		product.version.innerHTML = definitionSet.version;
+		product.copyrightYears.textContent = definitionSet.copyrightYears;
+	})(); //product
 
     return elementSet;
 

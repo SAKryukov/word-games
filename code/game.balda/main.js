@@ -9,8 +9,7 @@
 
 window.onload = () => {
 
-    const gameDefinitionSet = getGameDefinitionSet();
-    const elementSet = getElementSet(gameDefinitionSet);
+    const elementSet = getElementSet(game.definitionSet);
     const tableInput = createTableInput(null, elementSet.main, 1, 1, false);
     elementSet.main.appendChild(tableInput.tableElement);
 
@@ -31,14 +30,14 @@ window.onload = () => {
 
     const showInputPrompt = () => {
         elementSet.message = tableInput.width == 1
-            ? gameDefinitionSet.input.messages.promptEnterCharacterFirst
-            : gameDefinitionSet.input.messages.promptEnterCharacter;
+            ? game.definitionSet.input.messages.promptEnterCharacterFirst
+            : game.definitionSet.input.messages.promptEnterCharacter;
     } //showInputPrompt;
 
     const gameReset = () => {
         elementSet.score.textContent = 0;
         const wordLength =
-            gameDefinitionSet.input.wordLength.valueFromIndex(
+            game.definitionSet.input.wordLength.valueFromIndex(
                 elementSet.input.wordLength.selectedIndex);
         if (wordLength) {
             let word = gameAlgorithm.pickLongerRandomWord(wordLength + 2).toUpperCase();
@@ -53,9 +52,9 @@ window.onload = () => {
         tableInput.focus();
         showInputPrompt();
     } //gameReset
-    tableInput.reset(gameDefinitionSet.welcome.length, 1);
-    tableInput.text = [gameDefinitionSet.welcome.toLocaleUpperCase()];
-    tableInput.setReadonlyRow(0, 0, gameDefinitionSet.welcome.length, true);
+    tableInput.reset(game.definitionSet.welcome.length, 1);
+    tableInput.text = [game.definitionSet.welcome.toLocaleUpperCase()];
+    tableInput.setReadonlyRow(0, 0, game.definitionSet.welcome.length, true);
     elementSet.input.buttonStartStop.focus();
 
     tableInput.characterInputCallback = (cell, event) => {
@@ -68,11 +67,11 @@ window.onload = () => {
         if (tableInput.isCurrentCellReadonly) return;
         if (!gameAlgorithm.isValidCharacter(tableInput.getCharacter(tableInput.x, tableInput.y))) return;
         const wordLength =
-            gameDefinitionSet.input.wordLength.valueFromIndex(
+            game.definitionSet.input.wordLength.valueFromIndex(
                 elementSet.input.wordLength.selectedIndex);
         tableInput.setReadonly(tableInput.x, tableInput.y, true);
         const isAtBeginning = tableInput.x == 0;
-        if (gameDefinitionSet.input.wordLength.valueFromIndex(
+        if (game.definitionSet.input.wordLength.valueFromIndex(
             elementSet.input.wordLength.selectedIndex) == 0 && tableInput.width == 1) {
                 tableInput.insertCell(0);
                 tableInput.insertCell();
@@ -88,13 +87,13 @@ window.onload = () => {
         showInputPrompt();
         if (wordLength > 0)
             elementSet.score.textContent
-                = gameDefinitionSet.input.messages.relativeScore(
+                = game.definitionSet.input.messages.relativeScore(
                     tableInput.width - 2 - wordLength,
                     tableInput.width - 2);
         else
             elementSet.score.textContent = tableInput.width - 2;
         if (!gameAlgorithm.isInDictionary(word)) return;
-        elementSet.message = gameDefinitionSet.input.messages.congratulations(
+        elementSet.message = game.definitionSet.input.messages.congratulations(
             word,
             languageSelector.currentLanguage.characterRepertoire.quotes);
         tableInput.setReadonlyRow(0, 0, tableInput.width, true);
@@ -111,7 +110,7 @@ window.onload = () => {
     } //elementSet.input.buttonStartStop.onclick
 
     (() => { //menu:
-        const gameIO = createGameIO(gameDefinitionSet, languageSelector,
+        const gameIO = createGameIO(game.definitionSet, languageSelector,
             gameData => { //onSave:
                 gameData.currentContent = tableInput.text[0].slice(1, -1);
             }, //onSave

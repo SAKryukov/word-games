@@ -7,8 +7,7 @@
 
 "use strict";
 
-const game = {};
-makeNamespace(game, true, {
+const game = namespaces.make({
 	definitionSet: {
 		emptyCell: String.fromCodePoint(0x2205),
 		gameIO: {

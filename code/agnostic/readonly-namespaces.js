@@ -7,7 +7,7 @@
 
 "use strict";
 
-const makeNamespace = (namespace, readonly, properties) => {
+const namespaces = (() => {
 
 	const deepFreeze = object => {
 		Object.freeze(object);
@@ -20,33 +20,28 @@ const makeNamespace = (namespace, readonly, properties) => {
 		} //loop
 	}; //deepFreeze
 
-	const newProperties = {};
+	const extend = (namespace, propertySource, readonly = true) => {
+		const newProperties = {};
+		for (let index in propertySource) {
+			const property = propertySource[index];
+			if (readonly)
+				deepFreeze(property);
+			newProperties[index] = {};
+			newProperties[index].get = () => property;
+			newProperties[index].enumerable = true;
+		} //loop
+		Object.defineProperties(namespace, newProperties);
+		return namespace;
+	}; //extend
 
-	for (let index in properties) {
-		const property = properties[index];
-		if (readonly)
-			deepFreeze(property);
-		newProperties[index] = {};
-		newProperties[index].get = () => property;
-		newProperties[index].enumerable = true;
-	} //loop
-	Object.defineProperties(namespace, newProperties);
+	const make = (propertySource, readonly = true) => {
+		const namespace = {};
+		extend (namespace, propertySource, readonly);
+		return namespace;
+	}; //make
 
-}; //makeNamespace
+	const namespacesNamespace = { make: make, extend: extend };
+	Object.freeze(namespacesNamespace);
+	return namespacesNamespace;
 
-/* Usage:
-
-const myNamespace = {};
-makeNamespace(myNamespace, true, {
-	definitionSet: {
-		a: 13,
-		b: "some content",
-		c: 21.31,
-		d: {
-			e: [1, 2, 3],
-			f: 2,
-		},
-	}, //definitionSet
-});
-
-*/
+})();

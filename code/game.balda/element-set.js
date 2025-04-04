@@ -8,15 +8,9 @@
 "use strict";
 
 const getElementSet = definitionSet => {
-    const elementSet = {};
 
-    const sharedElementSet = getSharedElementSet();
-    elementSet.main = sharedElementSet.main;
-    elementSet.input = {};
-    elementSet.input.languageSet = sharedElementSet.languageSet;
-    elementSet.input.options = sharedElementSet.options;
-    elementSet.input.buttonActivateMenu = sharedElementSet.buttonActivateMenu;
-    elementSet.input.menu = sharedElementSet.menu;
+    const elementSet = getSharedElementSet();
+
     elementSet.input.buttonStartStop = document.querySelector("#buttonStartStop");
     const buttonStartContent = elementSet.input.buttonStartStop.innerHTML;
     const buttonStopContent = elementSet.input.buttonStartStop.dataset.secondContent;

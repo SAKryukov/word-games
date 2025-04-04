@@ -174,4 +174,10 @@ window.onload = () => {
         setupMenuActivator(contextMenu, elementSet.input.buttonActivateMenu);
     })(); //menu
 
+    (() => { // product:
+		elementSet.product.title.textContent = definitionSet.title;
+		elementSet.product.version.innerHTML = definitionSet.version;
+		elementSet.product.copyrightYears.textContent = definitionSet.copyrightYears;
+	})(); //product
+
 }; //window.onload

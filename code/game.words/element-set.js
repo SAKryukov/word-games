@@ -8,16 +8,9 @@
 "use strict";
 
 const getElementSet = () => {
-    const elementSet = {};
     
-    const sharedElementSet = getSharedElementSet();
+    const elementSet = getSharedElementSet();
 
-    const main = sharedElementSet.main;
-    elementSet.input = {};
-    elementSet.input.languageSet = sharedElementSet.languageSet;
-    elementSet.input.options = sharedElementSet.options;
-    elementSet.input.menu = sharedElementSet.menu;
-    elementSet.input.buttonActivateMenu  = sharedElementSet.buttonActivateMenu;
     elementSet.userSolution = document.querySelector("#user-solution");
     elementSet.machineSolution = document.querySelector("#machine-solution");
     elementSet.input.inputSetWord = document.querySelector("#input-set-word");
@@ -28,12 +21,6 @@ const getElementSet = () => {
     elementSet.count = document.querySelector("#count");
     elementSet.characterCount = document.querySelector("#character-count");
 
-    elementSet.product = {
-        title: document.querySelector("#product-title"),
-        version: document.querySelector("#product-version"),
-        copyrightYears: document.querySelector("#product-copyright-years"),
-    };
-
     elementSet.menuItem = {};
     elementSet.menuItem.viewMachineSolutionCount = elementSet.input.menu.children[0].textContent;
     elementSet.menuItem.reviewMachineSolution = elementSet.input.menu.children[1].textContent;
@@ -43,7 +30,7 @@ const getElementSet = () => {
     elementSet.menuItem.loadGame = elementSet.input.menu.children[5].textContent;
 
     let machineSolutionBackrgoundColor = null, userSolutionSolutionBackrgoundColor = null;
-    main.title = elementSet.userSolution.title;
+    elementSet.main.title = elementSet.userSolution.title;
     let showingUserSolution = true;
     Object.defineProperties(elementSet, {
         isUserSolutionShown: {
@@ -63,11 +50,11 @@ const getElementSet = () => {
 
     elementSet.showUserSolution = callback => {
         if (userSolutionSolutionBackrgoundColor == null) {
-            const style = window.getComputedStyle(main);
+            const style = window.getComputedStyle(elementSet.main);
             userSolutionSolutionBackrgoundColor = style.getPropertyValue("background-color");
         } //if
-        main.style.backgroundColor = userSolutionSolutionBackrgoundColor;
-        main.title = elementSet.userSolution.title;
+        elementSet.main.style.backgroundColor = userSolutionSolutionBackrgoundColor;
+        elementSet.main.title = elementSet.userSolution.title;
         elementSet.machineSolution.style.display = "none";
         elementSet.userSolution.style.display = "block";
         if (callback)
@@ -80,9 +67,9 @@ const getElementSet = () => {
             machineSolutionBackrgoundColor = style.getPropertyValue("background-color");
             elementSet.machineSolution.style.backgroundColor = "transparent";
         } //if
-        main.style.backgroundColor = machineSolutionBackrgoundColor;
-        main.title = elementSet.machineSolution.title;
-        main.title = "Machine solution";
+        elementSet.main.style.backgroundColor = machineSolutionBackrgoundColor;
+        elementSet.main.title = elementSet.machineSolution.title;
+        elementSet.main.title = "Machine solution";
         elementSet.userSolution.style.display = "none";
         elementSet.machineSolution.style.display = "block";
         if (callback)

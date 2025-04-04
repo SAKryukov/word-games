@@ -12,26 +12,27 @@ const getSharedElementSet = () => {
     const elementSet = {};
 
     const mainElement = document.querySelector("main");
-    const languageSetElement = document.querySelector("#language");
-    const optionsElement = document.querySelector("#options");
-    const buttonActivateMenu = document.querySelector("#button-activate-menu");
-    const menu = document.querySelector("#menu");
+    const input = {
+        languageSet: document.querySelector("#language"),
+        options: document.querySelector("#options"),
+        buttonActivateMenu: document.querySelector("#button-activate-menu"),
+        menu: document.querySelector("#menu"),
+    };
+    const product = {
+        title: document.querySelector("#product-title"),
+        version: document.querySelector("#product-version"),
+        copyrightYears: document.querySelector("#product-copyright-years"),
+    };
 
     Object.defineProperties(elementSet, {
         main: {
             get() { return mainElement; },
         },
-        languageSet: {
-            get() { return languageSetElement; },
+        input: {
+            get() { return input; },
         },
-        options: {
-            get() { return optionsElement; },
-        },
-        buttonActivateMenu: {
-            get() { return buttonActivateMenu; },
-        },
-        menu: {
-            get() { return menu; },
+        product: {
+            get() { return product; },
         },
     });
 

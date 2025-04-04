@@ -7,18 +7,13 @@
 
 "use strict";
 
-const getElementSet = definitionSet => {
-    const elementSet = {};
+const getElementSet = () => {
+    const elementSet = getSharedElementSet();
 
-    const sharedElementSet = getSharedElementSet();
-    elementSet.input = {
-        languageSet: sharedElementSet.languageSet,
-        wordsToRemove: document.querySelector("#to-remove"),
-        wordsToAdd: document.querySelector("#to-add"),
-        buttonStart: document.querySelector("#button-start"),
-    };
+    elementSet.input.wordsToRemove = document.querySelector("#to-remove");
+    elementSet.input.wordsToAdd = document.querySelector("#to-add");
+    elementSet.input.buttonStart = document.querySelector("#button-start");
     elementSet.input.buttonStart.tabIndex = 0;
-
 
     elementSet.output = {
         containerRemovedWords: document.querySelector("#removed-words"),
@@ -31,12 +26,6 @@ const getElementSet = definitionSet => {
         valueAlreadyAddedWords: document.querySelector("#already-added-words input"),
         containerBadWords: document.querySelector("#bad-words"),
         valueBadWords: document.querySelector("#bad-words input"),
-    };
-
-    elementSet.product = {
-        title: document.querySelector("#product-title"),
-        version: document.querySelector("#product-version"),
-        copyrightYears: document.querySelector("#product-copyright-years"),
     };
 
     return elementSet;

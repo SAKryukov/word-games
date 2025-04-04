@@ -35,4 +35,4 @@ const game = namespaces.create({
 			}, //messages
 		}, //input
 	}, //definitionSet
-});
+}); //game.definitionSet

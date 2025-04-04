@@ -7,9 +7,9 @@
 
 "use strict";
 
-const getMaintenanceDefinitionSet = () => {
-    
-    const maintenanceDefinitionSet = {
+const maintenance = namespaces.create({
+
+    definitionSet: {
         resultHTML: "<p>Dictionary maitenance complete.</p><p>The resulting dictionary definition is in the clipboard.</p>",
         resultDimmerOpacity: 0.3,
 		codeWrap: (languageName, json) =>
@@ -24,7 +24,6 @@ const getMaintenanceDefinitionSet = () => {
             shown: "block",
             hidden: "none"
         },
-    };
+    }, //definitionSet
 
-    return maintenanceDefinitionSet;
-};
+}); //maintenance.definitionSet

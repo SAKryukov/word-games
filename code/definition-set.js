@@ -13,4 +13,4 @@ const shared = namespaces.create({
         version: "v.&thinsp;1.0",
         copyrightYears: "2025",
     }, //definitionSet
-});
+}); //shared.definitionSet

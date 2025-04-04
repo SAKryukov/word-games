@@ -10,7 +10,6 @@
 window.onload = () => {
 
     const elementSet = getElementSet();
-    const gameDefinitionSet = getDefinitionSet();
     elementSet.makeEqualWidth(elementSet.buttonShuffle);
 
     const sortedWordListUser = createSortedWordList(
@@ -38,9 +37,9 @@ window.onload = () => {
             elementSet.showInputTry();
             if (!gameAlgorithm.isInDictionary(event.target.value.toLowerCase()))
                 modalPopup.show(
-                    gameDefinitionSet.setWordBad(languageSelector.currentLanguage, event.target.value),
+                    game.definitionSet.setWordBad(languageSelector.currentLanguage, event.target.value),
                     null,
-                    gameDefinitionSet.WarningFormat.modalPopupOptions);
+                    game.definitionSet.warningFormat.modalPopupOptions);
         } else
             languageSelector.filterOut(event);
     }; //elementSet.input.inputSetWord.onkeypress
@@ -56,24 +55,24 @@ window.onload = () => {
                 goodSubset = true;
             if (goodSubset && inDictionary) {
                 if (!sortedWordListUser.add(trialWord))
-                    modalPopup.show(gameDefinitionSet.alreadyFound(languageSelector.currentLanguage, trialWord));
+                    modalPopup.show(game.definitionSet.alreadyFound(languageSelector.currentLanguage, trialWord));
                 else
                     event.target.value = null;
             } //if
             if (!goodSubset && !inDictionary)
-                modalPopup.show(gameDefinitionSet.trialWordDoubleBad(languageSelector.currentLanguage, trialWord)); 
+                modalPopup.show(game.definitionSet.trialWordDoubleBad(languageSelector.currentLanguage, trialWord)); 
             else {
                 if (!goodSubset)
-                    modalPopup.show(gameDefinitionSet.insufficientRepertoire(languageSelector.currentLanguage, trialWord));
+                    modalPopup.show(game.definitionSet.insufficientRepertoire(languageSelector.currentLanguage, trialWord));
                 if (!inDictionary)
-                    modalPopup.show(gameDefinitionSet.trialWordNotInDictionary(languageSelector.currentLanguage, trialWord));    
+                    modalPopup.show(game.definitionSet.trialWordNotInDictionary(languageSelector.currentLanguage, trialWord));    
             } //if
         } else
             languageSelector.filterOut(event);
     }; //elementSet.input.inputTry.onkeypress
 
     elementSet.input.inputTry.oninput = () => elementSet.showUserSolution(() => sortedWordListUser.refresh());
-    const gameIO = createGameIO(sortedWordListUser, elementSet, languageSelector, gameDefinitionSet, gameAlgorithm);
+    const gameIO = createGameIO(sortedWordListUser, elementSet, languageSelector, game.definitionSet, gameAlgorithm);
     (() => { // setup shuffle:
         elementSet.input.inputSetWord.oninput = event => {
             sortedWordListUser.reset();
@@ -109,7 +108,7 @@ window.onload = () => {
         if (showWords && !sortedWordListMachine.isEmpty)
             elementSet.showMachineSolution(() => () => sortedWordListMachine.refresh());
         if (!showWords)
-            modalPopup.show(gameDefinitionSet.machineSolution.countFormat(count));
+            modalPopup.show(game.definitionSet.machineSolution.countFormat(count));
         }; //reviewMachineSolution
     
     (() => { // contextMenu:
@@ -151,9 +150,9 @@ window.onload = () => {
             restoreFocus();
         });
         if (!gameIO) {
-            menuItemProxyApiSave.changeText(gameDefinitionSet.invalidOperation(elementSet.menuItem.saveGameInExistingFile));
-            menuItemProxyApiSaveAs.changeText(gameDefinitionSet.invalidOperation(elementSet.menuItem.saveGame));
-            menuItemProxyApiLoad.changeText(gameDefinitionSet.invalidOperation(elementSet.menuItem.loadGame));
+            menuItemProxyApiSave.changeText(game.definitionSet.invalidOperation(elementSet.menuItem.saveGameInExistingFile));
+            menuItemProxyApiSaveAs.changeText(game.definitionSet.invalidOperation(elementSet.menuItem.saveGame));
+            menuItemProxyApiLoad.changeText(game.definitionSet.invalidOperation(elementSet.menuItem.loadGame));
         } //if
         setupMenuActivator(contextMenu, elementSet.input.buttonActivateMenu);
     })(); //contextMenu

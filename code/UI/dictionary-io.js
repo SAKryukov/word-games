@@ -10,15 +10,14 @@
 const createDictionartyIO = (languageSelector, signature, suggestedInitialFileName, gameName, gameSuffix, onSave, onLoad) => {
     // callback onSave(gameData); // take game data and add game-specific info, such as secret work and word list
     // onLoad(gameData); // extract game-specific info from game data and update UI
-    
-    const ioDefinitionSet = getIoDefinitionSet();
+
     const gameIO = {};
     
     const fileIO = createFileIO(exception => {
         modalPopup.show(
-            ioDefinitionSet.IOErrorFormat.formatException(exception),
+            IO.definitionSet.IOErrorFormat.formatException(exception),
             null,
-            ioDefinitionSet.IOErrorFormat.modalPopupOptions);
+            IO.definitionSet.IOErrorFormat.modalPopupOptions);
     });
 
     if (!fileIO)
@@ -54,27 +53,27 @@ const createDictionartyIO = (languageSelector, signature, suggestedInitialFileNa
             fileIO.saveExisting(
                 defaultInitialFileName,
                 stringData,
-                ioDefinitionSet.createFileOptions(suggestedInitialFileName, gameName, gameSuffix));
+                IO.definitionSet.createFileOptions(suggestedInitialFileName, gameName, gameSuffix));
         else
             fileIO.storeTextFile(
                 defaultInitialFileName,
                 stringData,
-                ioDefinitionSet.createFileOptions(suggestedInitialFileName, gameName, gameSuffix));
+                IO.definitionSet.createFileOptions(suggestedInitialFileName, gameName, gameSuffix));
     }; //gameIO.saveGame
 
     gameIO.restoreGame = () => {
         fileIO.loadTextFile((_, text) => {
             const json = JSON.parse(text);
             if (json.signature != signature)
-                throw new ioDefinitionSet.IOErrorFormat.invalidFileTypeError(
-                    ioDefinitionSet.IOErrorFormat.invalidSignatureMessage(signature));
+                throw new IO.definitionSet.IOErrorFormat.invalidFileTypeError(
+                    IO.definitionSet.IOErrorFormat.invalidSignatureMessage(signature));
             languageSelector.setLanguage(json.metadata.language);
             languageSelector.setOptionValues(
                 json.metadata.options.acceptBlankspaceCharacters,
                 json.metadata.options.acceptPunctuationCharacters
             );
             onLoad(json);
-        }, ioDefinitionSet.createFileOptions(suggestedInitialFileName, gameName, gameSuffix));
+        }, IO.definitionSet.createFileOptions(suggestedInitialFileName, gameName, gameSuffix));
     }; //gameIO.restoreGame
 
     return gameIO;

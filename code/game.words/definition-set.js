@@ -7,50 +7,49 @@
 
 "use strict";
 
-const getDefinitionSet = () => {
-    const gameDefinitionSet = {};
+const game = namespaces.create({
 
-    gameDefinitionSet.gameIO = {
-        gameSignature: "Words game",
-        gameName: "Words",
-        gameSuffix: "words",
-        suggestedInitialFileName: "saved-words-game.words",
-    };
+    definitionSet: (() => {
 
-    gameDefinitionSet.invalidOperation = menuItemText =>
-        `${menuItemText} (not supported by this browser; please use, for example, Chromium-compatible one)`;
+        const leftQuote = language => language == dictionaries.Russian ? "&laquo;" : "&ldquo;";
+        const rightQuote = language => language == dictionaries.Russian ? "&raquo;" : "&rdquo;";
+        const notComposed = "cannot be composed based on the given character repertoire";
 
-    const leftQuote = language => language == dictionaries.Russian ? "&laquo;" : "&ldquo;";
-    const rightQuote = language => language == dictionaries.Russian ? "&raquo;" : "&rdquo;";
-    const notComposed = "cannot be composed based on the given character repertoire";
+        const gameDefinitionSet = {
+            gameIO: {
+                gameSignature: "Words game",
+                gameName: "Words",
+                gameSuffix: "words",
+                suggestedInitialFileName: "saved-words-game.words",
+            }, //gameIO
+            invalidOperation: menuItemText =>
+                `${menuItemText} (not supported by this browser; please use, for example, Chromium-compatible one)`,
+            setWordBad: (language, value) =>
+                `<p>Warning:</p><p>${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary</p>`,
+            warningFormat: {
+                modalPopupOptions: {
+                    textAlign: "center",
+                    textLineColor: { message: "darkRed", },
+                },
+            },
+            machineSolution: {
+                countFormat: count =>
+                    count == 0
+                        ? `No words found`
+                        : `Found ${count} word${count == 1 ? "" : "s"}`,
+            },
+            trialWordNotInDictionary: (language, value) =>
+                `${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary`,
+            alreadyFound: (language, value) =>
+                `${leftQuote(language)}${value}${rightQuote(language)} is already found`,
+            insufficientRepertoire: (language, value) =>
+                `The word ${leftQuote(language)}${value}${rightQuote(language)} ${notComposed}`,
+            trialWordDoubleBad: (language, value) =>
+                `<p>${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary.<p><p>The word ${notComposed}.</p>`
+        };
+    
+        return gameDefinitionSet;  
+    
+    })(), //definitionSet
 
-    gameDefinitionSet.setWordBad = (language, value) =>
-        `<p>Warning:</p><p>${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary</p>`;
-    gameDefinitionSet.WarningFormat = {
-        modalPopupOptions: {
-            textAlign: "center",
-            textLineColor: { message: "darkRed", },
-        },
-    };
-
-    gameDefinitionSet.machineSolution = {
-        countFormat: count =>
-            count == 0
-                ? `No words found`
-                : `Found ${count} word${count == 1 ? "" : "s"}`,
-    }, //gameDefinitionSet.machineSolution
-
-        gameDefinitionSet.trialWordNotInDictionary = (language, value) =>
-            `${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary`;
-
-    gameDefinitionSet.alreadyFound = (language, value) =>
-        `${leftQuote(language)}${value}${rightQuote(language)} is already found`;
-
-    gameDefinitionSet.insufficientRepertoire = (language, value) =>
-        `The word ${leftQuote(language)}${value}${rightQuote(language)} ${notComposed}`;
-
-    gameDefinitionSet.trialWordDoubleBad = (language, value) =>
-        `<p>${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary.<p><p>The word ${notComposed}.</p>`;
-
-    return gameDefinitionSet;
-};
+}); //game.definitionSet

@@ -27,7 +27,6 @@ window.onload = () => {
 			return JSON.stringify(anObject);
 	}; //stringify
 
-	const maintenanceDefinitionSet = getMaintenanceDefinitionSet();
 	const elementSet = getElementSet(null);
 	const languageSelector =
 		createLanguageSelector(elementSet.input.languageSet, null, null);
@@ -81,7 +80,7 @@ window.onload = () => {
 				dictionary.indexedByLength[word.length].push(index);
 			} //loop
 			const json = stringify(dictionary);
-			navigator.clipboard.writeText(maintenanceDefinitionSet.codeWrap(dictionary.languageName, json));
+			navigator.clipboard.writeText(maintenance.definitionSet.codeWrap(dictionary.languageName, json));
 			return {
 				removedWords: removedWords,
 				notRemovedWords: notRemovedWords,
@@ -92,7 +91,7 @@ window.onload = () => {
 		}; //removeAddWords
 		const getWords = value => {
 			const result = [];
-			const words = value.split(maintenanceDefinitionSet.lexicalSet.delimiter);
+			const words = value.split(maintenance.definitionSet.lexicalSet.delimiter);
 			for (let word of words) {
 				const testWord = word.trim();
 				if (testWord.length > 0)
@@ -107,9 +106,9 @@ window.onload = () => {
 		const showResult = (parent, input, value) => {
 			parent.style.display = 
 				value != null && value.length > 0
-					? maintenanceDefinitionSet.visibility.shown
-					: maintenanceDefinitionSet.visibility.hidden;
-			input.value = value.join(maintenanceDefinitionSet.outputDelimiter);
+					? maintenance.definitionSet.visibility.shown
+					: maintenance.definitionSet.visibility.hidden;
+			input.value = value.join(maintenance.definitionSet.outputDelimiter);
 		};
 		showResult(elementSet.output.containerRemovedWords, elementSet.output.valueRemovedWords, removedWords);
 		showResult(elementSet.output.containerNotRemovedWords, elementSet.output.valueNotRemovedWords, notRemovedWords);
@@ -121,9 +120,9 @@ window.onload = () => {
 	elementSet.input.buttonStart.onclick = () => {
 		dictionaryMainenance();
 		modalPopup.show(
-			maintenanceDefinitionSet.resultHTML,
+			maintenance.definitionSet.resultHTML,
 			null,
-			{dimmerOpacity: maintenanceDefinitionSet.resultDimmerOpacity});
+			{dimmerOpacity: maintenance.definitionSet.resultDimmerOpacity});
 	}; //elementSet.input.buttonStart.onclick
 
 }; //window.onload

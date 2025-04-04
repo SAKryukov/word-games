@@ -9,9 +9,8 @@
 
 window.onload = () => {
 
-    const gameDefinitionSet = getGameDefinitionSet();
-    const elementSet = getElementSet(gameDefinitionSet);
-    const tableInput = createTableInput(null, elementSet.main, null, null, true, gameDefinitionSet.emptyCell);
+    const elementSet = getElementSet(game.definitionSet);
+    const tableInput = createTableInput(null, elementSet.main, null, null, true, game.definitionSet.emptyCell);
     elementSet.main.appendChild(tableInput.tableElement);
 
     const languageSelector =
@@ -25,8 +24,8 @@ window.onload = () => {
             tableInput.enableCell(x, row, false);
             tableInput.setReadonly(x, row, true);
         } //loop
-        tableInput.putCharacter(tableInput.width - 2, row, gameDefinitionSet.images.total);
-        tableInput.putCharacter(tableInput.width - 1, row, gameDefinitionSet.images.bull);
+        tableInput.putCharacter(tableInput.width - 2, row, game.definitionSet.images.total);
+        tableInput.putCharacter(tableInput.width - 1, row, game.definitionSet.images.bull);
     } //newRowHandler
 
     let secretWord = null;
@@ -34,7 +33,7 @@ window.onload = () => {
     const gameReset = starting => {
         elementSet.score.textContent = 0;
         const wordLength =
-            gameDefinitionSet.input.wordLength.valueFromIndex(
+            game.definitionSet.input.wordLength.valueFromIndex(
                 elementSet.input.wordLength.selectedIndex);
         tableInput.reset(wordLength + 2, 1);
         newRowHandler();
@@ -42,14 +41,14 @@ window.onload = () => {
             tableInput.select(0, 0);
         tableInput.focus();
         if (starting) {
-            elementSet.message = gameDefinitionSet.input.messages.promptEnterTrialWordInitial;
+            elementSet.message = game.definitionSet.input.messages.promptEnterTrialWordInitial;
             secretWord = gameAlgorithm.pickRandomWord(wordLength);
         } else
             secretWord = null;
     } //gameReset
     gameReset();
-    for (let index = 0; index < gameDefinitionSet.sample.length; ++index)
-        tableInput.putCharacter(index, 0, gameDefinitionSet.sample[index]);    
+    for (let index = 0; index < game.definitionSet.sample.length; ++index)
+        tableInput.putCharacter(index, 0, game.definitionSet.sample[index]);    
 
     tableInput.characterInputCallback = (cell, event) => {
         if (languageSelector.filterOut(event)) {
@@ -62,17 +61,17 @@ window.onload = () => {
             return;
         const row = tableInput.height - 1;
         if (!tableInput.isRowFilledIn(row)) {
-            elementSet.message = gameDefinitionSet.input.messages.notFilledRow;
+            elementSet.message = game.definitionSet.input.messages.notFilledRow;
             return;
         } else
-            elementSet.message = gameDefinitionSet.input.messages.promptEnterTrialWord;
-        let guessWord = gameDefinitionSet.empty;
+            elementSet.message = game.definitionSet.input.messages.promptEnterTrialWord;
+        let guessWord = game.definitionSet.empty;
         for (let index = 0; index < tableInput.width - 2; ++index)
             guessWord += tableInput.getCharacter(index, row);
         const evaluation = gameAlgorithm.evaluateBullsAndCowsSolution(secretWord, guessWord);
         if (!gameAlgorithm.isInDictionary(guessWord)) {
             elementSet.message = 
-                gameDefinitionSet.input.messages.badWord(guessWord,
+                game.definitionSet.input.messages.badWord(guessWord,
                     languageSelector.currentLanguage.characterRepertoire.quotes);
             return;
         } //if
@@ -80,7 +79,7 @@ window.onload = () => {
         tableInput.putCharacter(tableInput.width - 1, row, evaluation.bulls);
         if (evaluation.bulls == secretWord.length) {
             elementSet.input.onButtonStartStopToggle();
-            elementSet.message = gameDefinitionSet.input.messages.congratulations;
+            elementSet.message = game.definitionSet.input.messages.congratulations;
             tableInput.setReadonlyRow(row, 0, tableInput.width - 2, true);
             return;
         } //if
@@ -100,7 +99,7 @@ window.onload = () => {
     } //elementSet.input.buttonStartStop.onclick
 
     (() => { //menu:
-        const gameIO = createGameIO(gameDefinitionSet, languageSelector,
+        const gameIO = createGameIO(game.definitionSet, languageSelector,
             gameData => { //onSave:
                 gameData.secretWord = gameIO.restoreGame.obfuscate(secretWord);
                 gameData.moves = tableInput.text;
@@ -124,7 +123,7 @@ window.onload = () => {
                 newRowHandler();
                 tableInput.select(gameData.selection[0], gameData.selection[1]);
                 elementSet.input.wordLength.selectedIndex =
-                    gameDefinitionSet.input.wordLength.indexFromValue(tableInput.width - 2);
+                    game.definitionSet.input.wordLength.indexFromValue(tableInput.width - 2);
                 if (elementSet.isButtonStartReady) {
                     elementSet.input.onButtonStartStopToggle();
                 } //if
@@ -163,11 +162,11 @@ window.onload = () => {
             modalPopup.show(
                 secretWord.toUpperCase(),
                 [{
-                    text: gameDefinitionSet.revealSecretWordPopup.buttonText,
+                    text: game.definitionSet.revealSecretWordPopup.buttonText,
                     default: true, escape: true,
                     action: () => tableInput.focus()
                 }],
-                { textAlign: gameDefinitionSet.revealSecretWordPopup.textAlign },
+                { textAlign: game.definitionSet.revealSecretWordPopup.textAlign },
                 () => tableInput.focus()); 
         });
         //elementSet.isButtonStartReady

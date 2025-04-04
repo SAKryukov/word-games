@@ -33,15 +33,6 @@ const getDefinitionSet = () => {
         },
     };
 
-    gameDefinitionSet.dictionaryMaintenance = {
-        urlKeyword: "maintenance", // use in the browser address line: ...words.html?maintenance
-        menuItemText: "Dictionary Maintenance",
-        createOption: () => document.createElement("option"),
-        maitenanceCompletionMessage: function () {
-            return `<p>${this.menuItemText} complete.</p><p>The resulting dictionary definition is in the clipboard.</p>`;
-        },
-    }; //gameDefinitionSet.dictionaryMaintenance
-
     gameDefinitionSet.machineSolution = {
         countFormat: count =>
             count == 0

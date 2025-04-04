@@ -3,38 +3,24 @@
 
 <head>
   <title>Dictionary Maintenance</title>
-  <script src="../agnostic.UI/table-Input.js"></script>
   <script src="../agnostic.UI/modal-popup.js"></script>
-  <script src="../agnostic.UI/menu.js"></script>
-  <script src="../agnostic.UI/file-io.js"></script>
-  <script src="../agnostic.UI/checked-list-box.js"></script>
   <script src="../definition-set.js"></script>
   <script src="../Dictionaries/ru.js"></script>
   <script src="../Dictionaries/en.js"></script>
   <script src="../Dictionaries/dictionaries.js"></script>
   <script src="../UI/definition-set.js"></script>
   <script src="../UI/language-selector.js"></script>
-  <script src="../UI/game-algorithms.js"></script>
   <script src="../UI/shared-element-set.js"></script>
-  <script src="../UI/menu-activator.js"></script>
-  <script src="../UI/dictionary-io.js"></script>
   <script src="definition-set.js"></script>
   <script src="element-set.js"></script>
   <script src="main.js"></script>
   <style>
     @import url("../css/flex.css");
-    * { font-family: sans-serif; }
-    :root {
-      --deltaX: 1em;
-      --deltaY: 0.2em;
-      --smallDeltaX: 0.2em;
-      --menuPaddingY: 0.3em;
-      --border: solid thin darkGray;
-    }
+    @import url("../css/game.css");
     input { width: 100%; }
-    header, main, button, input, option, footer { padding-left: var(--deltaX); padding-right: var(--deltaX); }
-    main { margin-top: 1em; }
     p { margin-top: var(--deltaY); }
+    main p { display: none; }
+    button:focus { outline: solid 2px black; outline-offset: 2px; }
 </style>
 </head>
 
@@ -45,9 +31,6 @@
     <section>
       <u>L</u>anguage:<br/><select accesskey="l" id="language"></select>
     </section>
-  </header>
-
-  <main>
     <p>
       <input id="to-remove" placeholder="Comma-separated list of words to remove from dictionary"></input>
     </p>
@@ -56,6 +39,29 @@
     </p>
     <p>
       <button id="button-start" accesskey="u"><u>U</u>pdate dictionary</button>
+    </p>
+  </header>
+
+  <main>
+    <p id="removed-words">
+      Removed words:
+      <input disabled="true"></input>
+    </p>
+    <p id="not-removed-words">
+      Not removed words, because they were not found:
+      <input disabled="true"></input>
+    </p>
+    <p id="added-words">
+      Added words:
+      <input disabled="true"></input>
+    </p>
+    <p id="already-added-words">
+      Not added words, because they were already in the dictionary:
+      <input disabled="true"></input>
+    </p>
+    <p id="bad-words">
+      Not added words, because contain characters not in the dictionary character repertoire:
+      <input disabled="true"></input>
     </p>
   </main>
 

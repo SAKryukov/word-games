@@ -113,14 +113,11 @@ window.onload = () => {
         }; //reviewMachineSolution
     
     (() => { // contextMenu:
-        const dictionaryMaintenanceStarter = createDictionaryMaintenanceStarter(gameDefinitionSet);
         const restoreFocus = () => {
             elementSet.input.inputSetWord.focus();
             elementSet.input.inputTry.focus();
         }; //restoreFocus
-        dictionaryMaintenanceStarter.prepareMenu(elementSet.input.menu);
         const contextMenu = new menuGenerator(elementSet.input.menu);
-        dictionaryMaintenanceStarter.subsribe(contextMenu);
         contextMenu.subscribe(elementSet.menuItem.viewMachineSolutionCount, actionRequest => {
             if (!actionRequest) return true; 
             reviewMachineSolution(false);

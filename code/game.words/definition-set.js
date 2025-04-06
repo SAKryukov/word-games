@@ -11,8 +11,8 @@ const game = namespaces.create({
 
     definitionSet: (() => {
 
-        const leftQuote = language => language == dictionaries.Russian ? "&laquo;" : "&ldquo;";
-        const rightQuote = language => language == dictionaries.Russian ? "&raquo;" : "&rdquo;";
+        const leftQuote = language => language.characterRepertoire.quotes[0];
+        const rightQuote = language => language.characterRepertoire.quotes[1];
         const notComposed = "cannot be composed based on the given character repertoire";
 
         const gameDefinitionSet = {

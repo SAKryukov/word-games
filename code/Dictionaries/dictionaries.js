@@ -8,6 +8,7 @@
 "use strict";
 
 const dictionaries = { "English": English, "Russian": Russian };
+
 const dictionaryIndex = (() => {
     const indexedByCulture = {};
     for (let index in dictionaries)
@@ -16,4 +17,5 @@ const dictionaryIndex = (() => {
     Object.freeze(indexedByCulture);
     Object.freeze(dictionaries);
     Object.freeze(result);
+    return result;
 })();

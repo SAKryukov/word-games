@@ -80,7 +80,7 @@ window.onload = () => {
 				dictionary.indexedByLength[word.length].push(index);
 			} //loop
 			const json = stringify(dictionary);
-			navigator.clipboard.writeText(maintenance.definitionSet.codeWrap(dictionary.languageName, json));
+			navigator.clipboard.writeText(maintenance.definitionSet.codeWrap(json));
 			return {
 				removedWords: removedWords,
 				notRemovedWords: notRemovedWords,

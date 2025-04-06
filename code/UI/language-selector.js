@@ -56,22 +56,20 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
     }; //filterOut
 
     (() => { // populate language set:
-        let indexedDictionaries = [];
         let count = 0;
-        for (let index in dictionaries) {
-            const dictionary = dictionaries[index];
-            indexedDictionaries.push(dictionary);
+        for (let index in dictionaries.list) {
+            const dictionary = dictionaries.list[index];
             const option = localDefinitionSet.createOption();
             option.value = dictionary.languageName;
-            option.textContent = index;
+            option.textContent = dictionary.languageName;
             selectLanguageElement.appendChild(option);
             ++count;
         } //loop
         selectLanguageElement.selectedIndex = 0;
         selectLanguageElement.size = count;
-        selectedLanguage = indexedDictionaries[selectLanguageElement.selectedIndex];
+        selectedLanguage = dictionaries.list[selectLanguageElement.selectedIndex];
         selectLanguageElement.onchange = event => {
-            selectedLanguage = indexedDictionaries[event.target.selectedIndex];
+            selectedLanguage = dictionaries.list[event.target.selectedIndex];
             setRepertoire();
             if (onLanguagechange)
                 onLanguagechange();
@@ -106,13 +104,12 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
     } //languageSelector.setOptionValues
 
     languageSelector.setLanguage = languageName => {
-        selectedLanguage = dictionaries[languageName];
-        let index = 0;
-        for (let key in dictionaries) {
-            if (key == languageName) break;
-            ++index;
-        } //loop
-        selectLanguageElement.selectedIndex = index;
+        for (let index in dictionaries.list)
+            if (dictionaries.list[index].languageName == languageName) {
+                selectLanguageElement.selectedIndex = index;
+                selectedLanguage = dictionaries.list[index];
+                break;
+            } //if
         setRepertoire();
     } //languageSelector.setLanguage
 

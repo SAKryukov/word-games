@@ -12,8 +12,8 @@ const maintenance = namespaces.create({
     definitionSet: {
         resultHTML: "<p>Dictionary maitenance complete.</p><p>The resulting dictionary definition is in the clipboard.</p>",
         resultDimmerOpacity: 0.3,
-		codeWrap: (languageName, json) =>
-            `"use strict";\nconst ${languageName} =\n${json};`,
+		codeWrap: json =>
+            `"use strict";\ndictionaries.add(\n${json});`,
         lexicalSet: {
             delimiter: ",",
             keyValuePair: (key, value) => `${key}:${value}`,

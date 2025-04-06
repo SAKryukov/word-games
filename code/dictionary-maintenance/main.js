@@ -81,13 +81,6 @@ window.onload = () => {
 			} //loop
 			const json = stringify(dictionary);
 			navigator.clipboard.writeText(maintenance.definitionSet.codeWrap(json));
-			return {
-				removedWords: removedWords,
-				notRemovedWords: notRemovedWords,
-				addedWords: addedWords,
-				badWords: badWords,
-				alreadyAdded: alreadyAdded,	
-			}
 		}; //removeAddWords
 		const getWords = value => {
 			const result = [];
@@ -99,7 +92,7 @@ window.onload = () => {
 			} //loop
 			return result;
 		}; //getWords
-	    const result = removeAddWords(
+	    removeAddWords(
 			getWords(elementSet.input.wordsToRemove.value),
 			getWords(elementSet.input.wordsToAdd.value)
 		);

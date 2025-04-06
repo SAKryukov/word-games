@@ -34,6 +34,12 @@ const dictionary = namespaces.create({
                     blankSpace: 0,
                     quotes: 0,
             }, //propertyName
+            notUnique: {
+                dictionary: languageName =>
+                    `Dictionary "${languageName}" already exists`,
+                dictionaryName: languageName =>
+                    `Dictionary with the name "${languageName}" already exists`,
+            },
             alertText: (message, script) =>
                 `${message}\n\nFix the script\n${script}`,
             alertTextUnknownScript: message =>

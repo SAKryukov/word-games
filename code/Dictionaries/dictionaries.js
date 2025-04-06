@@ -9,6 +9,7 @@
 
 const dictionaries = (() => {
 
+    const set = new Set();
     const list = [];
     const byName = {};
     const byCulture = {};
@@ -73,6 +74,10 @@ const dictionaries = (() => {
                         dictionary.definitionSet.propertyName.quotes));
             if (dictionaryInstance.characterRepertoire.quotes.length < 2)
                 stopAll(dictionary.definitionSet.invalidDictionary.quotesLength(dictionaryInstance.languageName));
+            if (set.has(dictionaryInstance))
+                stopAll(dictionary.definitionSet.notUnique.dictionary(dictionaryInstance.languageName));
+            if (byName[dictionaryInstance.languageName])
+                stopAll(dictionary.definitionSet.notUnique.dictionaryName(dictionaryInstance.languageName));
         } catch (ex) {
             alert(ex.message);
         } //exception
@@ -81,6 +86,7 @@ const dictionaries = (() => {
     const add = dictionary => {
         testDictionary(dictionary);
         list.push(dictionary);
+        set.add(dictionary);
         byName[dictionary.languageName] = dictionary;
         byCulture[dictionary.culture] = dictionary;
     }; //add
@@ -88,6 +94,7 @@ const dictionaries = (() => {
     const dictinaries = namespaces.create({
         add: add,
         list: list,
+        set: set,
         byName: byName,
         byCulture: byCulture,
     }, false);

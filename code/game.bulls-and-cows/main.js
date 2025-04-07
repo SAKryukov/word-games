@@ -69,7 +69,7 @@ window.onload = () => {
         for (let index = 0; index < tableInput.width - 2; ++index)
             guessWord += tableInput.getCharacter(index, row);
         const evaluation = gameAlgorithm.evaluateBullsAndCowsSolution(secretWord, guessWord);
-        if (!gameAlgorithm.isInDictionary(guessWord)) {
+        if (languageSelector.currentLanguage.characterRepertoire.letters.length > 0 && !gameAlgorithm.isInDictionary(guessWord)) {
             elementSet.message = 
                 game.definitionSet.input.messages.badWord(guessWord,
                     languageSelector.currentLanguage.characterRepertoire.quotes);

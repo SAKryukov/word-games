@@ -85,6 +85,15 @@ const getGameAlgorithm = languageSelector => {
             const index = indexArray[randomIndex];
             return languageSelector.currentLanguage.alphabetical[index];  
         }; // generateIt
+        const generateNumber = () => {
+            let characters = languageSelector.repertoire;
+            const result = [];
+            for (let index = 0; index < length; ++index)
+                result.push(characters[Math.floor(Math.random() * characters.length)]);
+            return result.join("");
+        }; //generateNumber
+        if (languageSelector.currentLanguage.characterRepertoire.letters.length == 0)
+            return generateNumber();
         let word = null;
         while (true) {
             word = generateIt();

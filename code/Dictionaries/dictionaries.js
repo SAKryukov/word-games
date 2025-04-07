@@ -34,12 +34,6 @@ const dictionaries = (() => {
                 stopAll(
                     dictionary.definitionSet.invalidDictionary.property(dictionaryInstance.languageName,
                         dictionary.definitionSet.propertyName.culture));
-            if (!dictionaryInstance.alphabetical)
-                stopAll(dictionary.definitionSet.invalidDictionary.alphabetical(dictionaryInstance.languageName));
-            if (!dictionaryInstance.indexedByLength)
-                stopAll(
-                    dictionary.definitionSet.invalidDictionary.property(dictionaryInstance.languageName,
-                        dictionary.definitionSet.propertyName.indexedByLength));
             if (!dictionaryInstance.characterRepertoire)
                 stopAll(
                     dictionary.definitionSet.invalidDictionary.property(dictionaryInstance.languageName,
@@ -52,14 +46,22 @@ const dictionaries = (() => {
                 stopAll(
                     dictionary.definitionSet.invalidDictionary.property(dictionaryInstance.languageName,
                         dictionary.definitionSet.propertyName.letters));
-            if (dictionaryInstance.characterRepertoire.vowels == null)
-                stopAll(
-                    dictionary.definitionSet.invalidDictionary.property(dictionaryInstance.languageName,
-                        dictionary.definitionSet.propertyName.vowels));
-            if (dictionaryInstance.characterRepertoire.consonants == null)
-                stopAll(
-                    dictionary.definitionSet.invalidDictionary.property(dictionaryInstance.languageName,
-                        dictionary.definitionSet.propertyName.consonants));
+            if (dictionaryInstance.characterRepertoire.letters.length > 0) {
+                if (dictionaryInstance.characterRepertoire.vowels == null)
+                    stopAll(
+                        dictionary.definitionSet.invalidDictionary.property(dictionaryInstance.languageName,
+                            dictionary.definitionSet.propertyName.vowels));
+                if (dictionaryInstance.characterRepertoire.consonants == null)
+                    stopAll(
+                        dictionary.definitionSet.invalidDictionary.property(dictionaryInstance.languageName,
+                            dictionary.definitionSet.propertyName.consonants));
+                if (!dictionaryInstance.alphabetical)
+                    stopAll(dictionary.definitionSet.invalidDictionary.alphabetical(dictionaryInstance.languageName));
+                if (!dictionaryInstance.indexedByLength)
+                    stopAll(
+                        dictionary.definitionSet.invalidDictionary.property(dictionaryInstance.languageName,
+                            dictionary.definitionSet.propertyName.indexedByLength));
+            } //if letters
             if (dictionaryInstance.characterRepertoire.punctuation == null)
                 stopAll(
                     dictionary.definitionSet.invalidDictionary.property(dictionaryInstance.languageName,

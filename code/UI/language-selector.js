@@ -36,11 +36,17 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
             get() { return selectedLanguage; },
             enumerable: true, 
         },
+        repertoire: {
+            get() { return repertoire; },
+            enumerable: true, 
+        },
     }); //languageSelector.defineProperties options
 
     const setRepertoire = () => {
-        repertoire = selectedLanguage.characterRepertoire.letters;
-        repertoire += repertoire.toUpperCase();
+        let isDigits = selectedLanguage.characterRepertoire.letters.length == 0;
+        repertoire = isDigits
+            ? selectedLanguage.characterRepertoire.digits
+            : selectedLanguage.characterRepertoire.letters;
         if (acceptBlankspaceCharacters)
             repertoire += selectedLanguage.characterRepertoire.blankSpace;
         if (acceptPunctuationCharacters)
@@ -50,7 +56,9 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
     languageSelector.filterOut = event => {
 		const char = event.key;
         if (!char || char.length != 1) return false;
-		if (repertoire.indexOf(char) >= 0) return true;
+		if (repertoire.indexOf(char) >= 0 ||
+            repertoire.indexOf(char.toUpperCase()) > 0)
+                return true;
 		if (event.preventDefault) event.preventDefault();
 		return false;
     }; //filterOut
@@ -66,7 +74,8 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
             ++count;
         } //loop
         selectLanguageElement.selectedIndex = 0;
-        selectLanguageElement.size = count;
+        if (!selectLanguageElement.size)
+            selectLanguageElement.size = count;
         selectedLanguage = dictionaries.list[selectLanguageElement.selectedIndex];
         selectLanguageElement.onchange = event => {
             selectedLanguage = dictionaries.list[event.target.selectedIndex];

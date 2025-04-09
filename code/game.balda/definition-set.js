@@ -16,6 +16,10 @@ const game = namespaces.create({
 			gameSuffix: "balda",
 			suggestedInitialFileName: "balda-game.balda",
 		}, //gameIO
+		tooltip: {
+			elementTag: "div",
+			cssClass: "tooltip",
+		}, //tooltip
 		welcome: "Welcome to Balda!",
 		input: {
 			wordLength: {

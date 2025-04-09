@@ -9,6 +9,8 @@
 
 window.onload = () => {
 
+    createTooltip(maintenance.definitionSet.tooltip.elementTag, maintenance.definitionSet.tooltip.cssClass);
+
 	const stringify = anObject => {
 		if (anObject instanceof Array) {
 			const elements = [];

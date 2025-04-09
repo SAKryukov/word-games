@@ -9,6 +9,8 @@
 
 window.onload = () => {
 
+    createTooltip(game.definitionSet.tooltip.elementTag, game.definitionSet.tooltip.cssClass);
+
     const elementSet = getElementSet(game.definitionSet);
     const tableInput = createTableInput(null, elementSet.main, 1, 1, false);
     elementSet.main.appendChild(tableInput.tableElement);

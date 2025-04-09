@@ -4,6 +4,7 @@
 <head>
   <title>Balda game</title>
   <script src="agnostic/readonly-namespaces.js"></script>
+  <script src="agnostic.UI/tooltip.js"></script> 
   <script src="agnostic.UI/table-Input.js"></script>
   <script src="agnostic.UI/modal-popup.js"></script>
   <script src="agnostic.UI/menu.js"></script>
@@ -52,6 +53,7 @@
     p { margin-bottom: 0.4em; }
     table { margin-top: 0.6em; font-size: 140%; }
     #buttonStartStop:focus { outline: solid 2px black; outline-offset: 2px; }
+    .tooltip { background-color: lightcyan; border-color: blue; color: brown; }
 </style>
 </head>
 
@@ -73,7 +75,7 @@
     </section>
     </p>
     <section>
-      <button id="button-activate-menu" title="Context menu:  advanced...">⋯</button>
+      <button id="button-activate-menu" title="Context menu: advanced&hellip;">⋯</button>
     </section>
     <p class="message"><span id="message">Start game</span><span>Character count: <span id="score">0</span></span></p>
   </header>

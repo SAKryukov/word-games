@@ -22,6 +22,10 @@ const game = namespaces.create({
                 gameSuffix: "words",
                 suggestedInitialFileName: "saved-words-game.words",
             }, //gameIO
+			tooltip: {
+				elementTag: "div",
+				cssClass: "tooltip",
+			}, //tooltip
             invalidOperation: menuItemText =>
                 `${menuItemText} (not supported by this browser; please use, for example, Chromium-compatible one)`,
             setWordBad: (language, value) =>

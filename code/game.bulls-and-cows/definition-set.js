@@ -48,5 +48,9 @@ const game = namespaces.create({
 		}, //images
 		empty: "",
 		sample: "TRY",
-	}, //definitionSet
+		tooltip: {
+			elementTag: "div",
+			cssClass: "tooltip",
+		}, //tooltip
+}, //definitionSet
 }); //game.definitionSet

@@ -24,6 +24,10 @@ const maintenance = namespaces.create({
             shown: "block",
             hidden: "none"
         },
-    }, //definitionSet
+        tooltip: {
+            elementTag: "div",
+            cssClass: "tooltip",
+        }, //tooltip
+}, //definitionSet
 
 }); //maintenance.definitionSet

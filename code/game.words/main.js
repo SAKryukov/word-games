@@ -9,6 +9,8 @@
 
 window.onload = () => {
 
+    createTooltip(game.definitionSet.tooltip.elementTag, game.definitionSet.tooltip.cssClass);
+
     const elementSet = getElementSet();
     elementSet.makeEqualWidth(elementSet.buttonShuffle);
 

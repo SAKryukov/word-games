@@ -14,6 +14,7 @@
 <head>
   <title>Words Game</title>
   <script src="agnostic/readonly-namespaces.js"></script>
+  <script src="agnostic.UI/tooltip.js"></script> 
   <script src="agnostic.UI/modal-popup.js"></script>
   <script src="agnostic.UI/menu.js"></script>
   <script src="agnostic.UI/sorted-word-list.js"></script>
@@ -71,7 +72,7 @@
         <u>O</u>ptions:<br /><select accesskey="o" id="options"></select>
       </section>
       <section>
-        <button id="button-activate-menu" title="Context menu:  advanced...">⋯</button>
+        <button id="button-activate-menu" title="Context menu: advanced&hellip;">⋯</button>
       </section>
     </p>    
     <p class="pre-shuffle">
@@ -80,8 +81,8 @@
     </p>
     <p>
       <button id="button-shuffle" title="Shuffle: Alt+U, Reset: Alt+R">♻</button>
-      <span id="text-shuffle" title="Hint:  shuffled word"></span>
-      <span id="text-classify" title="Hint:  word characters classified into vowels, consonants, etc., and ordered"></span>
+      <span id="text-shuffle" title="Hint: shuffled word"></span>
+      <span id="text-classify" title="Hint: word characters classified into vowels, consonants, etc., and ordered"></span>
     </p>
     <p>
       <input id="input-try" placeholder="Enter word to try, press Enter"></input>

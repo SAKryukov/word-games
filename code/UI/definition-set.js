@@ -40,10 +40,8 @@ const IO = namespaces.create({
             invalidSignatureMessage: signature => `Invalid file signature: ${signature}`,
             invalidFileTypeError: InvalidFileTypeError,
         }; //ioDefinitionSet.IOErrorFormat   
-        
+
         return ioDefinitionSet;
 
     })(), //definitionSet
 }); //IO.definitionSet
-
-

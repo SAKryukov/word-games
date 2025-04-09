@@ -9,7 +9,8 @@
 
 window.onload = () => {
 
-    createTooltip(game.definitionSet.tooltip.elementTag, game.definitionSet.tooltip.cssClass);
+    const tooltip =
+        createTooltip(game.definitionSet.tooltip.elementTag, game.definitionSet.tooltip.cssClass);
 
     const elementSet = getElementSet(game.definitionSet);
     const tableInput = createTableInput(null, elementSet.main, 1, 1, false);
@@ -21,7 +22,7 @@ window.onload = () => {
     }; //selectingCallback
 
     const languageSelector =
-        createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, () => {
+        createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, tooltip, () => {
     });
     const gameAlgorithm = getGameAlgorithm(languageSelector);
 

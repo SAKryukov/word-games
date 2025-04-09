@@ -8,7 +8,7 @@
 "use strict";
 
 const setupCheckedListBox = (selectElement, defaultValues, modificationCallback) => {
-    // modificationCallback(number index, string textContent, bool value)
+    // modificationCallback(number index, string textContent, bool value, bool initial)
 
     const emptyBallotPrefix = `${String.fromCodePoint(0x2610)} `;
     const checkedBallotPrefix = `${String.fromCodePoint(0x2611)} `;
@@ -18,13 +18,13 @@ const setupCheckedListBox = (selectElement, defaultValues, modificationCallback)
     const optionMap = new Map();
     const optionIndex = [];
 
-    const setOption = (option, mapValue) => {
+    const setOption = (option, mapValue, initial) => {
         if (mapValue.value)
             option.textContent = checkedBallotPrefix + mapValue.textContent;
         else
             option.textContent = emptyBallotPrefix + mapValue.textContent;
         if (modificationCallback)
-            modificationCallback(mapValue.index, mapValue.textContent, mapValue.value);
+            modificationCallback(mapValue.index, mapValue.textContent, mapValue.value, initial);
     }; //setOption
 
     const toggleOption = option => {
@@ -39,7 +39,8 @@ const setupCheckedListBox = (selectElement, defaultValues, modificationCallback)
         const mapValue = { value: value, index: index, textContent: option.textContent };
         optionMap.set(option, mapValue);
         optionIndex.push(option);
-        setOption(option, mapValue);
+        const initial = true;
+        setOption(option, mapValue, initial);
         option.ondblclick = event =>
             toggleOption(event.target);
     } //loop

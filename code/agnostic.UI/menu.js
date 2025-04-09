@@ -502,7 +502,7 @@ function menuGenerator (container) {
                         new CustomEvent(event.key, { detail: data }));
             } //switch
         }; //selectElement.onkeydown
-        selectElement.onblur = event => {
+        selectElement.addEventListener("blur", event => {
             if (!isContextMenu) {
                 const data = elementMap.get(event.target);
                 select(data.element, false);    
@@ -510,7 +510,7 @@ function menuGenerator (container) {
                 else event.target.style.display = definitionSet.css.hide;
             if (onBlurHandler)
                 onBlurHandler(event);
-        } //selectElement.onblur
+        }); //selectElement.onblur
     let optionIndex = 0, optionSize = 0;
         const optionHandler = event => {
             if (event.target.disabled) return;

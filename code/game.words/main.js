@@ -9,7 +9,8 @@
 
 window.onload = () => {
 
-    createTooltip(game.definitionSet.tooltip.elementTag, game.definitionSet.tooltip.cssClass);
+    const tooltip =
+        createTooltip(game.definitionSet.tooltip.elementTag, game.definitionSet.tooltip.cssClass);
 
     const elementSet = getElementSet();
     elementSet.makeEqualWidth(elementSet.buttonShuffle);
@@ -23,7 +24,7 @@ window.onload = () => {
         wordCount => elementSet.count.textContent = wordCount);
     
     const languageSelector =
-        createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, () => {
+        createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, tooltip, () => {
             // on language change:
             elementSet.input.inputSetWord.value = null;
             elementSet.input.inputTry.value = null; 

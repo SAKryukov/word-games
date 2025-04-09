@@ -9,14 +9,15 @@
 
 window.onload = () => {
 
-    createTooltip(game.definitionSet.tooltip.elementTag, game.definitionSet.tooltip.cssClass);
+    const tootip =
+        createTooltip(game.definitionSet.tooltip.elementTag, game.definitionSet.tooltip.cssClass);
 
     const elementSet = getElementSet(game.definitionSet);
     const tableInput = createTableInput(null, elementSet.main, null, null, true, game.definitionSet.emptyCell);
     elementSet.main.appendChild(tableInput.tableElement);
 
     const languageSelector =
-        createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, () => {
+        createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, tootip, () => {
     });
     const gameAlgorithm = getGameAlgorithm(languageSelector);
 

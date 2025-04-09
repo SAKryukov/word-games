@@ -41,7 +41,7 @@ const createTooltip = (elementTag, cssClass, /* SA??? */ hideDelay, showDelay = 
                         position = 0;
                     element.style.right = toPixel(position); 
                 } else {
-                    position = toPixel(location.right);
+                    position = location.right;
                     if (position > window.innerWidth - elementSize.width)
                         position = window.innerWidth - elementSize.width;
                     element.style.left = toPixel(position); 
@@ -63,17 +63,17 @@ const createTooltip = (elementTag, cssClass, /* SA??? */ hideDelay, showDelay = 
                     position = window.innerHeight - elementSize.height;
                 element.style.top = toPixel(position);
             } //if
-        } //!horisonatal
+        } //!horisontal
         let position;
         if (horizontal) {
-            position = y;
+            position = y == undefined ? location.top : y;
             if (position < 0)
                 position = 0;
             else if (position > window.innerHeight - elementSize.height)
                 position = window.innerHeight - elementSize.height;
             element.style.top = toPixel(position);
         } else {
-            position = location.left;
+            position = x == undefined ? location.left : x;
             if (position < 0)
                 position = 0;
             else if (position > window.innerWidth - elementSize.width)
@@ -99,9 +99,19 @@ const createTooltip = (elementTag, cssClass, /* SA??? */ hideDelay, showDelay = 
                 show(value.title, event.target, event.pageX, event.pageY);    
                 //setInterval(() => hide(), showDelay);
             });
-            targetElement.addEventListener("pointerleave", () => hide());
-        }
+            targetElement.addEventListener("pointerleave", hide);
+            targetElement.addEventListener("blur", hide);
+        } //loop
     })();
+
+    Object.defineProperties(toolTip, {
+        show: {
+            get() { return show; }
+        },
+        hide: {
+            get() { return hide; }
+        }
+    });
 
     Object.freeze(toolTip);
     return toolTip;

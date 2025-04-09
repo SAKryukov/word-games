@@ -9,8 +9,6 @@
 
 window.onload = () => {
 
-    createTooltip(maintenance.definitionSet.tooltip.elementTag, maintenance.definitionSet.tooltip.cssClass);
-
 	const stringify = anObject => {
 		if (anObject instanceof Array) {
 			const elements = [];
@@ -31,7 +29,7 @@ window.onload = () => {
 
 	const elementSet = getElementSet(null);
 	const languageSelector =
-		createLanguageSelector(elementSet.input.languageSet, null, null);
+		createLanguageSelector(elementSet.input.languageSet, null, null, null);
 
 	const dictionaryMainenance = () => {
 		const removedWords = [];

@@ -28,7 +28,7 @@ option, input, button, .tooltip { padding-left: var(--deltaX); padding-right: va
 .tooltip { background-color: seashell; border: solid thin darkgoldenrod;
   pointer-events: none !important;
   font-size: 80%; color: gray; border-radius: 3px;
-  white-space: nowrap;
+  /* white-space: nowrap; */
   padding-top: 0.6em; padding-bottom: 0.6em; }
 #button-activate-menu {
   position: absolute; right: 3px; top: 3px;

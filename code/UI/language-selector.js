@@ -7,7 +7,7 @@
 
 "use strict";
 
-const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onLanguagechange) => {
+const createLanguageSelector = (selectLanguageElement, selectOptionsElement, tooltipElement, onLanguagechange) => {
     const languageSelector = {};
 
     const localDefinitionSet = {
@@ -16,6 +16,7 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
         acceptPunctuationCharacters: "Accept punctuation characters",
       },
       createOption: () => document.createElement("option"),
+      displayRepertoire: repertoire => `Valid characters: ${repertoire}`,
     }; //localDefinitionSet
 
     let repertoire = null;
@@ -42,15 +43,25 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
         },
     }); //languageSelector.defineProperties options
 
-    const setRepertoire = () => {
+    const setRepertoire = target => {
         let isDigits = selectedLanguage.characterRepertoire.letters.length == 0;
         repertoire = isDigits
             ? selectedLanguage.characterRepertoire.digits
             : selectedLanguage.characterRepertoire.letters;
-        if (acceptBlankspaceCharacters)
-            repertoire += selectedLanguage.characterRepertoire.blankSpace;
-        if (acceptPunctuationCharacters)
+            if (acceptBlankspaceCharacters)
+                repertoire += selectedLanguage.characterRepertoire.blankSpace;
+            if (acceptPunctuationCharacters)
             repertoire += selectedLanguage.characterRepertoire.punctuation;        
+        if (target != null && tooltipElement != null) {
+            let upper = "";
+            for (let index = 0; index < repertoire.length; ++index) {
+                const alt = repertoire[index].toUpperCase();
+                if (repertoire[index] != alt)
+                    upper += alt;
+            } // loop
+            const displayRepertoire = upper + repertoire;
+            tooltipElement.show(localDefinitionSet.displayRepertoire(displayRepertoire), target);
+        } //if
     }; //setRepertoire
 
     languageSelector.filterOut = event => {
@@ -79,7 +90,7 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
         selectedLanguage = dictionaries.list[selectLanguageElement.selectedIndex];
         selectLanguageElement.onchange = event => {
             selectedLanguage = dictionaries.list[event.target.selectedIndex];
-            setRepertoire();
+            setRepertoire(event.target);
             if (onLanguagechange)
                 onLanguagechange();
         };
@@ -98,12 +109,13 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, onL
     } //if
     const checkedListBox = selectOptionsElement
         ? setupCheckedListBox(selectOptionsElement, [false, false],
-            (index, _, value) => {
+            (index, _, value, initial) => {
                 if (index == 0)
                     acceptBlankspaceCharacters = value;
                 else
                     acceptPunctuationCharacters = value;
-                setRepertoire();
+                if (!initial)
+                    setRepertoire(selectOptionsElement);
             })
         : null;
 

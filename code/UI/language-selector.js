@@ -148,6 +148,6 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, too
         selectLanguageElement.style.height = pixelSize(height);
         selectOptionsElement.style.height = pixelSize(height);
     })(); //makeEqualHeight
-    
+
     return languageSelector;
 };

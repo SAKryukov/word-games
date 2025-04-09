@@ -10,7 +10,7 @@
 window.onload = () => {
 
     const tootip =
-        createTooltip(game.definitionSet.tooltip.elementTag, game.definitionSet.tooltip.cssClass);
+        createTooltip(games.definitionSet.tooltip.elementTag, games.definitionSet.tooltip.cssClass);
 
     const elementSet = getElementSet(game.definitionSet);
     const tableInput = createTableInput(null, elementSet.main, null, null, true, game.definitionSet.emptyCell);

@@ -10,7 +10,7 @@
 window.onload = () => {
 
     const tooltip =
-        createTooltip(game.definitionSet.tooltip.elementTag, game.definitionSet.tooltip.cssClass);
+        createTooltip(games.definitionSet.tooltip.elementTag, games.definitionSet.tooltip.cssClass);
 
     const elementSet = getElementSet();
     elementSet.makeEqualWidth(elementSet.buttonShuffle);
@@ -31,7 +31,7 @@ window.onload = () => {
             elementSet.hideInputTry();
             sortedWordListUser.reset();
             elementSet.textShuffle.textContent = null;
-            elementSet.count.textContent = 0;    
+            elementSet.count.textContent = 0;
         });
     const gameAlgorithm = getGameAlgorithm(languageSelector);
     

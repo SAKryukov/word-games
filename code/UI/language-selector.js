@@ -16,7 +16,7 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, too
         acceptPunctuationCharacters: "Accept punctuation characters",
       },
       createOption: () => document.createElement("option"),
-      displayRepertoire: repertoire => `Valid characters: ${repertoire}`,
+      displayRepertoire: repertoire => `Input characters: ${repertoire}`,
     }; //localDefinitionSet
 
     let repertoire = null;
@@ -49,7 +49,7 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, too
             ? selectedLanguage.characterRepertoire.digits
             : selectedLanguage.characterRepertoire.letters;
             if (acceptBlankspaceCharacters)
-                repertoire += selectedLanguage.characterRepertoire.blankSpace;
+                repertoire = selectedLanguage.characterRepertoire.blankSpace + repertoire;
             if (acceptPunctuationCharacters)
             repertoire += selectedLanguage.characterRepertoire.punctuation;        
         if (target != null && tooltipElement != null) {

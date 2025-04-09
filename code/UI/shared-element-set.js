@@ -34,13 +34,12 @@ const getSharedElementSet = () => {
 
     });
 
-	(() => { // product:
-		product.title.textContent = shared.definitionSet.title;
-		product.version.innerHTML = shared.definitionSet.version;
-		product.copyrightYears.textContent = shared.definitionSet.copyrightYears;
-	})(); //product
+    (() => { // product:
+        product.title.textContent = shared.definitionSet.title;
+        product.version.innerHTML = shared.definitionSet.version;
+        product.copyrightYears.textContent = shared.definitionSet.copyrightYears;
+    })(); //product
 
     return elementSet;
 
 } //getSharedElementSet
-

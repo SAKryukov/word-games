@@ -45,7 +45,6 @@ const getElementSet = () => {
     }; //elementSet.showInputTry
     elementSet.hideInputTry = () => {
         elementSet.input.inputTry.style.visibility = "hidden";
-        elementSet.input.inputSetWord.focus();
     }; //elementSet.hideInputTry
 
     elementSet.showUserSolution = callback => {

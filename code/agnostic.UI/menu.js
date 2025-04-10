@@ -1,5 +1,5 @@
 /*
-  Word games
+  Horizontal and vertical (context) menus
   Copyright (c) 2025 by Sergey A Kryukov
   http://www.SAKryukov.org
   https://github.com/SAKryukov/word-games

@@ -1,5 +1,5 @@
 /*
-  Word games
+  Read-only namespaces
   Copyright (c) 2025 by Sergey A Kryukov
   http://www.SAKryukov.org
   https://github.com/SAKryukov/word-games

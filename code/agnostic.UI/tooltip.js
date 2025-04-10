@@ -1,8 +1,20 @@
 /*
-  Word games
+
+  Tooltips
   Copyright (c) 2025 by Sergey A Kryukov
   http://www.SAKryukov.org
   https://github.com/SAKryukov/word-games
+
+  Element can have dataset.verticalTooltip
+  for example:
+
+  <option data-vertical-tooltip="false">Start game</option>
+  <select data-vertical-tooltip="true"></select>
+
+  verticalTooltip indicates the priority to place a tooltop above or below the target element
+  if "true" or undefined, verticalTooltip is the priority
+  if "false," the priority is horizontal: place tooltip on left or on right of the target element
+
 */
 
 "use strict";
@@ -14,18 +26,25 @@ const createTooltip = (elementTag, cssClass, showTime) => {
         toPixel: value => `${value}px`,
         gap: 1,
         empty: "",
+        allElements: "*",
+        displayAbsolute: element => element.style.position = "absolute",
         events: {
             onPointerEnter: (targetElement, eventHander) =>
                 targetElement.addEventListener("pointerenter", eventHander),
-
+            onPointerLeave: (targetElement, eventHander) =>
+                targetElement.addEventListener("pointerleave", eventHander),
+            onPointerBlur: (targetElement, eventHander) =>
+                targetElement.addEventListener("blur", eventHander),
         },
+        show: element => element.style.display = "block",
+        hide: element => element.style.display = "none",
     }; //localDefinitionSet
 
     let timeout = null;
 
     const element = document.createElement(elementTag);
-    element.style.display = "none";
-    element.style.position = "absolute";
+    localDefinitionSet.hide(element);
+    localDefinitionSet.displayAbsolute(element);
     element.classList.add(cssClass);
     document.body.appendChild(element);
 
@@ -50,7 +69,7 @@ const createTooltip = (elementTag, cssClass, showTime) => {
         element.style.top = null;
         element.style.bottom = null;
         element.innerHTML = html;
-        element.style.display = "block";
+        localDefinitionSet.show(element);
         const elementSize = element.getBoundingClientRect();
         const location = target.getBoundingClientRect();
         const horizontal = estimateLocation (location.left, location.right, window.innerWidth, elementSize.width);
@@ -75,7 +94,7 @@ const createTooltip = (elementTag, cssClass, showTime) => {
         element.style.top = localDefinitionSet.toPixel(y);
     }; //show
     const hide = fromTimeout => {
-        element.style.display = "none";
+        localDefinitionSet.hide(element);
         if (!fromTimeout && timeout != null)
             clearTimeout(timeout);
     }; //hide
@@ -83,7 +102,7 @@ const createTooltip = (elementTag, cssClass, showTime) => {
     const elementMap = new Map();
 
     (() => { //events
-        const elements = document.querySelectorAll("*");
+        const elements = document.querySelectorAll(localDefinitionSet.allElements);
         for (let targetElement of elements) {
             if (targetElement.title) {
                 elementMap.set(targetElement, { title: targetElement.title, });
@@ -107,8 +126,8 @@ const createTooltip = (elementTag, cssClass, showTime) => {
                 if (showTime)
                     timeout = setTimeout(hide, showTime, true);
             });
-            targetElement.addEventListener("pointerleave", hide);
-            targetElement.addEventListener("blur", hide);
+            localDefinitionSet.events.onPointerLeave(targetElement, hide);
+            localDefinitionSet.events.onPointerBlur(targetElement, hide);
         } //loop
     })();
 

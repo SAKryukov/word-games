@@ -20,7 +20,7 @@ window.onload = () => {
     elementSet.main.appendChild(tableInput.tableElement);
 
     const languageSelector =
-        createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, tootip, () => {
+        createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, tooltip, () => {
     });
     const gameAlgorithm = getGameAlgorithm(languageSelector);
 

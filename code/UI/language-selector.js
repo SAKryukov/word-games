@@ -16,7 +16,7 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, too
         acceptPunctuationCharacters: "Accept punctuation characters",
       },
       createOption: () => document.createElement("option"),
-      displayRepertoire: repertoire => `Valid characters: ${repertoire}`,
+      displayRepertoire: repertoire => `Input characters: ${repertoire}`,
     }; //localDefinitionSet
 
     let repertoire = null;

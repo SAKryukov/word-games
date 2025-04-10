@@ -10,9 +10,18 @@
 const createTooltip = (elementTag, cssClass, showTime) => {
     const toolTip = {};
 
-    let timeout = null;
+    const localDefinitionSet = {
+        toPixel: value => `${value}px`,
+        gap: 1,
+        empty: "",
+        events: {
+            onPointerEnter: (targetElement, eventHander) =>
+                targetElement.addEventListener("pointerenter", eventHander),
 
-    const toPixel = value => `${value}px`;
+        },
+    }; //localDefinitionSet
+
+    let timeout = null;
 
     const element = document.createElement(elementTag);
     element.style.display = "none";
@@ -20,8 +29,9 @@ const createTooltip = (elementTag, cssClass, showTime) => {
     element.classList.add(cssClass);
     document.body.appendChild(element);
 
-    const show = (html, target, x, y) => {
+    const show = (html, target, priorityVertical, x, y) => {
         const estimateLocation = (lowerEdge, higherEdge, max, tooltipSize) => {
+            tooltipSize += localDefinitionSet.gap;
             // testing hightEdge, first priority:
             if (max - higherEdge >= tooltipSize)
                 return { good: true, position: higherEdge };
@@ -30,7 +40,7 @@ const createTooltip = (elementTag, cssClass, showTime) => {
                 return { good: true, position: lowerEdge - tooltipSize };
             else { //no good, better to try another direction, but:
                 if (max - higherEdge >= lowerEdge)
-                    return{ good: true, position: higherEdge };
+                    return{ good: true, position: higherEdge + localDefinitionSet.gap };
                 else
                     return { good: true, position: lowerEdge - tooltipSize };
             } //if
@@ -44,24 +54,25 @@ const createTooltip = (elementTag, cssClass, showTime) => {
         const elementSize = element.getBoundingClientRect();
         const location = target.getBoundingClientRect();
         const horizontal = estimateLocation (location.left, location.right, window.innerWidth, elementSize.width);
-        let vertical = {}, finalPosition = {}; 
-        if (!horizontal.good)
-            vertical = estimateLocation (location.top, location.bottom, window.innerHeight, elementSize.height);
-        if (horizontal.good)
-            finalPosition = { x: horizontal.position, y: y };
-        else
-            finalPosition = { x: x, y: vertical.position };
-        x = finalPosition.x;
-        if (x < 0)
-            x = 0;
-        if (x > window.innerWidth - elementSize.width)
-            x = window.innerWidth - elementSize.width;
-        if (y < 0)
-            y = 0;
-        if (y > window.innerHeight - elementSize.height)
-            y = window.innerHeight - elementSize.height;
-        element.style.left = toPixel(x);
-        element.style.top = toPixel(y);
+        const vertical = estimateLocation (location.top, location.bottom, window.innerHeight, elementSize.height);
+        let isVertical = priorityVertical == null ? true : priorityVertical;
+        if (isVertical) {
+            y = vertical.position + localDefinitionSet.gap;
+            x = location.left;
+        } else {
+            x = horizontal.position + localDefinitionSet.gap;
+            y = location.top;
+        } //if
+        if (x < localDefinitionSet.gap)
+            x = localDefinitionSet.gap;
+        if (x > window.innerWidth - elementSize.width - localDefinitionSet.gap)
+            x = window.innerWidth - elementSize.width - localDefinitionSet.gap;
+        if (y < localDefinitionSet.gap)
+            y = localDefinitionSet.gap;
+        if (y > window.innerHeight - elementSize.height - localDefinitionSet.gap)
+            y = window.innerHeight - elementSize.height - localDefinitionSet.gap;
+        element.style.left = localDefinitionSet.toPixel(x);
+        element.style.top = localDefinitionSet.toPixel(y);
     }; //show
     const hide = fromTimeout => {
         element.style.display = "none";
@@ -76,15 +87,23 @@ const createTooltip = (elementTag, cssClass, showTime) => {
         for (let targetElement of elements) {
             if (targetElement.title) {
                 elementMap.set(targetElement, { title: targetElement.title, });
-                targetElement.title = "";
+                targetElement.title = localDefinitionSet.empty;
             } else
                 continue;
-            targetElement.addEventListener("pointerenter", event => {
+            localDefinitionSet.events.onPointerEnter(targetElement, event => {
                 if (timeout != null)
                     clearTimeout(timeout);
                 const value = elementMap.get(event.target);
-                element.innerHTML = "";
-                show(value.title, event.target, event.pageX, event.pageY);
+                element.innerHTML = localDefinitionSet.empty;
+                let priorityVertical = null;
+                if (event.target.dataset.verticalTooltip != null) {
+                    const data = event.target.dataset.verticalTooltip;
+                    if (data.toLowerCase() == false.toString())
+                        priorityVertical = false;
+                    else if (data.toLowerCase() == true.toString())
+                        priorityVertical = false;
+                } //if
+                show(value.title, event.target, priorityVertical, event.pageX, event.pageY);
                 if (showTime)
                     timeout = setTimeout(hide, showTime, true);
             });

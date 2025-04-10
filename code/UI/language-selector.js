@@ -7,7 +7,7 @@
 
 "use strict";
 
-const createLanguageSelector = (selectLanguageElement, selectOptionsElement, tooltipElement, onLanguagechange) => {
+const createLanguageSelector = (selectLanguageElement, selectOptionsElement, tooltip, onLanguagechange) => {
     const languageSelector = {};
 
     const localDefinitionSet = {
@@ -17,6 +17,7 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, too
       },
       createOption: () => document.createElement("option"),
       displayRepertoire: repertoire => `Input characters: ${repertoire}`,
+      empty: "",
     }; //localDefinitionSet
 
     let repertoire = null;
@@ -52,15 +53,15 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, too
                 repertoire = selectedLanguage.characterRepertoire.blankSpace + repertoire;
             if (acceptPunctuationCharacters)
             repertoire += selectedLanguage.characterRepertoire.punctuation;        
-        if (target != null && tooltipElement != null) {
-            let upper = "";
+        if (target != null && tooltip != null) {
+            let upper = localDefinitionSet.empty;
             for (let index = 0; index < repertoire.length; ++index) {
                 const alt = repertoire[index].toUpperCase();
                 if (repertoire[index] != alt)
                     upper += alt;
             } // loop
             const displayRepertoire = upper + repertoire;
-            tooltipElement.show(localDefinitionSet.displayRepertoire(displayRepertoire), target);
+            tooltip.show(localDefinitionSet.displayRepertoire(displayRepertoire), target);
         } //if
     }; //setRepertoire
 

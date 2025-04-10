@@ -13,6 +13,7 @@ const games = namespaces.create({
         tooltip: {
             elementTag: "div",
             cssClass: "tooltip",
+            showTime: 7000, // 7sec
         }, //tooltip 
 
     }, //definitionSet

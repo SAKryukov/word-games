@@ -16,7 +16,12 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, too
         acceptPunctuationCharacters: "Accept punctuation characters",
       },
       createOption: () => document.createElement("option"),
-      displayRepertoire: repertoire => `Input characters: ${repertoire}`,
+      displayRepertoire: repertoire => {
+        let cells = "";
+        for (let character of repertoire)
+            cells += `<td>${character}</td>`;
+        return `Valid input characters, case-insensitive:<br/>
+                <table><tr>${cells}</tr></table>` },
       empty: "",
     }; //localDefinitionSet
 
@@ -53,16 +58,8 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, too
                 repertoire = selectedLanguage.characterRepertoire.blankSpace + repertoire;
             if (acceptPunctuationCharacters)
             repertoire += selectedLanguage.characterRepertoire.punctuation;        
-        if (target != null && tooltip != null) {
-            let upper = localDefinitionSet.empty;
-            for (let index = 0; index < repertoire.length; ++index) {
-                const alt = repertoire[index].toUpperCase();
-                if (repertoire[index] != alt)
-                    upper += alt;
-            } // loop
-            const displayRepertoire = upper + repertoire;
-            tooltip.show(localDefinitionSet.displayRepertoire(displayRepertoire), target);
-        } //if
+        if (target != null && tooltip != null)
+            tooltip.show(localDefinitionSet.displayRepertoire(repertoire), target);
     }; //setRepertoire
 
     languageSelector.filterOut = event => {

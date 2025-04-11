@@ -30,6 +30,9 @@ option, input, button, .tooltip { padding-left: var(--deltaX); padding-right: va
   font-size: 80%; color: gray; border-radius: 3px;
   /* white-space: nowrap; */
   padding-top: 0.6em; padding-bottom: 0.6em; }
+.tooltip table { border-collapse: collapse; }
+.tooltip table, td { border: thin solid black; }
+.tooltip td { width: 1.2em !important; height: 1.2em !important; text-align: center; }
 #button-activate-menu {
   position: absolute; right: 3px; top: 3px;
   background-color: transparent;

@@ -18,9 +18,12 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, too
       createOption: () => document.createElement("option"),
       displayRepertoire: repertoire => {
         let cells = "";
+        let caseInsensitive = repertoire.toUpperCase() == repertoire.toLowerCase()
+            ? ""
+            : ", case-insensitive";
         for (let character of repertoire)
             cells += `<td>${character}</td>`;
-        return `Valid input characters, case-insensitive:<br/>
+        return `Valid input characters${caseInsensitive}:<br/>
                 <table><tr>${cells}</tr></table>` },
       empty: "",
     }; //localDefinitionSet

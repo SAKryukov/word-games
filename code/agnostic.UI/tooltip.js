@@ -19,7 +19,7 @@
 
 "use strict";
 
-const createTooltip = (elementTag, cssClass, showTime) => {
+const createTooltip = (elementTag, cssClass, showTime, isPriorityVertical, verticalPriorityDataSetName) => {
     const toolTip = {};
 
     const localDefinitionSet = {
@@ -76,7 +76,7 @@ const createTooltip = (elementTag, cssClass, showTime) => {
         const location = target.getBoundingClientRect();
         const horizontal = estimateLocation (location.left, location.right, window.innerWidth, elementSize.width);
         const vertical = estimateLocation (location.top, location.bottom, window.innerHeight, elementSize.height);
-        let isVertical = priorityVertical == null ? true : priorityVertical;
+        let isVertical = priorityVertical == null ? isPriorityVertical : priorityVertical;
         if (isVertical) {
             y = vertical.position;
             x = location.left;
@@ -117,8 +117,8 @@ const createTooltip = (elementTag, cssClass, showTime) => {
                 const value = elementMap.get(event.target);
                 element.innerHTML = localDefinitionSet.empty;
                 let priorityVertical = null;
-                if (event.target.dataset.verticalTooltip != null) {
-                    const data = event.target.dataset.verticalTooltip;
+                if (event.target.dataset[verticalPriorityDataSetName] != null) {
+                    const data = event.target.dataset[verticalPriorityDataSetName];
                     if (data.toLowerCase() == false.toString())
                         priorityVertical = false;
                     else if (data.toLowerCase() == true.toString())

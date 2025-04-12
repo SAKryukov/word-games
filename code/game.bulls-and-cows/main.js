@@ -13,7 +13,10 @@ window.onload = () => {
         createTooltip(
             games.definitionSet.tooltip.elementTag,
             games.definitionSet.tooltip.cssClass,
-            games.definitionSet.tooltip.showTime);
+            games.definitionSet.tooltip.showTime,
+            games.definitionSet.tooltip.isPriorityVertical,
+            games.definitionSet.tooltip.verticalPriorityDataSetName,
+        );
 
     const elementSet = getElementSet(game.definitionSet);
     const tableInput = createTableInput(null, elementSet.main, null, null, true, game.definitionSet.emptyCell);

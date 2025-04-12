@@ -95,6 +95,7 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, too
             if (onLanguagechange)
                 onLanguagechange();
         };
+        tooltip.onClickHandler = event => setRepertoire(event.target);
         setRepertoire();
     })(); //populate language set
 

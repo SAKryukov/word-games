@@ -19,10 +19,15 @@
 
 "use strict";
 
-const createTooltip = (elementTag, cssClass, showTime, isPriorityVertical, verticalPriorityDataSetName) => {
+const createTooltip = elementTag => {
     const toolTip = {};
 
     const localDefinitionSet = {
+        defaults: {
+            timeout: 10000,
+            isPriorityVertical: true,
+            verticalPriorityDataSetName: "verticalTooltip",
+        },
         toPixel: value => `${value}px`,
         upperGap: 2,
         lowerGap: 1,
@@ -36,17 +41,49 @@ const createTooltip = (elementTag, cssClass, showTime, isPriorityVertical, verti
                 targetElement.addEventListener("pointerleave", eventHander),
             onPointerBlur: (targetElement, eventHander) =>
                 targetElement.addEventListener("blur", eventHander),
+            onClick: (targetElement, eventHander) =>
+                targetElement.addEventListener("click", eventHander),
         },
         show: element => element.style.display = "block",
         hide: element => element.style.display = "none",
     }; //localDefinitionSet
 
+    const element = document.createElement(elementTag);
+    let cssClass = null;
+    let showTime = localDefinitionSet.defaults.timeout;
+    let isPriorityVertical = localDefinitionSet.defaults.isPriorityVertical;
+    let verticalPriorityDataSetName = localDefinitionSet.defaults.verticalPriorityDataSetName;
+    let onClickHandler = null;
+
+    Object.defineProperties(toolTip, {
+        onClickHandler: {
+            set(value) { onClickHandler = value; }
+        },
+        cssClass: {
+            get() { return cssClass; },
+            set(value) {
+                cssClass = value;
+                element.classList.add(cssClass);
+            }
+        },
+        showTime: {
+            get() { return showTime; },
+            set(value) { showTime = value; }
+        },
+        isPriorityVertical: {
+            get() { return isPriorityVertical; },
+            set(value) { isPriorityVertical = value; }
+        },
+        verticalPriorityDataSetName: {
+            get() { return verticalPriorityDataSetName; },
+            set(value) { verticalPriorityDataSetName = value; }
+        },
+    }); //properties
+
     let timeout = null;
 
-    const element = document.createElement(elementTag);
     localDefinitionSet.hide(element);
     localDefinitionSet.displayAbsolute(element);
-    element.classList.add(cssClass);
     document.body.appendChild(element);
 
     const show = (html, target, priorityVertical, x, y) => {
@@ -130,6 +167,10 @@ const createTooltip = (elementTag, cssClass, showTime, isPriorityVertical, verti
             });
             localDefinitionSet.events.onPointerLeave(targetElement, hide);
             localDefinitionSet.events.onPointerBlur(targetElement, hide);
+            localDefinitionSet.events.onClick(targetElement, event => {
+                if (onClickHandler != null)
+                    onClickHandler(event)
+            });
         } //loop
     })();
 

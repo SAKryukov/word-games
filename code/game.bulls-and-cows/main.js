@@ -9,14 +9,14 @@
 
 window.onload = () => {
 
-    const tooltip =
-        createTooltip(
-            games.definitionSet.tooltip.elementTag,
-            games.definitionSet.tooltip.cssClass,
-            games.definitionSet.tooltip.showTime,
-            games.definitionSet.tooltip.isPriorityVertical,
-            games.definitionSet.tooltip.verticalPriorityDataSetName,
-        );
+    const tooltip = (() => {
+        const tooltip = createTooltip(games.definitionSet.tooltip.elementTag);
+        tooltip.cssClass = games.definitionSet.tooltip.cssClass;
+        tooltip.showTime = games.definitionSet.tooltip.showTime;
+        tooltip.isPriorityVertical = games.definitionSet.tooltip.isPriorityVertical;
+        tooltip.verticalPriorityDataSetName = games.definitionSet.tooltip.verticalPriorityDataSetName;    
+        return tooltip;
+    })();
 
     const elementSet = getElementSet(game.definitionSet);
     const tableInput = createTableInput(null, elementSet.main, null, null, true, game.definitionSet.emptyCell);

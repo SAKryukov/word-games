@@ -24,7 +24,8 @@ const createTooltip = (elementTag, cssClass, showTime) => {
 
     const localDefinitionSet = {
         toPixel: value => `${value}px`,
-        gap: 1,
+        upperGap: 2,
+        lowerGap: 1,
         empty: "",
         allElements: "*",
         displayAbsolute: element => element.style.position = "absolute",
@@ -50,18 +51,19 @@ const createTooltip = (elementTag, cssClass, showTime) => {
 
     const show = (html, target, priorityVertical, x, y) => {
         const estimateLocation = (lowerEdge, higherEdge, max, tooltipSize) => {
-            tooltipSize += localDefinitionSet.gap;
+            const higherPosition = higherEdge + localDefinitionSet.lowerGap;
+            const lowerPosition = lowerEdge - tooltipSize - localDefinitionSet.upperGap;
             // testing hightEdge, first priority:
             if (max - higherEdge >= tooltipSize)
-                return { good: true, position: higherEdge };
+                return { good: true, position: higherPosition };
             // testing lowerEdge, second priority:
             else if (lowerEdge >= tooltipSize)
-                return { good: true, position: lowerEdge - tooltipSize };
+                return { good: true, position: lowerPosition };
             else { //no good, better to try another direction, but:
                 if (max - higherEdge >= lowerEdge)
-                    return{ good: true, position: higherEdge + localDefinitionSet.gap };
+                    return{ good: true, position: higherPosition };
                 else
-                    return { good: true, position: lowerEdge - tooltipSize };
+                    return { good: true, position: lowerPosition };
             } //if
         }; //estimateLocation
         element.style.right = null;
@@ -76,20 +78,20 @@ const createTooltip = (elementTag, cssClass, showTime) => {
         const vertical = estimateLocation (location.top, location.bottom, window.innerHeight, elementSize.height);
         let isVertical = priorityVertical == null ? true : priorityVertical;
         if (isVertical) {
-            y = vertical.position + localDefinitionSet.gap;
+            y = vertical.position;
             x = location.left;
         } else {
-            x = horizontal.position + localDefinitionSet.gap;
+            x = horizontal.position;
             y = location.top;
         } //if
-        if (x < localDefinitionSet.gap)
-            x = localDefinitionSet.gap;
-        if (x > window.innerWidth - elementSize.width - localDefinitionSet.gap)
-            x = window.innerWidth - elementSize.width - localDefinitionSet.gap;
-        if (y < localDefinitionSet.gap)
-            y = localDefinitionSet.gap;
-        if (y > window.innerHeight - elementSize.height - localDefinitionSet.gap)
-            y = window.innerHeight - elementSize.height - localDefinitionSet.gap;
+        if (x < localDefinitionSet.lowerGap)
+            x = localDefinitionSet.lowerGap;
+        if (x > window.innerWidth - elementSize.width - localDefinitionSet.upperGap)
+            x = window.innerWidth - elementSize.width - localDefinitionSet.upperGap;
+        if (y < localDefinitionSet.lowerGap)
+            y = localDefinitionSet.lowerGap;
+        if (y > window.innerHeight - elementSize.height - localDefinitionSet.upperGap)
+            y = window.innerHeight - elementSize.height - localDefinitionSet.upperGap;
         element.style.left = localDefinitionSet.toPixel(x);
         element.style.top = localDefinitionSet.toPixel(y);
     }; //show

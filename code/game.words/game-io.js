@@ -22,6 +22,7 @@ const createGameIO = (sortedWordList, elementSet, languageSelector, gameDefiniti
         }, //onSave
         gameData => { //onLoad
             elementSet.input.inputSetWord.value = gameData.setWord;
+            elementSet.characterCount.textContent = gameData.setWord.length;
             for (let word of gameData.alphabetical)
                 sortedWordList.add(word);
             gameIO.shuffleAndClassify(true);

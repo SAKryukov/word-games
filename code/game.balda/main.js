@@ -14,7 +14,7 @@ window.onload = () => {
         tooltip.cssClass = games.definitionSet.tooltip.cssClass;
         tooltip.showTime = games.definitionSet.tooltip.showTime;
         tooltip.isPriorityVertical = games.definitionSet.tooltip.isPriorityVertical;
-        tooltip.verticalPriorityDataSetName = games.definitionSet.tooltip.verticalPriorityDataSetName;    
+        tooltip.priorityDataSetName = games.definitionSet.tooltip.priorityDataSetName;    
         return tooltip;
     })();
 

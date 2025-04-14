@@ -16,7 +16,7 @@ const games = namespaces.create({
             showTime: 7000, // 7sec
             isPriorityVertical: true,
             // usage: data-vertical-tooltip="false", or false, or absent (default):
-            verticalPriorityDataSetName: "verticalTooltip", 
+            priorityDataSetName: "tooltipPriority", 
         }, //tooltip 
 
     }, //definitionSet

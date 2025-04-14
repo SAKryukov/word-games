@@ -29,7 +29,7 @@ window.onload = () => {
 
 	const elementSet = getElementSet(null);
 	const languageSelector =
-		createLanguageSelector(elementSet.input.languageSet, null, null, null);
+		createLanguageSelector(elementSet.input.languageSet);
 
 	const dictionaryMainenance = () => {
 		const removedWords = [];

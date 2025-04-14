@@ -28,8 +28,9 @@ window.onload = () => {
     }; //selectingCallback
 
     const languageSelector =
-        createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, tooltip, () => {
-    });
+        createLanguageSelector(elementSet.input.languageSet, elementSet.input.options);
+    languageSelector.tooltip = tooltip;
+    
     const gameAlgorithm = getGameAlgorithm(languageSelector);
 
     const newTurnHandler = () => {

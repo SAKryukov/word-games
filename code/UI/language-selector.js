@@ -7,7 +7,7 @@
 
 "use strict";
 
-const createLanguageSelector = (selectLanguageElement, selectOptionsElement, tooltip, onCharacterSetChange) => {
+const createLanguageSelector = (selectLanguageElement, selectOptionsElement) => {
     const languageSelector = {};
 
     const localDefinitionSet = {
@@ -32,24 +32,40 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, too
     let selectedLanguage = null;
     let acceptBlankspaceCharacters = false;
     let acceptPunctuationCharacters = false;
+    let onCharacterSetChange = null;
+    let tooltip = null;
 
     Object.defineProperties(languageSelector, {
         acceptBlankspaceCharactersValue: {
             get() { return acceptBlankspaceCharacters; },
-            enumerable: true, 
         },
         acceptPunctuationCharactersValue: {
             get() { return acceptPunctuationCharacters; },
-            enumerable: true, 
         },
         currentLanguage: {
             get() { return selectedLanguage; },
-            enumerable: true, 
         },
         repertoire: {
             get() { return repertoire; },
-            enumerable: true, 
         },
+        onCharacterSetChange: {
+            set(value) { onCharacterSetChange = value; },
+        },
+        tooltip: {
+            set(value) {
+                tooltip = value;
+                if (!tooltip) return;
+                tooltip.onClickHandler = event => {
+                    if (
+                        event.target == selectLanguageElement
+                        || event.target == selectOptionsElement
+                        || (event.target.parentElement
+                            && (event.target.parentElement == selectLanguageElement
+                                || event.target.parentElement == selectOptionsElement)))
+                        setRepertoire(event.target);
+                }; //tooltip.onClickHandler
+            },
+        }
     }); //languageSelector.defineProperties options
 
     const setRepertoire = target => {
@@ -95,16 +111,6 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, too
             if (onCharacterSetChange)
                 onCharacterSetChange();
         };
-        if (tooltip)
-            tooltip.onClickHandler = event => {
-                if (
-                    event.target == selectLanguageElement
-                    || event.target == selectOptionsElement
-                    || (event.target.parentElement
-                        && (event.target.parentElement == selectLanguageElement
-                            || event.target.parentElement == selectOptionsElement)))
-                                setRepertoire(event.target);
-            }; //tooltip.onClickHandler
         setRepertoire();
     })(); //populate language set
 

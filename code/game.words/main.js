@@ -29,17 +29,23 @@ window.onload = () => {
         elementSet.machineSolution, elementSet.highlightClass,
         wordCount => elementSet.count.textContent = wordCount);
     
-    const languageSelector =
-        createLanguageSelector(elementSet.input.languageSet, elementSet.input.options, tooltip, () => {
+    const languageSelector = (() => {
+        const languageSelector =
+            createLanguageSelector(elementSet.input.languageSet, elementSet.input.options);
+        languageSelector.tooltip = tooltip;
+        languageSelector.onCharacterSetChange = () => {
             // on language change:
             elementSet.input.inputSetWord.value = null;
-            elementSet.input.inputTry.value = null; 
+            elementSet.input.inputTry.value = null;
             elementSet.hideInputTry();
             sortedWordListUser.reset();
             elementSet.textShuffle.textContent = null;
             elementSet.textClassify.textContent = null;
             elementSet.count.textContent = 0;
-        });
+        }; //languageSelector.onCharacterSetChange
+        return languageSelector;
+    })();
+
     const gameAlgorithm = getGameAlgorithm(languageSelector);
     
     elementSet.input.inputSetWord.onkeypress = event => {

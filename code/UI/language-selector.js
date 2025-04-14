@@ -7,7 +7,7 @@
 
 "use strict";
 
-const createLanguageSelector = (selectLanguageElement, selectOptionsElement, tooltip, onLanguagechange) => {
+const createLanguageSelector = (selectLanguageElement, selectOptionsElement, tooltip, onCharacterSetChange) => {
     const languageSelector = {};
 
     const localDefinitionSet = {
@@ -92,8 +92,8 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, too
         selectLanguageElement.onchange = event => {
             selectedLanguage = dictionaries.list[event.target.selectedIndex];
             setRepertoire(event.target);
-            if (onLanguagechange)
-                onLanguagechange();
+            if (onCharacterSetChange)
+                onCharacterSetChange();
         };
         if (tooltip)
             tooltip.onClickHandler = event => {
@@ -109,13 +109,12 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, too
     })(); //populate language set
 
     if (selectOptionsElement) {
-        let option = document.createElement("option");
+        let option = localDefinitionSet.createOption();
         option.textContent = localDefinitionSet.characterRepertoireOptions.acceptBlankspaceCharacters;
         selectOptionsElement.appendChild(option);
-        option = document.createElement("option");
+        option = localDefinitionSet.createOption();
         option.textContent = localDefinitionSet.characterRepertoireOptions.acceptPunctuationCharacters;
         selectOptionsElement.appendChild(option);
-        document.createElement("option");
         selectOptionsElement.size = 2;
     } //if
     const checkedListBox = selectOptionsElement
@@ -127,6 +126,8 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement, too
                     acceptPunctuationCharacters = value;
                 if (!initial)
                     setRepertoire(selectOptionsElement);
+                if (onCharacterSetChange)
+                    onCharacterSetChange();    
             })
         : null;
 

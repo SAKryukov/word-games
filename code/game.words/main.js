@@ -37,6 +37,7 @@ window.onload = () => {
             elementSet.hideInputTry();
             sortedWordListUser.reset();
             elementSet.textShuffle.textContent = null;
+            elementSet.textClassify.textContent = null;
             elementSet.count.textContent = 0;
         });
     const gameAlgorithm = getGameAlgorithm(languageSelector);

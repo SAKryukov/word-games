@@ -26,6 +26,7 @@ const createGameIO = (sortedWordList, elementSet, languageSelector, gameDefiniti
             for (let word of gameData.alphabetical)
                 sortedWordList.add(word);
             gameIO.shuffleAndClassify(true);
+            elementSet.showInputTry();
         } //onLoad
     ); //dictionaryIO
 

@@ -25,37 +25,11 @@
 const createTooltip = elementTag => {
     const toolTip = {};
 
-    const tooltipPriorities = {
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-    };
-    for (let index in tooltipPriorities)
-        tooltipPriorities[index] = index;
-    Object.freeze(tooltipPriorities);
-    /*
-    const priorityFromString = text => {
-        for (let index in tooltipPriorities)
-            if (text == index)
-                return tooltipPriorities[index];
-    }; //priorityFromString
-    */
-    const prioritiesFromStringArray = values => {
-        const result = [];
-        if (!values) return result;
-        for (let value of values)
-            if (tooltipPriorities[value])
-                result.push(tooltipPriorities[value]);
-        return result;
-    }; //prioritiesFromStringArray
-
     const localDefinitionSet = {
         defaults: {
             timeout: 10000,
-            isPriorityVertical: true, // SA??? temporary
             priorityDataSetName: "tooltipPriority",
-            priorities: [tooltipPriorities.bottom, tooltipPriorities.left, tooltipPriorities.right, tooltipPriorities.top],
+            priorities: ["bottom", "right", "top", "left"],
         },
         toPixel: value => `${value}px`,
         upperGap: 2,
@@ -78,66 +52,49 @@ const createTooltip = elementTag => {
         prioritySeparator: " ",
     }; //localDefinitionSet
 
+    const tooltipPriorities = (() => {
+        const tooltipPriorities = {
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+        };
+        for (let index in tooltipPriorities)
+            tooltipPriorities[index] = index;
+        tooltipPriorities.fromStringArray = values => {
+            const result = [];
+            if (!values) return result;
+            for (let value of values)
+                if (tooltipPriorities[value])
+                    result.push(tooltipPriorities[value]);
+            return result;
+        }; //fromStringArray    
+        Object.freeze(tooltipPriorities);
+        return tooltipPriorities;
+    })();
+
     const element = document.createElement(elementTag);
     let cssClass = null;
     let showTime = localDefinitionSet.defaults.timeout;
-    let isPriorityVertical = localDefinitionSet.defaults.isPriorityVertical;
     let priorityDataSetName = localDefinitionSet.defaults.priorityDataSetName;
-    let priorities = localDefinitionSet.defaults.priorities;
+    let priorities = tooltipPriorities.fromStringArray(localDefinitionSet.defaults.priorities);
     let onClickHandler = null;
-
-    Object.defineProperties(toolTip, {
-        onClickHandler: {
-            set(value) { onClickHandler = value; },
-        },
-        cssClass: {
-            get() { return cssClass; },
-            set(value) {
-                cssClass = value;
-                element.classList.add(cssClass);
-            },
-        },
-        showTime: {
-            get() { return showTime; },
-            set(value) { showTime = value; },
-        },
-        isPriorityVertical: {
-            get() { return isPriorityVertical; },
-            set(value) { isPriorityVertical = value; },
-        },
-        priorityDataSetName: {
-            get() { return priorityDataSetName; },
-            set(value) { priorityDataSetName = value; },
-        },
-        priorities: {
-            get() { return priorities; },
-            set(values) { priorities = prioritiesFromStringArray(values); },
-        }
-    }); //properties
-
     let timeout = null;
 
     localDefinitionSet.hide(element);
     localDefinitionSet.displayAbsolute(element);
     document.body.appendChild(element);
 
-    const show = (html, target, priorities, x, y) => {
-        const prioritySequence = prioritiesFromStringArray(priorities);
+    const show = (html, target, customPriorities, x, y) => {
+        let prioritySequence = tooltipPriorities.fromStringArray(customPriorities);
+        if (prioritySequence.length < 1)
+            prioritySequence = priorities;
         const estimateLocation = (lowerEdge, higherEdge, max, tooltipSize) => {
             const higherPosition = higherEdge + localDefinitionSet.lowerGap;
             const lowerPosition = lowerEdge - tooltipSize - localDefinitionSet.upperGap;
-            // testing hightEdge, first priority:
-            if (max - higherEdge >= tooltipSize)
-                return { good: true, position: higherPosition };
-            // testing lowerEdge, second priority:
-            else if (lowerEdge >= tooltipSize)
-                return { good: true, position: lowerPosition };
-            else { //no good, better to try another direction, but:
-                if (max - higherEdge >= lowerEdge)
-                    return{ good: true, position: higherPosition };
-                else
-                    return { good: true, position: lowerPosition };
-            } //if
+            const higherPositionRoom = (max - higherEdge - tooltipSize) / tooltipSize;
+            const lowerPositionRoom = (lowerEdge - tooltipSize) / tooltipSize;
+            return { lowerPosition, higherPosition, lowerPositionRoom, higherPositionRoom};
         }; //estimateLocation
         element.style.right = null;
         element.style.left = null;
@@ -148,17 +105,68 @@ const createTooltip = elementTag => {
         const elementSize = element.getBoundingClientRect();
         const location = target.getBoundingClientRect();
         const horizontal = estimateLocation (location.left, location.right, window.innerWidth, elementSize.width);
-        const vertical = estimateLocation (location.top, location.bottom, window.innerHeight, elementSize.height);        
-        let isVertical = priorities == null // SA??? temporary
-            ? isPriorityVertical
-            : prioritySequence.length == 0;
-        if (isVertical) { // SA??? temporary
-            y = vertical.position;
-            x = location.left;
-        } else {
-            x = horizontal.position;
-            y = location.top;
-        } //if
+        const vertical = estimateLocation (location.top, location.bottom, window.innerHeight, elementSize.height);
+        const locationFromPriorities = () => {
+            for (let priority of prioritySequence) {
+                switch (priority) {
+                    case tooltipPriorities.left:
+                        if (horizontal.lowerPositionRoom >= 0)
+                            return { x: horizontal.lowerPosition, y: location.top };
+                    case tooltipPriorities.right:
+                        if (horizontal.higherPositionRoom >= 0)
+                            return { x: horizontal.higherPosition, y: location.top };
+                    case tooltipPriorities.top:
+                        if (vertical.lowerPositionRoom >= 0)
+                            return { x: location.left, y: vertical.lowerPosition };
+                    case tooltipPriorities.bottom:
+                        if (vertical.higherPositionRoom >= 0)
+                            return { x: location.left, y: vertical.higherPosition };
+                } //switch
+            } //loop
+            let maxRoom = -window.innerWidth;
+            let optimalLocation = null;
+            for (let priority of prioritySequence) {
+                switch (priority) {
+                    case tooltipPriorities.left:
+                        if (horizontal.lowerPositionRoom > maxRoom) {
+                            maxRoom = horizontal.lowerPositionRoom;
+                            optimalLocation = priority;
+                        }
+                        break;
+                    case tooltipPriorities.right:
+                        if (horizontal.higherPositionRoom > maxRoom) {
+                            maxRoom = horizontal.higherPositionRoom;
+                            optimalLocation = priority;
+                        }
+                        break;
+                    case tooltipPriorities.top:
+                        if (vertical.lowerPositionRoom > maxRoom) {
+                            maxRoom = vertical.lowerPositionRoom;
+                            optimalLocation = priority;
+                        }
+                        break;
+                    case tooltipPriorities.bottom:
+                        if (vertical.higherPositionRoom > maxRoom) {
+                            maxRoom = vertical.higherPositionRoom;
+                            optimalLocation = priority;
+                        }
+                        break;
+                } //switch               
+                switch (optimalLocation) {
+                    case tooltipPriorities.left:
+                        return { x: horizontal.lowerPosition, y: location.top };
+                    case tooltipPriorities.right:
+                        return { x: horizontal.higherPosition, y: location.top };
+                    case tooltipPriorities.top:
+                        return { x: location.left, y: vertical.lowerPosition };
+                    case tooltipPriorities.bottom:
+                        return { x: location.left, y: vertical.higherPosition };
+                } //switch               
+            } //loop
+        }; //locationFromPriorities
+        const tooltipLocation = locationFromPriorities();
+        x = tooltipLocation.x;
+        y = tooltipLocation.y;
         if (x < localDefinitionSet.lowerGap)
             x = localDefinitionSet.lowerGap;
         if (x > window.innerWidth - elementSize.width - localDefinitionSet.upperGap)
@@ -210,12 +218,34 @@ const createTooltip = elementTag => {
     })();
 
     Object.defineProperties(toolTip, {
+        onClickHandler: {
+            set(value) { onClickHandler = value; },
+        },
+        cssClass: {
+            get() { return cssClass; },
+            set(value) {
+                cssClass = value;
+                element.classList.add(cssClass);
+            },
+        },
+        showTime: {
+            get() { return showTime; },
+            set(value) { showTime = value; },
+        },
+        priorityDataSetName: {
+            get() { return priorityDataSetName; },
+            set(value) { priorityDataSetName = value; },
+        },
+        priorities: {
+            get() { return priorities; },
+            set(values) { priorities = tooltipPriorities.fromStringArray(values); },
+        },
         show: {
-            get() { return show; }
+            get() { return show; },
         },
         hide: {
-            get() { return hide; }
-        }
+            get() { return hide; },
+        },
     });
 
     Object.freeze(toolTip);

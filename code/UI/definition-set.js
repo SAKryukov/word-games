@@ -14,7 +14,6 @@ const games = namespaces.create({
             elementTag: "div",
             cssClass: "tooltip",
             showTime: 7000, // 7sec
-            isPriorityVertical: true,
             // usage: data-vertical-tooltip="false", or false, or absent (default):
             priorityDataSetName: "tooltipPriority", 
         }, //tooltip 

@@ -13,7 +13,6 @@ window.onload = () => {
         const tooltip = createTooltip(games.definitionSet.tooltip.elementTag);
         tooltip.cssClass = games.definitionSet.tooltip.cssClass;
         tooltip.showTime = games.definitionSet.tooltip.showTime;
-        tooltip.isPriorityVertical = games.definitionSet.tooltip.isPriorityVertical;
         tooltip.priorityDataSetName = games.definitionSet.tooltip.priorityDataSetName;    
         return tooltip;
     })();

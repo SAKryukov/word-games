@@ -29,7 +29,7 @@ const createTooltip = elementTag => {
         defaults: {
             timeout: 10000,
             priorityDataSetName: "tooltipPriority",
-            priorities: ["bottom", "right", "top", "left"],
+            priorities: ["bottom", "right", "top", "left"], // the array length should be > 0
         },
         toPixel: value => `${value}px`,
         upperGap: 2,
@@ -59,8 +59,14 @@ const createTooltip = elementTag => {
             top: 0,
             bottom: 0,
         };
-        for (let index in tooltipPriorities)
-            tooltipPriorities[index] = index;
+        tooltipPriorities.left = (location, horizontal, _) => {
+            return { room: horizontal.lowerPositionRoom, x: horizontal.lowerPosition, y: location.top }; }
+        tooltipPriorities.right = (location, horizontal, _) => {
+                return { room: horizontal.higherPositionRoom, x: horizontal.higherPosition, y: location.top }; }
+        tooltipPriorities.top = (location, _, vertical) => {
+                return { room: vertical.lowerPositionRoom, x: location.left, y: vertical.lowerPosition }; }
+        tooltipPriorities.bottom = (location, _, vertical) => {
+                return { room: vertical.higherPositionRoom, x: location.left, y: vertical.higherPosition }; }
         tooltipPriorities.fromStringArray = values => {
             const result = [];
             if (!values) return result;
@@ -108,61 +114,21 @@ const createTooltip = elementTag => {
         const vertical = estimateLocation (location.top, location.bottom, window.innerHeight, elementSize.height);
         const locationFromPriorities = () => {
             for (let priority of prioritySequence) {
-                switch (priority) {
-                    case tooltipPriorities.left:
-                        if (horizontal.lowerPositionRoom >= 0)
-                            return { x: horizontal.lowerPosition, y: location.top };
-                    case tooltipPriorities.right:
-                        if (horizontal.higherPositionRoom >= 0)
-                            return { x: horizontal.higherPosition, y: location.top };
-                    case tooltipPriorities.top:
-                        if (vertical.lowerPositionRoom >= 0)
-                            return { x: location.left, y: vertical.lowerPosition };
-                    case tooltipPriorities.bottom:
-                        if (vertical.higherPositionRoom >= 0)
-                            return { x: location.left, y: vertical.higherPosition };
-                } //switch
+                const evaluation = priority(location, horizontal, vertical);
+                if (evaluation.room >= 0)
+                    return { x: evaluation.x, y: evaluation.y };
             } //loop
-            let maxRoom = -window.innerWidth;
+            let maxRoom = Number.MIN_SAFE_INTEGER;
             let optimalLocation = null;
             for (let priority of prioritySequence) {
-                switch (priority) {
-                    case tooltipPriorities.left:
-                        if (horizontal.lowerPositionRoom > maxRoom) {
-                            maxRoom = horizontal.lowerPositionRoom;
-                            optimalLocation = priority;
-                        }
-                        break;
-                    case tooltipPriorities.right:
-                        if (horizontal.higherPositionRoom > maxRoom) {
-                            maxRoom = horizontal.higherPositionRoom;
-                            optimalLocation = priority;
-                        }
-                        break;
-                    case tooltipPriorities.top:
-                        if (vertical.lowerPositionRoom > maxRoom) {
-                            maxRoom = vertical.lowerPositionRoom;
-                            optimalLocation = priority;
-                        }
-                        break;
-                    case tooltipPriorities.bottom:
-                        if (vertical.higherPositionRoom > maxRoom) {
-                            maxRoom = vertical.higherPositionRoom;
-                            optimalLocation = priority;
-                        }
-                        break;
-                } //switch               
-                switch (optimalLocation) {
-                    case tooltipPriorities.left:
-                        return { x: horizontal.lowerPosition, y: location.top };
-                    case tooltipPriorities.right:
-                        return { x: horizontal.higherPosition, y: location.top };
-                    case tooltipPriorities.top:
-                        return { x: location.left, y: vertical.lowerPosition };
-                    case tooltipPriorities.bottom:
-                        return { x: location.left, y: vertical.higherPosition };
-                } //switch               
+                const evaluation = priority(location, horizontal, vertical);
+                if (evaluation.room > maxRoom) {
+                    optimalLocation = priority;
+                    maxRoom = evaluation.room;
+                } //if
             } //loop
+            const evaluation = optimalLocation(location, horizontal, vertical);
+            return  { x: evaluation.x, y: evaluation.y };
         }; //locationFromPriorities
         const tooltipLocation = locationFromPriorities();
         x = tooltipLocation.x;
@@ -238,7 +204,11 @@ const createTooltip = elementTag => {
         },
         priorities: {
             get() { return priorities; },
-            set(values) { priorities = tooltipPriorities.fromStringArray(values); },
+            set(values) {
+                priorities = tooltipPriorities.fromStringArray(values);
+                if (priorities.length > 1)
+                    priorities = tooltipPriorities.fromStringArray(localDefinitionSet.defaults.priorities);
+            },
         },
         show: {
             get() { return show; },

@@ -62,7 +62,7 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement) => 
                         || (event.target.parentElement
                             && (event.target.parentElement == selectLanguageElement
                                 || event.target.parentElement == selectOptionsElement)))
-                        setRepertoire(event.target);
+                        setRepertoire(selectOptionsElement);
                 }; //tooltip.onClickHandler
             },
         }

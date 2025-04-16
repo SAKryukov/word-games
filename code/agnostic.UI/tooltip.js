@@ -8,8 +8,9 @@
   A target element can have dataset.tooltipPriority,
   for example:
 
-  <option data-tooltip-priority="left right"></option>
+  <option data-tooltip-priority="top right"></option>
   <select data-tooltip-priority="bottom"></select>
+  <select data-tooltip-priority="pointer"></select>
 
   tooltipPriority indicates the priority to place a tooltop above or below the target element
   if undefined, the default priorites are used: 
@@ -29,7 +30,7 @@ const createTooltip = elementTag => {
         defaults: {
             timeout: 10000,
             priorityDataSetName: "tooltipPriority",
-            priorities: ["bottom", "right", "top", "left"], // the array length should be > 0
+            priorities: ["bottom", "right", "top", "left"], // the array length should be 4 or 5
         },
         toPixel: value => `${value}px`,
         upperGap: 2,
@@ -58,6 +59,7 @@ const createTooltip = elementTag => {
             right: 0,
             top: 0,
             bottom: 0,
+            pointer: 0, // depending on mouse/pointer location
         };
         tooltipPriorities.left = (location, horizontal, _) => {
             return { room: horizontal.lowerPositionRoom, x: horizontal.lowerPosition, y: location.top }; }
@@ -71,7 +73,7 @@ const createTooltip = elementTag => {
             const result = [];
             if (!values) return result;
             for (let value of values)
-                if (tooltipPriorities[value])
+                if (tooltipPriorities[value] != null)
                     result.push(tooltipPriorities[value]);
             return result;
         }; //fromStringArray    
@@ -114,20 +116,25 @@ const createTooltip = elementTag => {
         const vertical = estimateLocation (location.top, location.bottom, window.innerHeight, elementSize.height);
         const locationFromPriorities = () => {
             for (let priority of prioritySequence) {
-                const evaluation = priority(location, horizontal, vertical);
+                if (priority == tooltipPriorities.pointer) // special case, no evaluation function:
+                    if (x != null && y != null)
+                        return { x, y };
+                    else
+                        continue;
+                const evaluation = priority(location, horizontal, vertical, x, y);
                 if (evaluation.room >= 0)
                     return { x: evaluation.x, y: evaluation.y };
             } //loop
             let maxRoom = Number.MIN_SAFE_INTEGER;
             let optimalLocation = null;
             for (let priority of prioritySequence) {
-                const evaluation = priority(location, horizontal, vertical);
+                const evaluation = priority(location, horizontal, vertical, x, y);
                 if (evaluation.room > maxRoom) {
                     optimalLocation = priority;
                     maxRoom = evaluation.room;
                 } //if
             } //loop
-            const evaluation = optimalLocation(location, horizontal, vertical);
+            const evaluation = optimalLocation(location, horizontal, vertical, x, y);
             return  { x: evaluation.x, y: evaluation.y };
         }; //locationFromPriorities
         const tooltipLocation = locationFromPriorities();

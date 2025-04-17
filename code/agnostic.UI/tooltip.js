@@ -5,8 +5,8 @@
   http://www.SAKryukov.org
   https://github.com/SAKryukov/word-games
 
-  A target element can have dataset.tooltipPriority,
-  for example:
+  A target element is defined by the presense of the attribute "title" (removed by createTooltip).
+  It can have dataset.tooltipPriority, for example:
 
   <option data-tooltip-priority="top right"></option>
   <select data-tooltip-priority="bottom"></select>
@@ -30,7 +30,7 @@ const createTooltip = elementTag => {
         defaults: {
             timeout: 10000,
             priorityDataSetName: "tooltipPriority",
-            priorities: ["bottom", "right", "top", "left"], // the array length should be 4 or 5
+            priorities: null, // defined by tooltipPriorities order and values below
         },
         toPixel: value => `${value}px`,
         upperGap: 2,
@@ -54,12 +54,12 @@ const createTooltip = elementTag => {
     }; //localDefinitionSet
 
     const tooltipPriorities = (() => {
-        const tooltipPriorities = {
-            left: 0,
+        const tooltipPriorities = { // order is important, defines default priorities:
+            bottom: 0,
             right: 0,
             top: 0,
-            bottom: 0,
-            pointer: 0, // depending on mouse/pointer location
+            left: 0,
+            pointer: 0, // depending on mouse/pointer location, important: not in default priorities
         };
         tooltipPriorities.left = (location, horizontal, _) => {
             return { room: horizontal.lowerPositionRoom, x: horizontal.lowerPosition, y: location.top }; }
@@ -69,6 +69,14 @@ const createTooltip = elementTag => {
                 return { room: vertical.lowerPositionRoom, x: location.left, y: vertical.lowerPosition }; }
         tooltipPriorities.bottom = (location, _, vertical) => {
                 return { room: vertical.higherPositionRoom, x: location.left, y: vertical.higherPosition }; }
+        (() => { // set localDefinitionSet.defaults.priorities
+            localDefinitionSet.defaults.priorities = [];
+            for (let index in tooltipPriorities)
+                if (tooltipPriorities[index] instanceof Function)
+                    localDefinitionSet.defaults.priorities.push(tooltipPriorities[index]);
+        })();
+        Object.freeze(localDefinitionSet.defaults);
+        Object.freeze(localDefinitionSet);
         tooltipPriorities.fromStringArray = values => {
             const result = [];
             if (!values) return result;
@@ -85,7 +93,7 @@ const createTooltip = elementTag => {
     let cssClass = null;
     let showTime = localDefinitionSet.defaults.timeout;
     let priorityDataSetName = localDefinitionSet.defaults.priorityDataSetName;
-    let priorities = tooltipPriorities.fromStringArray(localDefinitionSet.defaults.priorities);
+    let priorities = localDefinitionSet.defaults.priorities;
     let onClickHandler = null;
     let timeout = null;
 
@@ -214,7 +222,7 @@ const createTooltip = elementTag => {
             set(values) {
                 priorities = tooltipPriorities.fromStringArray(values);
                 if (priorities.length > 1)
-                    priorities = tooltipPriorities.fromStringArray(localDefinitionSet.defaults.priorities);
+                    priorities = localDefinitionSet.defaults.priorities;
             },
         },
         show: {

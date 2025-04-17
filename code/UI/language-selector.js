@@ -27,8 +27,11 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement) => 
                 <table><tr>${cells}</tr></table>`
         },
         empty: "",
-        onPaste: (targetElement, eventHander) =>
-            targetElement.addEventListener("paste", eventHander),
+        paste: {
+            onPaste: (targetElement, eventHander) =>
+                targetElement.addEventListener("paste", eventHander),
+            getClipboardText: event => event.clipboardData.getData("text"),
+        },
     }; //localDefinitionSet
 
     let repertoire = null;
@@ -90,12 +93,23 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement) => 
     languageSelector.filterOut = event => {
 		const char = event.key;
         if (!char || char.length != 1) return false;
-		if (repertoire.indexOf(char) >= 0 ||
-            repertoire.indexOf(char.toUpperCase()) > 0)
-                return true;
+		if (repertoire.indexOf(char.toLowerCase()) >= 0)
+            return true;
 		if (event.preventDefault) event.preventDefault();
 		return false;
     }; //filterOut
+
+    languageSelector.setPasteFilter = element => {
+        localDefinitionSet.paste.onPaste(element, event => {
+            const data = localDefinitionSet.paste.getClipboardText(event);
+            event.preventDefault();
+            let result = localDefinitionSet.empty;
+            for (let character of data)
+                if (repertoire.indexOf(character.toLowerCase()) >= 0)
+                    result += character;
+            event.target.value = result;
+        });
+    }; //pasteFilter
 
     (() => { // populate language set:
         let count = 0;
@@ -172,19 +186,6 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement) => 
         selectLanguageElement.style.height = pixelSize(height);
         selectOptionsElement.style.height = pixelSize(height);
     })(); //makeEqualHeight
-
-    languageSelector.setPasteFilter = element => {
-        localDefinitionSet.onPaste(element, event => {
-            const data = event.clipboardData.getData("text");
-            event.preventDefault();
-            let result = localDefinitionSet.empty;
-            for (let character of data)
-                if (repertoire.indexOf(character.toLowerCase()) >= 0 ||
-                    repertoire.indexOf(character.toUpperCase()) > 0)
-                        result += character;
-            event.target.value = result;
-        });
-    }; //pasteFilter
 
     return languageSelector;
 };

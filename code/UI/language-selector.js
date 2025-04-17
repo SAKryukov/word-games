@@ -11,21 +11,24 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement) => 
     const languageSelector = {};
 
     const localDefinitionSet = {
-      characterRepertoireOptions: {
-        acceptBlankspaceCharacters: "Accept blankspace characters",
-        acceptPunctuationCharacters: "Accept punctuation characters",
-      },
-      createOption: () => document.createElement("option"),
-      displayRepertoire: repertoire => {
-        let cells = "";
-        let caseInsensitive = repertoire.toUpperCase() == repertoire.toLowerCase()
-            ? ""
-            : ", case-insensitive";
-        for (let character of repertoire)
-            cells += `<td>${character}</td>`;
-        return `Valid input characters${caseInsensitive}:<br/>
-                <table><tr>${cells}</tr></table>` },
-      empty: "",
+        characterRepertoireOptions: {
+            acceptBlankspaceCharacters: "Accept blankspace characters",
+            acceptPunctuationCharacters: "Accept punctuation characters",
+        },
+        createOption: () => document.createElement("option"),
+        displayRepertoire: repertoire => {
+            let cells = "";
+            let caseInsensitive = repertoire.toUpperCase() == repertoire.toLowerCase()
+                ? ""
+                : ", case-insensitive";
+            for (let character of repertoire)
+                cells += `<td>${character}</td>`;
+            return `Valid input characters${caseInsensitive}:<br/>
+                <table><tr>${cells}</tr></table>`
+        },
+        empty: "",
+        onPaste: (targetElement, eventHander) =>
+            targetElement.addEventListener("paste", eventHander),
     }; //localDefinitionSet
 
     let repertoire = null;
@@ -67,8 +70,8 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement) => 
                             && (event.target.parentElement == selectOptionsElement)))
                                 setRepertoire(selectOptionsElement);
                 }; //tooltip.onClickHandler
-            },
-        }
+            },            
+        },
     }); //languageSelector.defineProperties options
 
     const setRepertoire = target => {
@@ -169,6 +172,19 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement) => 
         selectLanguageElement.style.height = pixelSize(height);
         selectOptionsElement.style.height = pixelSize(height);
     })(); //makeEqualHeight
+
+    languageSelector.setPasteFilter = element => {
+        localDefinitionSet.onPaste(element, event => {
+            const data = event.clipboardData.getData("text");
+            event.preventDefault();
+            let result = localDefinitionSet.empty;
+            for (let character of data)
+                if (repertoire.indexOf(character.toLowerCase()) >= 0 ||
+                    repertoire.indexOf(character.toUpperCase()) > 0)
+                        result += character;
+            event.target.value = result;
+        });
+    }; //pasteFilter
 
     return languageSelector;
 };

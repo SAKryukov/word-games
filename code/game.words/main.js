@@ -172,6 +172,9 @@ window.onload = () => {
         setupMenuActivator(contextMenu, elementSet.input.buttonActivateMenu);
     })(); //contextMenu
 
+    languageSelector.setPasteFilter(elementSet.input.inputSetWord);
+    languageSelector.setPasteFilter(elementSet.input.inputTry);
+
     elementSet.input.inputSetWord.focus();
 
 }; //window.onload

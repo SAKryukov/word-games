@@ -31,6 +31,7 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement) => 
             onPaste: (targetElement, eventHander) =>
                 targetElement.addEventListener("paste", eventHander),
             getClipboardText: event => event.clipboardData.getData("text"),
+            insert: (before, value, after) => `${before}${value}${after}`,
         },
     }; //localDefinitionSet
 
@@ -107,7 +108,13 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement) => 
             for (let character of data)
                 if (repertoire.indexOf(character.toLowerCase()) >= 0)
                     result += character;
-            event.target.value = result;
+            const startPos = event.target.selectionStart;
+            const endPos = event.target.selectionEnd;
+            event.target.value =
+                localDefinitionSet.paste.insert(
+                    event.target.value.substring(0, startPos),
+                    result,
+                    event.target.value.substring(endPos, event.target.value.length));
         });
     }; //pasteFilter
 

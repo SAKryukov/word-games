@@ -75,8 +75,7 @@ const createTooltip = elementTag => {
                 if (tooltipPriorities[index] instanceof Function)
                     localDefinitionSet.defaults.priorities.push(tooltipPriorities[index]);
         })();
-        Object.freeze(localDefinitionSet.defaults);
-        Object.freeze(localDefinitionSet);
+        namespaces.deepFreeze(localDefinitionSet);
         tooltipPriorities.fromStringArray = values => {
             const result = [];
             if (!values) return result;

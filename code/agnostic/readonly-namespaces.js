@@ -40,7 +40,7 @@ const namespaces = (() => {
 		return namespace;
 	}; //create
 
-	const namespacesNamespace = { create: create, extend: extend };
+	const namespacesNamespace = { create, extend, deepFreeze };
 	Object.freeze(namespacesNamespace);
 	return namespacesNamespace;
 

@@ -174,6 +174,10 @@ window.onload = () => {
 
     languageSelector.setPasteFilter(elementSet.input.inputSetWord);
     languageSelector.setPasteFilter(elementSet.input.inputTry);
+    languageSelector.onPaste = element => {
+        if (element == elementSet.input.inputSetWord)
+            elementSet.characterCount.textContent = element.value.length;
+    }; //languageSelector.onPaste
 
     elementSet.input.inputSetWord.focus();
 

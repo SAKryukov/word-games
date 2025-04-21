@@ -40,6 +40,7 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement) => 
     let acceptBlankspaceCharacters = false;
     let acceptPunctuationCharacters = false;
     let onCharacterSetChange = null;
+    let onPaste = null;
     let tooltip = null;
 
     Object.defineProperties(languageSelector, {
@@ -57,6 +58,9 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement) => 
         },
         onCharacterSetChange: {
             set(value) { onCharacterSetChange = value; },
+        },
+        onPaste: {
+            set(value) { onPaste = value; },
         },
         tooltip: {
             set(value) {
@@ -115,6 +119,8 @@ const createLanguageSelector = (selectLanguageElement, selectOptionsElement) => 
                     event.target.value.substring(0, startPos),
                     result,
                     event.target.value.substring(endPos, event.target.value.length));
+                if (onPaste)
+                    onPaste(event.target);
         });
     }; //pasteFilter
 

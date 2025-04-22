@@ -7,7 +7,7 @@
 
 "use strict";
 
-window.onload = () => {
+initialize.onBeforeDOMContentLoaded(() => {
 
     const tooltip = (() => {
         const tooltip = createTooltip(games.definitionSet.tooltip.elementTag);
@@ -181,4 +181,4 @@ window.onload = () => {
 
     elementSet.input.inputSetWord.focus();
 
-}; //window.onload
+}); //window.onload

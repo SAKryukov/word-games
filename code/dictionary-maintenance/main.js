@@ -7,7 +7,7 @@
 
 "use strict";
 
-window.onload = () => {
+initialize.onBeforeDOMContentLoaded(() => {
 
 	const stringify = anObject => {
 		if (anObject instanceof Array) {
@@ -118,4 +118,4 @@ window.onload = () => {
 			{dimmerOpacity: maintenance.definitionSet.resultDimmerOpacity});
 	}; //elementSet.input.buttonStart.onclick
 
-}; //window.onload
+}); //window.onload

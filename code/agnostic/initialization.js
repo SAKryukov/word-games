@@ -9,7 +9,7 @@
 
 const initialize = (() => {
 
-    const localDefinitionSet = {
+    const definitionSet = {
         document: {
             events: {
                 DOMContentLoaded: 0,
@@ -19,32 +19,41 @@ const initialize = (() => {
                 loading: 0, // initial
                 interactive: 0,
                 complete: 0,
-            }
+            },
         },
-    }; //localDefinitionSet
-    for (let index in localDefinitionSet.document.events)
-        localDefinitionSet.document.events[index] = index;
-    for (let index in localDefinitionSet.document.readyState)
-        localDefinitionSet.document.readyState[index] = index;
+        window: {
+            events: {
+                load: 0,
+            },
+        },
+        initialize: function () {
+            for (let dictionary of [
+                this.document.events,
+                this.window.events,
+                this.document.readyState])
+                    for (let index in dictionary)
+                        dictionary[index] = index;        
+        },
+    }; //definitionSet
+    definitionSet.initialize();
 
-    const onBeforeDOMContentLoaded = method => {
-        document.onreadystatechange = event => {
-            if (document.readyState === localDefinitionSet.document.readyState.interactive)
-                method(event);
-        };
-    }; //onBeforeDOMContentLoaded
+    const onBeforeDOMContentLoaded = handler =>
+        document.addEventListener(definitionSet.document.events.readystatechange, event => {
+            if (document.readyState == definitionSet.document.readyState.interactive)
+                handler(event);
+        });
 
-    const onBeforeLoad = method => {
-        document.onreadystatechange = event => {
-            if (method && document.readyState === localDefinitionSet.document.readyState.complete)
-                method(event);
-        };
-    }; //onBeforeLoad
+    const onBeforeLoad = handler =>
+        document.addEventListener(definitionSet.document.events.readystatechange, event => {
+            if (document.readyState == definitionSet.document.readyState.complete)
+                handler(event);
+        });
     
-    const onDOMContentLoaded = method =>
-        document.addEventListener(localDefinitionSet.document.events.DOMContentLoaded, method);
+    const onDOMContentLoaded = handler =>
+        document.addEventListener(definitionSet.document.events.DOMContentLoaded, handler);
 
-    const onLoad = method => window.onload = method;
+    const onLoad = handler =>
+        window.addEventListener(definitionSet.window.events.load, handler);
 
     const api = { onBeforeDOMContentLoaded, onDOMContentLoaded, onBeforeLoad, onLoad, };
     

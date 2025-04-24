@@ -3,29 +3,31 @@
     "configurations": [
         {
             "type": "chrome",
+            //"type": "firefox",
             "request": "launch",
-            "name": "balda",
+            "name": "Balda",
             "file": "${workspaceFolder}/balda.html"
         },
         {
             "type": "chrome",
+            //"type": "firefox",
             "request": "launch",
-            "name": "words",
+            "name": "Words",
             "file": "${workspaceFolder}/words.html"
         },
         {
             "type": "chrome",
+            //"type": "firefox",
             "request": "launch",
-            "name": "bulls and cows",
+            "name": "Bulls and Cows",
             "file": "${workspaceFolder}/bulls-and-cows.html"
         },
         {
             "type": "chrome",
+            //"type": "firefox",
             "request": "launch",
-            "name": "maintenance",
+            "name": "Maintenance",
             "file": "${workspaceFolder}/dictionary-maintenance/index.html"
         },
-
-
     ]
 }

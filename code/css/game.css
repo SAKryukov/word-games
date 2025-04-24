@@ -24,6 +24,7 @@ section { display: inline-block; }
 #menu > option:disabled { font-weight: lighter; opacity: 0.6; }
 select { overflow-y: auto; }
 select, button, input { border-radius: 4px; }
+button:not(#button-activate-menu) { padding-top: var(--deltaY); padding-bottom: var(--deltaY); }
 option, input, button, .tooltip { padding-left: var(--deltaX); padding-right: var(--deltaX); }
 .tooltip { background-color: seashell; border: solid thin darkgoldenrod;
   pointer-events: none !important;

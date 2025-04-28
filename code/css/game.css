@@ -1,12 +1,17 @@
 * { font-family: sans-serif; }
+
 :root {
   --deltaX: 1em;
   --deltaY: 0.2em;
   --smallDeltaX: 0.2em;
   --menuPaddingY: 0.3em;
   --border: solid thin darkGray;
-  --special: orange;
+  --focusFrameThickness: 2px;
+  --focusFrameOffset: 2px;
+  --focusFrameRadius: 6px;
+  --focusFrameColor: black;
 }
+
 a.help { margin-left: 3em; }
 main {
   border-top: var(--border);
@@ -17,14 +22,25 @@ main, header, footer {
   padding-top: var(--deltaY);
   padding-bottom: var(--deltaY);
 }
+
 header section:not(:first-of-type) { margin-left: 2em; }
 section { display: inline-block; }
 #menu { display: none; }
 #menu > option { padding-top: var(--menuPaddingY); padding-bottom: var(--menuPaddingY);}
 #menu > option:disabled { font-weight: lighter; opacity: 0.6; }
 select { overflow-y: auto; }
-select, button, input { border-radius: 4px; }
-button:not(#button-activate-menu) { padding-top: var(--deltaY); padding-bottom: var(--deltaY); }
+select { border-radius: var(--focusFrameRadius) 0 0 var(--focusFrameRadius); }
+button, input { border-radius: var(--focusFrameRadius); }
+
+select { border: solid thin gray; margin-top: 4px; }
+select:focus { outline: solid var(--focusFrameThickness) var(--focusFrameColor); outline-offset: var(--focusFrameOffset); } 
+button:not(#button-activate-menu) { padding-top: var(--deltaY); padding-bottom: var(--deltaY);
+  border: solid thin hsl(203, 60%, 50%, 100%); }
+button:not(#button-activate-menu)  { background-color: hsl(203, 60%, 80%, 100%); }
+button:not(#button-activate-menu):hover { background-color:hsl(203, 100%, 90%, 100%); }
+button:not(#button-activate-menu):active { background-color: hsl(39, 100%, 95%, 100%); }
+button:not(#button-activate-menu):focus { outline: solid var(--focusFrameThickness) var(--focusFrameColor); outline-offset: var(--focusFrameOffset); }
+
 option, input, button, .tooltip { padding-left: var(--deltaX); padding-right: var(--deltaX); }
 .tooltip { background-color: seashell; border: solid thin darkgoldenrod;
   pointer-events: none !important;
@@ -45,5 +61,3 @@ p { margin-bottom: 0.4em; }
 p.message { display:flex; margin-top: 1em; flex-wrap:nowrap; }
 p.message #message { flex-grow:1; text-align:center; margin-right: 2em; }
 p.message #score, p.message span:last-of-type { white-space: nowrap; }
-
-

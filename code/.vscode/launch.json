@@ -2,8 +2,15 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "request": "launch",
             "type": "chrome",
             //"type": "firefox",
+            "name": "Launch index.html",
+            "file": "${workspaceFolder}/index.html"
+        },
+        {
+            //"type": "chrome",
+            "type": "firefox",
             "request": "launch",
             "name": "Balda",
             "file": "${workspaceFolder}/balda.html"
@@ -16,8 +23,8 @@
             "file": "${workspaceFolder}/words.html"
         },
         {
-            "type": "chrome",
-            //"type": "firefox",
+            //"type": "chrome",
+            "type": "firefox",
             "request": "launch",
             "name": "Bulls and Cows",
             "file": "${workspaceFolder}/bulls-and-cows.html"

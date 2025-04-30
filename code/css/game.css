@@ -30,12 +30,12 @@ section { display: inline-block; }
 #menu > option { padding-top: var(--menuPaddingY); padding-bottom: var(--menuPaddingY);}
 #menu > option:disabled { font-weight: lighter; opacity: var(--disabledOpacity); }
 select { overflow-y: auto; }
-select { border-radius: var(--focusFrameRadius) 0 0 var(--focusFrameRadius); }
 button { border-radius: var(--focusFrameRadius); }
 
 select, input { border: solid thin gray; margin-top: 4px; }
 select:disabled { opacity: var(--disabledOpacity); }
 select:focus { outline: solid var(--focusFrameThickness) var(--focusFrameColor); outline-offset: var(--focusFrameOffset); }
+select#menu { outline: none; border: solid thin gray; }
 button { border: solid thin gray; }
 button#buttonStartStop { padding-top: var(--deltaY); padding-bottom: var(--deltaY);
   border: solid thin hsl(203, 60%, 60%, 100%); }

@@ -10,12 +10,7 @@
 
 "use strict";
 
-const fixAccessKeyAttributes = (prefix = ["altKey"]) => {
-    // The argument can be:
-    // ["altKey", "shiftKey"]
-    // ["altKey", "ctrlKey"]
-    // ["altKey", "shiftKey", "ctrlKey"]...
-    // and the like
+const fixAccessKeyAttributes = (altKey = true, shiftKey = false, ctrlKey = false, metaKey = false) => {
 
     const definitionSet = {
         accesskey: 0,
@@ -42,9 +37,10 @@ const fixAccessKeyAttributes = (prefix = ["altKey"]) => {
     } //loop
 
     window.addEventListener(definitionSet.keydown, event => {
-        for (let prefixElement of prefix)
-            if (!event[prefixElement])
-                return;
+        if (event.altKey != altKey) return;
+        if (event.shiftKey != shiftKey) return;
+        if (event.ctrlKey != ctrlKey) return;
+        if (event.metaKey != metaKey) return;
         const value = eventMap.get(event.code);
         if (!value) return;
         if (!value.element.disabled)

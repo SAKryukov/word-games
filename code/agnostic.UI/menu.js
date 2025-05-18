@@ -596,4 +596,4 @@ function menuGenerator (container) {
     this.toString = () => { return describeSelfDocumentedAPI(this); };
     Object.freeze(this);
 
-};
+}

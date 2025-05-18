@@ -10,19 +10,20 @@
 const setupCheckedListBox = (selectElement, defaultValues, modificationCallback) => {
     // modificationCallback(number index, string textContent, bool value, bool initial)
 
-    const emptyBallotPrefix = `${String.fromCodePoint(0x2610)} `;
-    const checkedBallotPrefix = `${String.fromCodePoint(0x2611)} `;
-    const blankSpace = " ";
-    const enter = "Enter";
- 
+    const definitionSet = {
+        emptyBallotPrefix: `${String.fromCodePoint(0x2610)} `,
+        checkedBallotPrefix: `${String.fromCodePoint(0x2611)} `,
+        keyToogleFlipCheck: new Set(["Space", "Enter"]),
+    }; //definitionSet
+
     const optionMap = new Map();
     const optionIndex = [];
 
     const setOption = (option, mapValue, initial) => {
         if (mapValue.value)
-            option.textContent = checkedBallotPrefix + mapValue.textContent;
+            option.textContent = definitionSet.checkedBallotPrefix + mapValue.textContent;
         else
-            option.textContent = emptyBallotPrefix + mapValue.textContent;
+            option.textContent = definitionSet.emptyBallotPrefix + mapValue.textContent;
         if (modificationCallback)
             modificationCallback(mapValue.index, mapValue.textContent, mapValue.value, initial);
     }; //setOption
@@ -46,7 +47,7 @@ const setupCheckedListBox = (selectElement, defaultValues, modificationCallback)
     } //loop
 
     selectElement.onkeyup = event => {
-        if (event.key == blankSpace || event.key == enter) {
+        if (definitionSet.keyToogleFlipCheck.has(event.code)) {
             const option = event.target.children[event.target.selectedIndex];
             toggleOption(option);
         } //if
@@ -60,7 +61,7 @@ const setupCheckedListBox = (selectElement, defaultValues, modificationCallback)
         const mapValue = optionMap.get(option);
         mapValue.value = value;
         setOption(option, mapValue);
-  } //setValue
+    } //setValue
 
     return { getValue: getValue, setValue: setValue };
 

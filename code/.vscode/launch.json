@@ -4,34 +4,29 @@
         {
             "request": "launch",
             "type": "chrome",
-            //"type": "firefox",
             "name": "Launch index.html",
             "file": "${workspaceFolder}/index.html"
         },
         {
-            //"type": "chrome",
-            "type": "firefox",
+            "type": "chrome",
             "request": "launch",
             "name": "Balda",
             "file": "${workspaceFolder}/balda.html"
         },
         {
             "type": "chrome",
-            //"type": "firefox",
             "request": "launch",
             "name": "Words",
             "file": "${workspaceFolder}/words.html"
         },
         {
-            //"type": "chrome",
-            "type": "firefox",
+            "type": "chrome",
             "request": "launch",
             "name": "Bulls and Cows",
             "file": "${workspaceFolder}/bulls-and-cows.html"
         },
         {
             "type": "chrome",
-            //"type": "firefox",
             "request": "launch",
             "name": "Maintenance",
             "file": "${workspaceFolder}/dictionary-maintenance/index.html"

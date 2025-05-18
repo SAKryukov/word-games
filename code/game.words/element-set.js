@@ -76,11 +76,12 @@ const getElementSet = () => {
         showingUserSolution = false;
     }; //elementSet.showMachineSolution
 
+    elementSet.setWindowKeyHandler = handler => window.addEventListener("keydown", handler);
     elementSet.isEnter = event => event.key == "Enter";
+    elementSet.keyShuffle = "KeyU";
+    elementSet.keyShuffleReset = "KeyR";
     elementSet.highlightClass = "highlight";
-    elementSet.keyShuffle = "u";
-    elementSet.keyShuffleReset = "r";
-    elementSet.isKeyShuffleRelated = event => event.key == "u" || event.key == "r";
+    elementSet.isKeyShuffleRelated = event => event.code == "KeyU" || event.code == "keyR";
     elementSet.makeEqualWidth = element => element.style.width = `${element.offsetHeight}px`;
 
     return elementSet;

@@ -97,16 +97,16 @@ initialize.onBeforeDOMContentLoaded(() => {
         };
         gameIO.shuffleAndClassify(true);
         elementSet.buttonShuffle.onclick = () => gameIO.shuffleAndClassify(false);
-        window.onkeydown = event => {
+        elementSet.setWindowKeyHandler(event => {
             if (event.altKey) {
-                if (event.key == elementSet.keyShuffle)
+                if (event.code == elementSet.keyShuffle)
                     gameIO.shuffleAndClassify(false);
-                if (event.key == elementSet.keyShuffleReset)
+                if (event.code == elementSet.keyShuffleReset)
                     gameIO.shuffleAndClassify(true);
                 if (elementSet.isKeyShuffleRelated(event))
                     event.preventDefault();
             } //if
-        };
+        });
     })(); //setup shuffle
 
     const reviewMachineSolution = showWords => {
@@ -181,4 +181,4 @@ initialize.onBeforeDOMContentLoaded(() => {
 
     elementSet.input.inputSetWord.focus();
 
-}); //window.onload
+});

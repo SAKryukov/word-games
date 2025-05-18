@@ -7,8 +7,23 @@
 
 "use strict";
 
-const createSortedWordList = (parent, hightlightClass, callback) => {   
-    //callback(int wordCount)
+const createSortedWordList = (parent, hightlightClass, callback) => {
+
+    const definitionSet = {
+        keys:  {
+            ArrowRight: 0,
+            ArrowLeft: 0,
+            Home: 0,
+            End: 0,
+        },
+        wrapperElement: "div",
+        initialize: function() {
+            for (let index in this.keys)
+                this.keys[index] = index;
+        },
+    };
+    definitionSet.initialize();
+
     const wordSet = new Set();
     let lastWrapper = null;
     const result = {};
@@ -42,18 +57,18 @@ const createSortedWordList = (parent, hightlightClass, callback) => {
             return false;
         } //if
         wordSet.add(word);
-        const wrapper = document.createElement("div");
+        const wrapper = document.createElement(definitionSet.wrapperElement);
         wrapper.textContent = word;
         wrapper.tabIndex = 0;
         wrapper.onkeydown = event => {
-            switch (event.key) {
-                case "ArrowRight":
+            switch (event.code) {
+                case definitionSet.keys.ArrowRight:
                     event.target.nextSibling?.focus(); break;
-                case "ArrowLeft":
+                case definitionSet.keys.ArrowLeft:
                     event.target.previousSibling?.focus(); break;
-                case "Home":
+                case definitionSet.keys.Home:
                     event.target.parentElement.firstChild.focus(); break;
-                case "End": 
+                case definitionSet.keys.End: 
                     event.target.parentElement.lastChild.focus(); break;
             }
         }; //wrapper.onkeydown

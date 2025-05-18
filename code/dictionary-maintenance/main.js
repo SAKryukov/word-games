@@ -118,4 +118,5 @@ initialize.onBeforeDOMContentLoaded(() => {
 			{dimmerOpacity: maintenance.definitionSet.resultDimmerOpacity});
 	}; //elementSet.input.buttonStart.onclick
 
-}); //window.onload
+});
+

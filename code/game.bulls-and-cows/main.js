@@ -182,4 +182,4 @@ initialize.onBeforeDOMContentLoaded(() => {
         setupMenuActivator(contextMenu, elementSet.input.buttonActivateMenu);
     })(); //menu
 
-}); //window.onload
+});

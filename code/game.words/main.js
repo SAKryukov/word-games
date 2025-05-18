@@ -9,6 +9,7 @@
 
 initialize.onBeforeDOMContentLoaded(() => {
 
+с
     const tooltip = (() => {
         const tooltip = createTooltip(games.definitionSet.tooltip.elementTag);
         tooltip.cssClass = games.definitionSet.tooltip.cssClass;

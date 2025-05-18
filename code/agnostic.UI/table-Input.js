@@ -318,6 +318,7 @@ const createTableInput = (element, scrollableElement, initialWidth, initialHeigh
                 if (enterCallback)
                     enterCallback(cell, currentX, currentY);
             default:
+                if (event.altKey || event.CtrlKey) return;
                 if (!cell.classList.contains(readonlyClassName)) {
                     if (characterInputCallback)
                         if (!characterInputCallback(cell, event))

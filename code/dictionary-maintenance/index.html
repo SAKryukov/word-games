@@ -7,6 +7,7 @@
   <script src="../agnostic/initialization.js"></script>
   <script src="../agnostic.UI/tooltip.js"></script> 
   <script src="../agnostic.UI/modal-popup.js"></script>
+  <script src="../agnostic.UI/accesskey.js"></script>
   <script src="../definition-set.js"></script>
   <script src="../Dictionaries/definition-set.js"></script>
   <script src="../Dictionaries/dictionaries.js"></script>
@@ -40,7 +41,8 @@
     <h1>Dictionary Maintenance</h1>
     <p>
     <section>
-      <u>L</u>anguage:<br/><select accesskey="l" id="language"></select>
+      <!-- accesskey attributes are removed by script: -->
+      <u>L</u>anguage:<br/><select accesskey="KeyL" id="language"></select>
     </section>
     <p>
       <input id="to-remove" placeholder="Comma-separated list of words to remove from dictionary"></input>
@@ -49,7 +51,8 @@
       <input id="to-add" placeholder="Comma-separated list of words to add do dictionary"></input>
     </p>
     <p>
-      <button id="button-start" accesskey="u"><u>U</u>pdate dictionary</button>
+      <!-- accesskey attributes are removed by script: -->
+      <button id="button-start" accesskey="KeyU"><u>U</u>pdate dictionary</button>
     </p>
   </header>
 

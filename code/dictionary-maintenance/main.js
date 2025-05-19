@@ -9,6 +9,8 @@
 
 initialize.onBeforeDOMContentLoaded(() => {
 
+	fixAccessKeyAttributes();
+
 	const stringify = anObject => {
 		if (anObject instanceof Array) {
 			const elements = [];
@@ -49,7 +51,7 @@ initialize.onBeforeDOMContentLoaded(() => {
 			if (wordsToRemove != null)
 				for (let word of wordsToRemove) {
 					word = word.toLowerCase();
-			        if (wordSet.has(word)) {
+					if (wordSet.has(word)) {
 						wordSet.delete(word);
 						removedWords.push(word);
 					} else
@@ -92,12 +94,12 @@ initialize.onBeforeDOMContentLoaded(() => {
 			} //loop
 			return result;
 		}; //getWords
-	    removeAddWords(
+		removeAddWords(
 			getWords(elementSet.input.wordsToRemove.value),
 			getWords(elementSet.input.wordsToAdd.value)
 		);
 		const showResult = (parent, input, value) => {
-			parent.style.display = 
+			parent.style.display =
 				value != null && value.length > 0
 					? maintenance.definitionSet.visibility.shown
 					: maintenance.definitionSet.visibility.hidden;
@@ -115,7 +117,7 @@ initialize.onBeforeDOMContentLoaded(() => {
 		modalPopup.show(
 			maintenance.definitionSet.resultHTML,
 			null,
-			{dimmerOpacity: maintenance.definitionSet.resultDimmerOpacity});
+			{ dimmerOpacity: maintenance.definitionSet.resultDimmerOpacity });
 	}; //elementSet.input.buttonStart.onclick
 
 });

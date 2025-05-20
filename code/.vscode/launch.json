@@ -15,6 +15,7 @@
         },
         {
             "type": "chrome",
+            //"type": "firefox",
             "request": "launch",
             "name": "Words",
             "file": "${workspaceFolder}/words.html"

@@ -5,10 +5,10 @@ Modal Popup
 v.3.1
 
 Copyright (c) 2015, 2017, 2019, 2023, 2025 by Sergey A Kryukov
-http://www.SAKryukov.org
-http://www.codeproject.com/Members/SAKryukov
+https://www.SAKryukov.org
+https://www.codeproject.com/Members/SAKryukov
 
-Published: http://www.codeproject.com/Articles/1061121/ModalPopupFromScratch
+Published: https://sakryukov.github.io/publications/2015-12-02.Modal-Popup-From-Scratch.html
 
 */
 

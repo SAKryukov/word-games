@@ -18,11 +18,8 @@ const createFileIO = showException => {
     let fileHandleSave = undefined;
     let fileHandleOpen = undefined;
     let previouslyOpenedFilename = null; // fallback
-
-    const exceptionHandler = exception => {
-        if (showException != null && exception.name != definitionSet.nonHandledExceptionName)
-            showException(exception);
-    }; //exceptionHandler
+    
+    const canSave = () => experimentalImplementation ? fileHandleSave != null : previouslyOpenedFilename != null;
 
     const saveFileWithHandle = (handle, content) => {
         if (!handle) return;
@@ -30,10 +27,10 @@ const createFileIO = showException => {
             stream.write(content).then(() => {
                 stream.close();
             }).catch(writeException => {
-                exceptionHandler(writeException);
+                showException(writeException);
             });
         }).catch(createWritableException => {
-            exceptionHandler(createWritableException);
+            showException(createWritableException);
         });
     }; //saveFileWithHandle
 
@@ -48,24 +45,26 @@ const createFileIO = showException => {
                 file.text().then(text => {
                     fileHandler(handles[0].name, text);
                 }).catch(fileTextException => {
-                    exceptionHandler(fileTextException);
+                    showException(fileTextException);
                 });
             }).catch(getFileException => {
-                exceptionHandler(getFileException);
+                showException(getFileException);
             });
         }).catch(openFilePicketException => {
-            exceptionHandler(openFilePicketException);
+            if (openFilePicketException.name != definitionSet.nonHandledExceptionName)
+                showException(openFilePicketException);
         });
     }; //loadTextFile
 
     const storeTextFile = (_, content, options) => {
-        options.startIn = fileHandleSave ?? fileHandleOpen ?? definitionSet.defaultLocation;
+        options.startIn = fileHandleSave ?? fileHandleOpen ?? options.startIn ?? definitionSet.defaultLocation;
         window.showSaveFilePicker(options).then(handle => {
             if (!handle) return;
             fileHandleSave = handle;
             saveFileWithHandle(handle, content);
         }).catch(saveFilePickerException => {
-            exceptionHandler(saveFilePickerException);
+            if (saveFilePickerException.name != definitionSet.nonHandledExceptionName)
+                showException(saveFilePickerException);
         });
     }; //storeTextFile
 
@@ -113,6 +112,7 @@ const createFileIO = showException => {
     }; //saveExistingFallback
 
     return {
+        canSave,
         isFallback: !experimentalImplementation,
         saveExisting: experimentalImplementation ? saveExisting : saveExistingFallback,
         storeTextFile: experimentalImplementation ? storeTextFile : storeTextFileFallback,

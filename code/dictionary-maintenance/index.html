@@ -6,7 +6,7 @@
   <script src="../agnostic/readonly-namespaces.js"></script>
   <script src="../agnostic/initialization.js"></script>
   <script src="../agnostic.UI/tooltip.js"></script> 
-  <script src="../agnostic.UI/modal-popup.js"></script>
+  <script src="../agnostic.UI/modal-dialog.js"></script>
   <script src="../agnostic.UI/accesskey.js"></script>
   <script src="../definition-set.js"></script>
   <script src="../Dictionaries/definition-set.js"></script>
@@ -22,7 +22,11 @@
   <meta http-equiv="Cache-Control" content="no-store" />
   <style>
     @import url("../css/flex.css");
+    @import url("../agnostic.UI/modal-dialog.css");
     @import url("../css/game.css");
+    dialog > section:first-of-type { color: darkGreen; }
+    dialog > section:last-of-type { background-color: hsl(141, 34%, 74%); border-color: green; padding-top: 0.6em; padding-bottom: 0.6em; }
+    dialog > section:last-of-type > button { outline-color: hsl(142, 28%, 35%); outline-width: 3.3px; outline-offset: 2.1px; }
     input { width: 100%; }
     p { margin-top: var(--deltaY); }
     h1 { text-align: center; font-size: 110%; margin-top: 0.8em; }

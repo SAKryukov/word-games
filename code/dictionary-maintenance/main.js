@@ -114,10 +114,7 @@ initialize.onBeforeDOMContentLoaded(() => {
 
 	elementSet.input.buttonStart.onclick = () => {
 		dictionaryMainenance();
-		modalPopup.show(
-			maintenance.definitionSet.resultHTML,
-			null,
-			{ dimmerOpacity: maintenance.definitionSet.resultDimmerOpacity });
+		modalDialog.show(maintenance.definitionSet.resultHTML);
 	}; //elementSet.input.buttonStart.onclick
 
 });

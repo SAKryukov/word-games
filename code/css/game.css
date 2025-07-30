@@ -64,5 +64,4 @@ p.message { display:flex; margin-top: 1em; flex-wrap:nowrap; }
 p.message #message { flex-grow:1; text-align:center; margin-right: 2em; }
 p.message #score, p.message span:last-of-type { white-space: nowrap; }
 
-dialog section:last-of-type { background-color: hsl(201, 40%, 79%); }
 dialog.error > section:first-of-type { color: red; }

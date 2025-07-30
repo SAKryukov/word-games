@@ -32,11 +32,6 @@ const IO = namespaces.create({
     
         ioDefinitionSet.IOErrorFormat = {
             formatException: exception => `<p>${exception.name}<br/><br/>${exception.message}</p>`,
-            modalPopupOptions: {
-                textAlign: "center",
-                textLineColor: { message: "red", },
-                backgroundColor: { message: "lightYellow", },
-            },
             invalidSignatureMessage: signature => `Invalid file signature: ${signature}`,
             invalidFileTypeError: InvalidFileTypeError,
         }; //ioDefinitionSet.IOErrorFormat   

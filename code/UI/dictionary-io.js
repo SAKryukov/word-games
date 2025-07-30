@@ -14,10 +14,7 @@ const createDictionartyIO = (languageSelector, signature, suggestedInitialFileNa
     const gameIO = {};
     
     const fileIO = createFileIO(exception => {
-        modalPopup.show(
-            IO.definitionSet.IOErrorFormat.formatException(exception),
-            null,
-            IO.definitionSet.IOErrorFormat.modalPopupOptions);
+        modalDialog.show(IO.definitionSet.IOErrorFormat.formatException(exception), game.definitionSet.modalDialogErrorOptions);
     });
 
     if (!fileIO)

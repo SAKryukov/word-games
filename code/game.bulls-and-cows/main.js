@@ -170,17 +170,8 @@ initialize.onBeforeDOMContentLoaded(() => {
         });
         contextMenu.subscribe(elementSet.menuItem.revealSolution, actionRequest => {
             if (!actionRequest) return secretWord != null;
-            modalPopup.show(
-                secretWord.toUpperCase(),
-                [{
-                    text: game.definitionSet.revealSecretWordPopup.buttonText,
-                    default: true, escape: true,
-                    action: () => tableInput.focus()
-                }],
-                { textAlign: game.definitionSet.revealSecretWordPopup.textAlign },
-                () => tableInput.focus()); 
+            modalDialog.show(secretWord.toUpperCase(), { options: { focusAfterAction: tableInput }});
         });
-        //elementSet.isButtonStartReady
         setupMenuActivator(contextMenu, elementSet.input.buttonActivateMenu);
     })(); //menu
 

@@ -53,10 +53,9 @@ initialize.onBeforeDOMContentLoaded(() => {
         if (elementSet.isEnter(event) && event.target.value) {
             elementSet.showInputTry();
             if (!gameAlgorithm.isInDictionary(event.target.value.toLowerCase()))
-                modalPopup.show(
+                modalDialog.show(
                     game.definitionSet.setWordBad(languageSelector.currentLanguage, event.target.value),
-                    null,
-                    game.definitionSet.warningFormat.modalPopupOptions);
+                    { options: { focusAfterAction: elementSet.input.inputSetWord }});
         } else
             languageSelector.filterOut(event);
     }; //elementSet.input.inputSetWord.onkeypress
@@ -72,17 +71,17 @@ initialize.onBeforeDOMContentLoaded(() => {
                 goodSubset = true;
             if (goodSubset && inDictionary) {
                 if (!sortedWordListUser.add(trialWord))
-                    modalPopup.show(game.definitionSet.alreadyFound(languageSelector.currentLanguage, trialWord));
+                    modalDialog.show(game.definitionSet.alreadyFound(languageSelector.currentLanguage, trialWord));
                 else
                     event.target.value = null;
             } //if
             if (!goodSubset && !inDictionary)
-                modalPopup.show(game.definitionSet.trialWordDoubleBad(languageSelector.currentLanguage, trialWord)); 
+                modalDialog.show(game.definitionSet.trialWordDoubleBad(languageSelector.currentLanguage, trialWord)); 
             else {
                 if (!goodSubset)
-                    modalPopup.show(game.definitionSet.insufficientRepertoire(languageSelector.currentLanguage, trialWord));
+                    modalDialog.show(game.definitionSet.insufficientRepertoire(languageSelector.currentLanguage, trialWord));
                 if (!inDictionary)
-                    modalPopup.show(game.definitionSet.trialWordNotInDictionary(languageSelector.currentLanguage, trialWord));    
+                    modalDialog.show(game.definitionSet.trialWordNotInDictionary(languageSelector.currentLanguage, trialWord));    
             } //if
         } else
             languageSelector.filterOut(event);
@@ -125,7 +124,7 @@ initialize.onBeforeDOMContentLoaded(() => {
         if (showWords && !sortedWordListMachine.isEmpty)
             elementSet.showMachineSolution(() => () => sortedWordListMachine.refresh());
         if (!showWords)
-            modalPopup.show(game.definitionSet.machineSolution.countFormat(count));
+            modalDialog.show(game.definitionSet.machineSolution.countFormat(count));
         }; //reviewMachineSolution
     
     (() => { // contextMenu:

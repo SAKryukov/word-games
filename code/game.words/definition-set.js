@@ -26,12 +26,7 @@ const game = namespaces.create({
                 `${menuItemText} (not supported by this browser; please use, for example, Chromium-compatible one)`,
             setWordBad: (language, value) =>
                 `<p>Warning:</p><p>${leftQuote(language)}${value}${rightQuote(language)} not found in the ${language.languageName} dictionary</p>`,
-            warningFormat: {
-                modalPopupOptions: {
-                    textAlign: "center",
-                    textLineColor: { message: "darkRed", },
-                },
-            },
+            modalDialogErrorOptions: { options: { cssClasses: "error" } },
             machineSolution: {
                 countFormat: count =>
                     count == 0

@@ -156,6 +156,7 @@ const getGameAlgorithm = languageSelector => {
     gameAlgorithm.classifyWord = word => {
         if (!word) return word;
         if (word.length < 2) return word;
+        word = word.toLowerCase();
         let vowels = [], consonants = [], modifierLetters = [], diacritic = [], punctuation = [];
         for (let index = 0; index < word.length; ++index) {
             const letter = word[index];

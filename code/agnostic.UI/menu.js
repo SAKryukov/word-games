@@ -1,15 +1,16 @@
 /*
-  Horizontal and vertical (context) menus
-  Copyright (c) 2025 by Sergey A Kryukov
-  http://www.SAKryukov.org
-  https://github.com/SAKryukov/word-games
+HTML Menu
+
+Copyright (c) 2017, 2023, 2025 by Sergey A Kryukov
+http://www.SAKryukov.org
+http://www.codeproject.com/Members/SAKryukov
 */
 
 "use strict";
 
 function menuGenerator (container) {
     
-    const version = "0.2.15";
+    const version = "1.0.0";
     if (!new.target) return version; 
 
     if (!container) return;
@@ -38,6 +39,7 @@ function menuGenerator (container) {
             findNext: "F3",
             underline: text => `<u>${text}</u>`,
         },
+        keyToCode: key => `Key${key.toUpperCase()}`,
         elements: {
             header: "header",
             select: "select",
@@ -70,6 +72,12 @@ function menuGenerator (container) {
                 Menu item "${value}" subscription failed:
                 menu item (HTML option) with this value does not exist`, //sic!
         },
+        goodKeyboardActivationPrefix: (event, activationPrefix) => {
+            for (const prefix of activationPrefix)
+                if (!event[prefix])
+                    return false;
+            return true;
+        }, //goodKeyboardActivationPrefix
         toString: text => `${text == null ? "" : text}`,
     } //const definitionSet
     Object.freeze(definitionSet);
@@ -83,7 +91,8 @@ function menuGenerator (container) {
     Object.freeze(menuItemButtonState);
     let menuOptions = {
         keyboardShortcuts: {
-            activationPrefix: ["Alt"],
+            // allowed (AND-ed) combinations of: altKey, ctrlKey, metaKey and shiftKey:
+            activationPrefix: ["altKey"],
             excludes: "|/\\`~;:,." + "q-lip"+ "jpg" + "!@#$%^&*()_+",
         },
         afterActionBehavior: {
@@ -107,7 +116,7 @@ function menuGenerator (container) {
 
     const row = [];
     let isCurrentVisible = false, current = null,
-    onShownHandler = null, onCancelHandler, onBlurHandler = null;
+        onShownHandler = null, onCancelHandler, onBlurHandler = null;
     const actionMap = new Map();
     const elementMap = new Map();
     const keyboardMap = new Map();
@@ -270,7 +279,7 @@ function menuGenerator (container) {
     const remapKeyboardShortcuts = () => {
         keyboardMap.clear();
         for (const character of menuOptions.keyboardShortcuts.excludes)
-            keyboardMap.set(character, null);
+            keyboardMap.set(definitionSet.keyToCode(character), null);
         const remapKeyboardShortcut = (header, xPosition) => { //automatic keyboard shortcuts:
             if (!goodForKeyboardHandling())
                 return;
@@ -279,10 +288,10 @@ function menuGenerator (container) {
             const textContent = header.textContent;
             header.innerHTML = textContent; // remove markup
             for (const character of textContent) {
-                const characterKey = character.toLowerCase(character);
-                if (!keyboardMap.has(characterKey) && !(keyboardMap.has(character))) {
-                    keyboardMap.has(characterKey);
-                    keyboardMap.set(characterKey, xPosition);
+                const code = definitionSet.keyToCode(character);
+                if (!keyboardMap.has(code) && !(keyboardMap.has(code))) {
+                    keyboardMap.has(code);
+                    keyboardMap.set(code, xPosition);
                     found = true;
                     break;
                 } //if
@@ -308,7 +317,7 @@ function menuGenerator (container) {
         for (const element of row)
             remapKeyboardShortcut(element.header, xPosition++);
         for (const character of menuOptions.keyboardShortcuts.excludes)
-            keyboardMap.delete(character);
+            keyboardMap.delete(definitionSet.keyToCode(character));
     }; //remapKeyboardShortcuts
     
     const reset = () => {
@@ -502,7 +511,7 @@ function menuGenerator (container) {
                         new CustomEvent(event.key, { detail: data }));
             } //switch
         }; //selectElement.onkeydown
-        selectElement.addEventListener("blur", event => {
+        selectElement.onblur = event => {
             if (!isContextMenu) {
                 const data = elementMap.get(event.target);
                 select(data.element, false);    
@@ -510,7 +519,7 @@ function menuGenerator (container) {
                 else event.target.style.display = definitionSet.css.hide;
             if (onBlurHandler)
                 onBlurHandler(event);
-        }); //selectElement.onblur
+        } //selectElement.onblur
     let optionIndex = 0, optionSize = 0;
         const optionHandler = event => {
             if (event.target.disabled) return;
@@ -568,17 +577,12 @@ function menuGenerator (container) {
 
     const startKeyboardHandling = handler => {
         if (!goodForKeyboardHandling()) return;
-        const downKeys = new Set();
         window.addEventListener(definitionSet.events.keyDown, event => {
-            downKeys.add(event.key);
-            if (downKeys.size <= menuOptions.keyboardShortcuts.activationPrefix.length) return;
-            if (!downKeys.has(event.key)) return;
-            for (const pressedOne of menuOptions.keyboardShortcuts.activationPrefix)
-                if (!downKeys.has(pressedOne)) return;
+            if (!keyboardMap.has(event.code)) return;
+            //if (event.key == "Alt") return;
+            //if (event.key == "Meta") return;
+            if (!definitionSet.goodKeyboardActivationPrefix(event, menuOptions.keyboardShortcuts.activationPrefix)) return;
             handler(event);
-        });
-        window.addEventListener(definitionSet.events.keyUp, event => {
-            downKeys.delete(event.key);
         });
     }; //startKeyboardHandling
 
@@ -586,7 +590,7 @@ function menuGenerator (container) {
         const length = row.length;  
         if (keyboardMap.size < 1) return;
         if (length < 1) return;
-        const index = keyboardMap.get(event.key);
+        const index = keyboardMap.get(event.code);
         if (index == null) return;
         if (index < 0 || index >= length) return;
         event.preventDefault();
@@ -596,4 +600,4 @@ function menuGenerator (container) {
     this.toString = () => { return describeSelfDocumentedAPI(this); };
     Object.freeze(this);
 
-}
+};
